@@ -28,7 +28,7 @@ function App() {
         <div className="w-full max-w-[375px] bg-navy relative shadow-2xl min-h-screen">
           <FixedHeader activeTab={activeTab} onTabChange={setActiveTab} />
           
-          <main className="pt-[200px] pb-10">
+          <main className="pt-[140px] pb-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}

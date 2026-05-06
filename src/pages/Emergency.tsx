@@ -10,9 +10,16 @@ const PHRASES = [
 ];
 
 export const EmergencyPage = () => {
+  const speak = (text: string) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'vi-VN';
+    utterance.rate = 0.8; // Slightly slower for clarity
+    window.speechSynthesis.speak(utterance);
+  };
+
   return (
     <div className="pb-10 px-4">
-      <div className="flex items-center gap-2 mb-6 px-1">
+      <div className="flex items-center gap-2 mb-4 px-1">
         <Languages className="w-5 h-5 text-coral" />
         <h2 className="text-xl font-black text-text-primary">긴급 회화</h2>
       </div>
@@ -27,8 +34,11 @@ export const EmergencyPage = () => {
                 <span className="text-[10px] text-text-hint">[{p.pr}]</span>
               </div>
             </div>
-            <button className="p-2 group-active:text-coral transition-colors">
-              <Volume2 className="w-4 h-4 text-text-secondary" />
+            <button 
+              onClick={() => speak(p.vn)}
+              className="p-2 hover:bg-coral/10 rounded-full transition-colors text-text-secondary hover:text-coral"
+            >
+              <Volume2 className="w-4 h-4" />
             </button>
           </div>
         ))}
