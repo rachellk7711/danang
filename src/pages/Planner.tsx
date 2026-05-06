@@ -2,7 +2,7 @@ import { Bed, Plus, CheckCircle2, StickyNote, MapPin } from 'lucide-react';
 
 export const PlannerPage = ({ onGoExplore }: { onGoExplore: () => void }) => {
   return (
-    <div className="pt-28 pb-10 px-4">
+    <div className="pb-10 px-4">
       {/* Accommodation Summary */}
       <div className="glass-card p-4 mb-6 bg-navy-sub/50 border-teal/20">
         <div className="flex items-center gap-2 mb-3">

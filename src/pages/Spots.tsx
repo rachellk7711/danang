@@ -74,9 +74,9 @@ export const SpotsPage = () => {
   };
 
   return (
-    <div className="pt-28 pb-10">
+    <div className="pb-10">
       {/* 2-Line Filters */}
-      <div className="px-4 mb-6 space-y-3 sticky top-24 z-20 bg-navy/80 backdrop-blur-md pb-3 border-b border-white/5">
+      <div className="px-4 mb-6 space-y-3 sticky top-[200px] z-20 bg-navy/80 backdrop-blur-md pb-3 border-b border-white/5">
         <div className="flex gap-2">
           {(['danang', 'hoian'] as const).map(c => (
             <button

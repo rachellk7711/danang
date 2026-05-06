@@ -154,7 +154,7 @@ export const FoodShoppingPage = () => {
   const fruits = SEASONAL_FRUITS[selectedMonth] || [];
 
   return (
-    <div className="pt-28 pb-10 px-4 space-y-6">
+    <div className="pb-10 px-4 space-y-6">
       {/* 1. Seasonal Fruits Section */}
       <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
         <button 

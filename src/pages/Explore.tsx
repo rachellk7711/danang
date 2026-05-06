@@ -205,7 +205,7 @@ export const ExplorePage = () => {
   };
 
   return (
-    <div className="pt-28 pb-10">
+    <div className="pb-10">
       {/* Test Mock Locations */}
       {showMockButtons && (
         <div className="px-4 mb-4">
