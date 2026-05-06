@@ -81,7 +81,7 @@ const SHOPPING_CATEGORIES = [
 ];
 
 // Data for Delivery Recommendations (Verified for 2024-2025)
-const DELIVERY_SPOTS = [
+const DELIVERY_SPOTS_DANANG = [
   {
     category: '생과일 배달 🥭',
     name: '유가네 과일 (Yu Ga Ne)',
@@ -119,6 +119,18 @@ const DELIVERY_SPOTS = [
     ]
   },
   {
+    category: '프리미엄 크랩 🦀',
+    name: '레드크랩 (Red Crab)',
+    hours: '10:00 - 22:00',
+    contact: '카카오톡: 다낭레드크랩',
+    desc: '고급스러운 필리핀 스타일 알리망오 크랩 요리 전문점. 특별한 날 리조트에서 파티 분위기 내기에 좋습니다.',
+    menu: [
+      { name: '블랙페퍼 크랩', price: '변동' },
+      { name: '갈릭 버터 새우', price: '320,000₫' },
+      { name: '상하이 볶음밥', price: '120,000₫' }
+    ]
+  },
+  {
     category: '야식 치킨/분식 배달 🍗',
     name: '다낭 치킨톡 (Chicken Talk)',
     hours: '15:00 - 01:00',
@@ -129,19 +141,106 @@ const DELIVERY_SPOTS = [
       { name: '국물 떡볶이 & 튀김 세트', price: '250,000₫' },
       { name: '골뱅이 소면', price: '280,000₫' }
     ]
+  }
+];
+
+const DELIVERY_SPOTS_HOIAN = [
+  {
+    category: '한식/현지식 배달 🍚',
+    name: '달빛식당 (Dalbit)',
+    hours: '10:00 - 21:00',
+    contact: '카카오톡: 달빛식당 호이안',
+    desc: '호이안 올드타운 근처 인기 맛집. 삼겹살 정식부터 현지식까지 다양하게 배달 가능하며 한국어 주문이 매우 편합니다.',
+    menu: [
+      { name: '삼겹살 정식 (강추)', price: '250,000₫' },
+      { name: '김치찌개 / 된장찌개', price: '150,000₫' },
+      { name: '모닝글로리 덮밥', price: '120,000₫' }
+    ]
   },
   {
-    category: '배달 앱 활용 팁 📱',
-    name: '배달K / Grab Food',
-    hours: '24시간 이용 가능',
-    contact: 'App Store / Play Store 설치',
-    desc: '특정 식당 외에 다양한 로컬 음식을 원하시면 "배달K(한국어 지원)" 또는 "Grab" 앱을 이용하는 것이 가장 저렴하고 빠릅니다.',
+    category: '전설의 반미 🥖',
+    name: '반미프엉 (Banh Mi Phuong)',
+    hours: '06:30 - 21:30',
+    contact: 'Grab 푸드 이용 추천',
+    desc: '호이안에서 가장 유명한 반미집. 줄 서지 말고 그랩으로 배달시키세요. 3번(믹스) 메뉴가 가장 인기 있습니다.',
     menu: [
-      { name: '리조트 정문/로비에서 수령 필수', price: 'TIP' },
-      { name: '배달K는 한국 카드로도 결제 가능', price: 'INFO' }
+      { name: '3번 믹스 반미', price: '35,000₫' },
+      { name: '5번 바베큐 반미', price: '30,000₫' },
+      { name: '치킨 반미', price: '30,000₫' }
+    ]
+  },
+  {
+    category: '반미의 여왕 🥖',
+    name: '마담콴 (Madam Khanh)',
+    hours: '07:00 - 19:00',
+    contact: 'Grab 푸드 이용 추천',
+    desc: '반미프엉과 쌍벽을 이루는 곳. 소스가 더 진하고 풍부한 맛이 특징입니다. 현지인들이 더 선호하기도 해요.',
+    menu: [
+      { name: 'The Mixed 반미', price: '30,000₫' },
+      { name: 'BBQ 포크 반미', price: '30,000₫' },
+      { name: '오믈렛 반미', price: '25,000₫' }
+    ]
+  },
+  {
+    category: '현지인 맛집 🍜',
+    name: '포슈아 (Pho Xua)',
+    hours: '10:00 - 21:00',
+    contact: '배달K / Grab 이용',
+    desc: '호이안 올드타운의 가성비 맛집. 분짜와 화이트로즈(물만두 스타일)가 특히 맛있기로 소문난 곳입니다.',
+    menu: [
+      { name: '분짜 (BUN CHA)', price: '55,000₫' },
+      { name: '화이트로즈 (물만두)', price: '60,000₫' },
+      { name: '프라이드 완탄', price: '60,000₫' }
+    ]
+  },
+  {
+    category: '커피 & 디저트 ☕',
+    name: '미노커피 (Mino Coffee)',
+    hours: '08:00 - 21:00',
+    contact: '카카오톡: minocoffee',
+    desc: '코코넛 스무디 커피가 정말 맛있는 곳. 리조트에서 시원하게 카페인 충전하고 싶을 때 추천합니다.',
+    menu: [
+      { name: '코코넛 커피 (시그니처)', price: '45,000₫' },
+      { name: '솔트 커피', price: '40,000₫' },
+      { name: '망고 스무디', price: '50,000₫' }
     ]
   }
 ];
+
+const DeliveryCard: React.FC<{ spot: any }> = ({ spot }) => (
+  <div className="glass-card overflow-hidden">
+    <div className="bg-navy-sub/50 p-3 border-b border-white/5 relative">
+      <div className="flex justify-between items-start mb-1">
+        <span className="text-[10px] font-bold text-coral uppercase tracking-widest">{spot.category}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] text-text-hint">{spot.hours}</span>
+          <a 
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.name + ' 베트남')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 rounded-lg transition-colors"
+            title="지도 보기"
+          >
+            <MapPin className="w-3 h-3" />
+          </a>
+        </div>
+      </div>
+      <h3 className="text-sm font-black text-text-primary mb-0.5">{spot.name}</h3>
+      <p className="text-[10px] text-coral font-bold">{spot.contact}</p>
+    </div>
+    <div className="p-3 bg-white/2">
+      <p className="text-[10px] text-text-secondary mb-3 leading-relaxed italic">"{spot.desc}"</p>
+      <div className="space-y-1.5">
+        {spot.menu.map((m: any, i: number) => (
+          <div key={i} className="flex justify-between items-center bg-white/3 border-l-2 border-coral/30 p-2 rounded-r-lg transition-all hover:bg-white/5 hover:border-coral group">
+            <span className="text-[11px] text-text-primary font-medium">{m.name}</span>
+            <span className="text-[11px] font-bold text-mango bg-mango/10 px-1.5 py-0.5 rounded-md">{m.price}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 export const FoodShoppingPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
@@ -149,6 +248,7 @@ export const FoodShoppingPage = () => {
   const [isFruitOpen, setIsFruitOpen] = useState(false);
   const [isShoppingOpen, setIsShoppingOpen] = useState(false);
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(false);
+  const [isHoianDeliveryOpen, setIsHoianDeliveryOpen] = useState(false);
 
   const fruits = SEASONAL_FRUITS[selectedMonth] || [];
 
@@ -220,7 +320,6 @@ export const FoodShoppingPage = () => {
 
         {isShoppingOpen && (
           <div className="px-4 pb-6 animate-in fade-in slide-in-from-top-2 duration-300">
-            {/* Category Tabs */}
             <div className="grid grid-cols-4 gap-1.5 mb-6">
               {SHOPPING_CATEGORIES.map((cat) => (
                 <button
@@ -239,7 +338,6 @@ export const FoodShoppingPage = () => {
               ))}
             </div>
 
-            {/* Items List */}
             <div className="space-y-3">
               {SHOPPING_CATEGORIES.find(c => c.id === activeTab)?.items.map((item, idx) => (
                 <div key={idx} className="glass-card p-4 flex flex-col gap-1 border-l-4 border-l-teal shadow-md">
@@ -255,7 +353,7 @@ export const FoodShoppingPage = () => {
         )}
       </section>
 
-      {/* 3. Delivery Recommendations Section */}
+      {/* 3. Delivery Recommendations (Da Nang) */}
       <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
         <button 
           onClick={() => setIsDeliveryOpen(!isDeliveryOpen)}
@@ -263,7 +361,7 @@ export const FoodShoppingPage = () => {
         >
           <div className="flex items-center gap-2">
             <Tag className="w-5 h-5 text-coral" />
-            <h2 className="text-xl font-black text-coral">리조트 배달 맛집</h2>
+            <h2 className="text-xl font-black text-coral">리조트 배달 맛집 (다낭)</h2>
           </div>
           <div className={cn("transition-transform duration-300", !isDeliveryOpen && "rotate-180")}>
             <ChevronRight className="w-5 h-5 text-coral rotate-90" />
@@ -272,44 +370,57 @@ export const FoodShoppingPage = () => {
 
         {isDeliveryOpen && (
           <div className="px-4 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
-            {DELIVERY_SPOTS.map((spot, idx) => (
-              <div key={idx} className="glass-card overflow-hidden">
-                <div className="bg-navy-sub/50 p-3 border-b border-white/5 relative">
-                  <div className="flex justify-between items-start mb-1">
-                    <span className="text-[10px] font-bold text-coral uppercase tracking-widest">{spot.category}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] text-text-hint">{spot.hours}</span>
-                      <a 
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.name + ' 베트남')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 rounded-lg transition-colors"
-                        title="지도 보기"
-                      >
-                        <MapPin className="w-3 h-3" />
-                      </a>
-                    </div>
-                  </div>
-                  <h3 className="text-sm font-black text-text-primary mb-0.5">{spot.name}</h3>
-                  <p className="text-[10px] text-coral font-bold">{spot.contact}</p>
-                </div>
-                <div className="p-3 bg-white/2">
-                  <p className="text-[10px] text-text-secondary mb-3 leading-relaxed italic">"{spot.desc}"</p>
-                  <div className="space-y-1.5">
-                    {spot.menu.map((m, i) => (
-                      <div key={i} className="flex justify-between items-center bg-white/3 border-l-2 border-coral/30 p-2 rounded-r-lg transition-all hover:bg-white/5 hover:border-coral group">
-                        <span className="text-[11px] text-text-primary font-medium">{m.name}</span>
-                        <span className="text-[11px] font-bold text-mango bg-mango/10 px-1.5 py-0.5 rounded-md">{m.price}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            {DELIVERY_SPOTS_DANANG.map((spot, idx) => (
+              <DeliveryCard key={idx} spot={spot} />
             ))}
           </div>
         )}
       </section>
 
+      {/* 4. Delivery Recommendations (Hoi An) */}
+      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+        <button 
+          onClick={() => setIsHoianDeliveryOpen(!isHoianDeliveryOpen)}
+          className="w-full flex items-center justify-between p-3"
+        >
+          <div className="flex items-center gap-2">
+            <Tag className="w-5 h-5 text-mint" />
+            <h2 className="text-xl font-black text-mint">리조트 배달 맛집 (호이안)</h2>
+          </div>
+          <div className={cn("transition-transform duration-300", !isHoianDeliveryOpen && "rotate-180")}>
+            <ChevronRight className="w-5 h-5 text-mint rotate-90" />
+          </div>
+        </button>
+
+        {isHoianDeliveryOpen && (
+          <div className="px-4 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+            {DELIVERY_SPOTS_HOIAN.map((spot, idx) => (
+              <DeliveryCard key={idx} spot={spot} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* 5. General Tips */}
+      <div className="px-2 pt-2 pb-4">
+        <div className="bg-navy-card/50 rounded-2xl p-4 border border-white/5">
+          <h3 className="text-xs font-bold text-text-hint mb-3 uppercase tracking-wider">💡 배달 이용 꿀팁</h3>
+          <ul className="space-y-2 text-[11px] text-text-secondary leading-relaxed">
+            <li className="flex gap-2">
+              <span className="text-coral">•</span>
+              <span>배달 앱(배달K, 그랩)을 이용하면 더 많은 로컬 맛집을 찾을 수 있습니다.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-coral">•</span>
+              <span>리조트 보안상 객실 앞까지 배달이 불가능한 경우가 많으니 로비나 정문에서 수령하세요.</span>
+            </li>
+            <li className="flex gap-2">
+              <span className="text-coral">•</span>
+              <span>카톡 주문 시 '호텔명/동/호수'를 명확히 남기면 의사소통이 훨씬 빠릅니다.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 };
