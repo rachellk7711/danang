@@ -80,66 +80,65 @@ const SHOPPING_CATEGORIES = [
   }
 ];
 
-// Data for Delivery Recommendations
+// Data for Delivery Recommendations (Verified for 2024-2025)
 const DELIVERY_SPOTS = [
   {
-    category: '과일 배달 🥭',
-    name: '다낭 K-과일 (K-Fruit)',
-    hours: '09:00 - 21:00',
-    contact: '카카오톡 ID: kfruit_danang',
-    desc: '호텔 리조트 로비까지 신선하게 깎은 과일을 아이스박스로 깔끔하게 배달해 줍니다.',
+    category: '생과일 배달 🥭',
+    name: '유가네 과일 (Yu Ga Ne)',
+    hours: '10:00 - 22:00',
+    contact: '카카오톡 채널: 유가네 과일',
+    desc: '다낭에서 가장 유명한 과일 배달 업체. 먹기 좋게 손질된 애플망고와 망고스틴을 리조트 로비에서 편하게 받을 수 있습니다.',
     menu: [
-      { name: '손질 애플망고 1kg', price: '120,000₫' },
-      { name: '망고스틴 1kg', price: '150,000₫' },
-      { name: '모듬 과일팩 (대)', price: '250,000₫' }
+      { name: '손질 애플망고 (특)', price: '130,000₫' },
+      { name: '망고스틴 1kg (제철)', price: '160,000₫' },
+      { name: '프리미엄 모듬 과일세트', price: '280,000₫' }
     ]
   },
   {
-    category: '해산물/회 배달 🦞',
-    name: '다낭 K-씨푸드',
-    hours: '11:00 - 23:00',
-    contact: '카카오톡 ID: danang_seafood',
-    desc: '수산시장에 직접 가지 않아도 리조트 식탁에서 신선한 회와 해산물 요리를 즐길 수 있습니다.',
-    menu: [
-      { name: '다금바리 회 세트', price: '850,000₫' },
-      { name: '칠리 크랩 & 볶음밥', price: '450,000₫' },
-      { name: '가리비 치즈구이', price: '150,000₫' }
-    ]
-  },
-  {
-    category: '한식/야식 배달 🍗',
-    name: '마스터 떡볶이 & 치킨',
-    hours: '16:00 - 02:00',
-    contact: '카카오톡 ID: master_dn',
-    desc: '현지 음식이 물릴 때 리조트 야식으로 최고입니다. 한국어로 편하게 주문 가능해요.',
-    menu: [
-      { name: '국물 떡볶이 세트', price: '180,000₫' },
-      { name: '양념 순살 치킨', price: '220,000₫' },
-      { name: '김치찌개 정식', price: '150,000₫' }
-    ]
-  },
-  {
-    category: '피자/양식 배달 🍕',
-    name: "피자 4P's (Grab 배달)",
-    hours: '11:00 - 22:00',
-    contact: 'Grab 앱 이용',
-    desc: '예약하기 힘든 다낭 최고의 피자집 메뉴를 숙소에서 그랩으로 편하게 받아볼 수 있습니다.',
-    menu: [
-      { name: '부라타 파마햄 피자', price: '290,000₫' },
-      { name: '하프 앤 하프 피자', price: '250,000₫' },
-      { name: '크랩 토마토 스파게티', price: '220,000₫' }
-    ]
-  },
-  {
-    category: '현지식 배달 🍜',
+    category: '현지식 맛집 배달 🍜',
     name: '안토이 (An Thoi)',
     hours: '10:30 - 22:00',
-    contact: '배달K 앱 / 그랩(Grab)',
-    desc: '한국인 입맛에 가장 잘 맞는 깔끔한 현지식 식당. 에어컨 없는 식당이 싫다면 배달이 정답입니다.',
+    contact: '카카오톡 채널: 다낭안토이',
+    desc: '줄 서서 먹는 다낭 대표 맛집. 한국어 주문이 가능하며 리조트 배달 시에도 매장 맛 그대로 깔끔하게 포장되어 옵니다.',
     menu: [
-      { name: '소고기 쌀국수', price: '60,000₫' },
-      { name: '반세오', price: '85,000₫' },
-      { name: '모닝글로리 마늘볶음', price: '50,000₫' }
+      { name: '반세오 (최고 인기)', price: '89,000₫' },
+      { name: '소고기 쌀국수', price: '65,000₫' },
+      { name: '파인애플 볶음밥', price: '115,000₫' }
+    ]
+  },
+  {
+    category: '해산물 전문 배달 🦞',
+    name: '목 해산물 식당 (Moc Quan)',
+    hours: '10:30 - 23:00',
+    contact: '카카오톡 채널: 다낭 목 해산물 식당',
+    desc: '미케비치 근처 가성비 최고의 해산물 식당. 크랩, 새우 요리를 매장에 가지 않고 리조트 식탁에서 즐길 수 있습니다.',
+    menu: [
+      { name: '블랙타이거 새우 (크림/칠리)', price: '250,000₫~' },
+      { name: '해산물 볶음면', price: '120,000₫' },
+      { name: '맛조개 모닝글로리 볶음', price: '95,000₫' }
+    ]
+  },
+  {
+    category: '야식 치킨/분식 배달 🍗',
+    name: '다낭 치킨톡 (Chicken Talk)',
+    hours: '15:00 - 01:00',
+    contact: '카카오톡 ID: dnck',
+    desc: '리조트 야식이 고민될 때 1순위. 한국식 바삭한 치킨과 떡볶이 등 분식 메뉴를 늦은 밤까지 배달해 줍니다.',
+    menu: [
+      { name: '반반 치킨 (후라이드/양념)', price: '320,000₫' },
+      { name: '국물 떡볶이 & 튀김 세트', price: '250,000₫' },
+      { name: '골뱅이 소면', price: '280,000₫' }
+    ]
+  },
+  {
+    category: '배달 앱 활용 팁 📱',
+    name: '배달K / Grab Food',
+    hours: '24시간 이용 가능',
+    contact: 'App Store / Play Store 설치',
+    desc: '특정 식당 외에 다양한 로컬 음식을 원하시면 "배달K(한국어 지원)" 또는 "Grab" 앱을 이용하는 것이 가장 저렴하고 빠릅니다.',
+    menu: [
+      { name: '리조트 정문/로비에서 수령 필수', price: 'TIP' },
+      { name: '배달K는 한국 카드로도 결제 가능', price: 'INFO' }
     ]
   }
 ];
