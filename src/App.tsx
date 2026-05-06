@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
 import { FixedHeader } from './components/FixedHeader'
 import { AnimatePresence, motion } from 'framer-motion'

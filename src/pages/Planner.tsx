@@ -1,4 +1,3 @@
-import React from 'react';
 import { Bed, Plus, CheckCircle2, StickyNote, MapPin } from 'lucide-react';
 
 export const PlannerPage = ({ onGoExplore }: { onGoExplore: () => void }) => {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingBag, Utensils, Info, ExternalLink, Calendar, ChevronRight, Tag } from 'lucide-react';
+import { ShoppingBag, Utensils, Calendar, ChevronRight, Tag } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
