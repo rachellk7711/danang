@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Dark Mode (Default) */
+    --theme-bg-main: #0d1b2a;
+    --theme-bg-card: #1e2d3d;
+    --theme-bg-sub: #12202e;
+    
+    --theme-card-local: #112028;
+    --theme-card-tourist: #1e2010;
+    
+    --theme-text-primary: #e5e7eb;
+    --theme-text-secondary: #9ca3af;
+    --theme-text-hint: #6b7280;
+
+    --theme-border: rgba(255, 255, 255, 0.05);
+    --theme-overlay-5: rgba(255, 255, 255, 0.05);
+    --theme-overlay-10: rgba(255, 255, 255, 0.1);
+  }
+
+  :root.light {
+    /* Light Mode (White Background) */
+    --theme-bg-main: #f8fafc;
+    --theme-bg-card: #ffffff;
+    --theme-bg-sub: #f1f5f9;
+    
+    --theme-card-local: #f0fdfa; /* Very light teal */
+    --theme-card-tourist: #fffbeb; /* Very light yellow */
+    
+    --theme-text-primary: #0f172a;
+    --theme-text-secondary: #475569;
+    --theme-text-hint: #94a3b8;
+
+    --theme-border: rgba(0, 0, 0, 0.05);
+    --theme-overlay-5: rgba(0, 0, 0, 0.03);
+    --theme-overlay-10: rgba(0, 0, 0, 0.06);
+  }
+}
+
+@theme {
+  /* Mapping my custom classes to the theme variables */
+  --color-navy: var(--theme-bg-main);
+  --color-navy-card: var(--theme-bg-card);
+  --color-navy-sub: var(--theme-bg-sub);
+  
+  --color-card-local: var(--theme-card-local);
+  --color-card-tourist: var(--theme-card-tourist);
+  
+  --color-text-primary: var(--theme-text-primary);
+  --color-text-secondary: var(--theme-text-secondary);
+  --color-text-hint: var(--theme-text-hint);
+  
+  /* Constant Accent Colors */
+  --color-teal: #0e7c7b;
+  --color-mint: #2ab5b3;
+  --color-coral: #e8312a;
+  --color-mango: #f5a623;
+  --color-forsythia: #f9d000;
+}
+
+@layer base {
+  body {
+    background-color: var(--theme-bg-main);
+    color: var(--theme-text-primary);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+@layer components {
+  .glass-card {
+    background-color: color-mix(in srgb, var(--theme-bg-card) 80%, transparent);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--theme-border);
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--theme-overlay-10);
+  border-radius: 9999px;
+}
+
+/* Override utility classes that use literal white/black opacities to use semantic overlays */
+.light .bg-white\/5 { background-color: var(--theme-overlay-5); }
+.light .bg-white\/10 { background-color: var(--theme-overlay-10); }
+.light .border-white\/5 { border-color: var(--theme-border); }
+.light .border-white\/10 { border-color: color-mix(in srgb, var(--theme-border) 200%, transparent); }
+.light .divide-white\/5 > * + * { border-color: var(--theme-border); }
