@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingBag, Utensils, Calendar, ChevronRight, Tag } from 'lucide-react';
+import { ShoppingBag, Utensils, Calendar, ChevronRight, Tag, MapPin } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -275,10 +275,21 @@ export const FoodShoppingPage = () => {
           <div className="px-4 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
             {DELIVERY_SPOTS.map((spot, idx) => (
               <div key={idx} className="glass-card overflow-hidden">
-                <div className="bg-navy-sub/50 p-3 border-b border-white/5">
+                <div className="bg-navy-sub/50 p-3 border-b border-white/5 relative">
                   <div className="flex justify-between items-start mb-1">
                     <span className="text-[10px] font-bold text-coral uppercase tracking-widest">{spot.category}</span>
-                    <span className="text-[10px] text-text-hint">{spot.hours}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-text-hint">{spot.hours}</span>
+                      <a 
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spot.name + ' 베트남')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 rounded-lg transition-colors"
+                        title="지도 보기"
+                      >
+                        <MapPin className="w-3 h-3" />
+                      </a>
+                    </div>
                   </div>
                   <h3 className="text-sm font-black text-text-primary mb-0.5">{spot.name}</h3>
                   <p className="text-[10px] text-coral font-bold">{spot.contact}</p>
