@@ -1,5 +1,5 @@
 /// <reference types="@types/google.maps" />
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Star, MapPin, Loader2, RefreshCw, Plus } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -32,6 +32,8 @@ const MOCK_LOCATIONS = [
   { name: '⛰️ 선짜', lat: 16.1215, lng: 108.2778 }
 ];
 
+const DANANG_CENTER = { lat: 16.0683, lng: 108.2234 };
+
 export const ExplorePage = () => {
   const { coords: currentCoords, setCoords: setCurrentCoords, setIsMock } = useLocation();
   const [exploreMode, setExploreMode] = useState<'recommend' | 'google'>('recommend');
@@ -40,7 +42,15 @@ export const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+  // Use a stable reference point for distance sorting if current location is too far from Da Nang
+  const activeBaseCoords = useMemo(() => {
+    if (!currentCoords) return DANANG_CENTER;
+    const distFromCenter = calculateDistance(currentCoords.lat, currentCoords.lng, DANANG_CENTER.lat, DANANG_CENTER.lng);
+    // If more than 50km away, assume user is not in Da Nang and use center for sorting
+    return distFromCenter > 50 ? DANANG_CENTER : currentCoords;
+  }, [currentCoords]);
+
+  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -49,26 +59,26 @@ export const ExplorePage = () => {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  };
+  }
 
   const loadRecommendPlaces = useCallback(async (coords: {lat: number, lng: number} | null) => {
     setLoading(true);
     try {
       const dbPlaces: PlaceData[] = [];
       const database = db as any;
+      const base = coords || activeBaseCoords;
 
       const mapToPlaceData = (item: any, catName: string): PlaceData => {
         let distance = '정보없음';
         let distanceVal = 999;
         
-        const itemLat = item.location?.lat || (item.city === 'danang' ? 16.0544 : item.city === 'hoian' ? 15.8801 : null);
-        const itemLng = item.location?.lng || (item.city === 'danang' ? 108.2022 : item.city === 'hoian' ? 108.3380 : null);
+        // Use specific item location or city default
+        const itemLat = item.location?.lat || (item.city === 'hoian' ? 15.8801 : 16.0544);
+        const itemLng = item.location?.lng || (item.city === 'hoian' ? 108.3380 : 108.2022);
 
-        if (coords?.lat && coords?.lng && itemLat && itemLng) {
-          const d = calculateDistance(coords.lat, coords.lng, itemLat, itemLng);
-          distanceVal = d;
-          distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
-        }
+        const d = calculateDistance(base.lat, base.lng, itemLat, itemLng);
+        distanceVal = d;
+        distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
 
         let costStr = '정보없음';
         if (item.avg_cost_per_person) costStr = `${Number(item.avg_cost_per_person).toLocaleString()}동~`;
@@ -94,6 +104,7 @@ export const ExplorePage = () => {
         };
       };
 
+      // Safe JSON Mapping
       if (database.restaurants) {
         if ((selectedCategory === '전체' || selectedCategory === '로컬맛집') && database.restaurants.local) {
           database.restaurants.local.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
@@ -105,6 +116,10 @@ export const ExplorePage = () => {
       if (database.massage_shops && (selectedCategory === '전체' || selectedCategory === '마사지')) {
         database.massage_shops.forEach((m: any) => dbPlaces.push(mapToPlaceData(m, '마사지')));
       }
+      if (database.cafes && (selectedCategory === '전체' || selectedCategory === '카페')) {
+        const cafes = database.cafes.danang ? [...database.cafes.danang, ...database.cafes.hoian] : (Array.isArray(database.cafes) ? database.cafes : []);
+        cafes.forEach((c: any) => dbPlaces.push(mapToPlaceData(c, '카페')));
+      }
 
       try {
         const { data: userPlaces } = await supabase.from('user_places').select('*');
@@ -114,8 +129,8 @@ export const ExplorePage = () => {
             name: p.name,
             category: p.category,
             rating: p.rating,
-            distance: coords ? `${calculateDistance(coords.lat, coords.lng, p.location.lat, p.location.lng).toFixed(1)}km` : '-',
-            distanceVal: coords ? calculateDistance(coords.lat, coords.lng, p.location.lat, p.location.lng) : 999,
+            distance: `${calculateDistance(base.lat, base.lng, p.location.lat, p.location.lng).toFixed(1)}km`,
+            distanceVal: calculateDistance(base.lat, base.lng, p.location.lat, p.location.lng),
             time: '내 장소',
             cost: p.avg_cost || '-',
             isLocal: true,
@@ -141,7 +156,7 @@ export const ExplorePage = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, activeBaseCoords]);
 
   const searchGooglePlaces = useCallback((lat: number, lng: number) => {
     setLoading(true);
@@ -195,12 +210,12 @@ export const ExplorePage = () => {
 
   useEffect(() => {
     refreshData();
-  }, [exploreMode, selectedCategory]);
+  }, [exploreMode, selectedCategory, activeBaseCoords]);
 
   return (
     <div className="pb-24 bg-white min-h-screen">
       <div className="p-4">
-        <div className="flex bg-gray-100 p-1 rounded-2xl border border-gray-200">
+        <div className="flex bg-gray-100 p-1 rounded-2xl border border-gray-200 shadow-sm">
           <button
             onClick={() => setExploreMode('recommend')}
             className={cn(
@@ -225,11 +240,11 @@ export const ExplorePage = () => {
       </div>
 
       <div className="px-4 mb-4">
-        <div className="bg-gray-50 border border-gray-100 rounded-3xl p-6 relative overflow-hidden">
-          <p className="text-xs text-gray-500 leading-relaxed text-center">
+        <div className="bg-teal/5 border border-teal/10 rounded-3xl p-4 relative overflow-hidden">
+          <p className="text-[11px] text-teal/70 leading-relaxed text-center font-medium">
             {exploreMode === 'recommend' 
-              ? '다낭 전문가가 엄선한 맛집과 내가 저장한 장소를 거리순으로 보여드려요.'
-              : '현재 위치 반경 1.5km 이내의 구글 평점 4.0 이상 장소를 검색합니다.'}
+              ? '다낭 전문가의 엄선 맛집과 내 위시리스트를 거리순으로 확인하세요.'
+              : '현재 위치 반경 1.5km 이내, 구글 평점 4.0 이상 장소를 탐색합니다.'}
           </p>
         </div>
       </div>
@@ -246,7 +261,7 @@ export const ExplorePage = () => {
             }}
             className={cn(
               "px-3 py-2 rounded-xl text-[11px] font-bold shrink-0 border transition-all",
-              currentCoords?.lat === loc.lat ? "bg-coral/10 border-coral text-coral" : "bg-white border-gray-200 text-gray-500"
+              currentCoords?.lat === loc.lat ? "bg-coral text-white border-coral shadow-sm" : "bg-white border-gray-200 text-gray-500"
             )}
           >
             {loc.name}
@@ -265,38 +280,41 @@ export const ExplorePage = () => {
             />
           ))}
         </div>
-        <button onClick={() => setIsAddModalOpen(true)} className="w-10 h-10 bg-teal text-white rounded-full flex items-center justify-center shadow-lg"><Plus className="w-5 h-5" /></button>
+        <button onClick={() => setIsAddModalOpen(true)} className="w-10 h-10 bg-teal text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform"><Plus className="w-5 h-5" /></button>
       </div>
 
       <div className="px-4 space-y-4">
         {loading ? (
-          <div className="py-20 text-center"><Loader2 className="w-8 h-8 animate-spin text-teal mx-auto mb-2" /><p className="text-sm text-gray-400">데이터 로드 중...</p></div>
+          <div className="py-20 text-center"><Loader2 className="w-8 h-8 animate-spin text-teal mx-auto mb-2" /><p className="text-sm text-gray-400">최적의 장소를 찾는 중...</p></div>
         ) : places.length === 0 ? (
           <div className="py-20 text-center text-gray-400 text-sm">표시할 장소가 없습니다.</div>
         ) : (
           places.map((place) => (
-            <div key={place.id} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+            <div key={place.id} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-3">
-                <div>
-                  <span className="text-[10px] font-bold text-teal bg-teal/5 px-2 py-0.5 rounded-md mb-1 inline-block">{place.category}</span>
-                  <h4 className="text-base font-bold text-gray-800">{place.name}</h4>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[9px] font-bold text-teal bg-teal/5 px-1.5 py-0.5 rounded uppercase">{place.category}</span>
+                    {place.isUserPlace && <span className="text-[9px] font-bold text-coral bg-coral/5 px-1.5 py-0.5 rounded">MY</span>}
+                  </div>
+                  <h4 className="text-base font-black text-gray-900 leading-tight">{place.name}</h4>
                   <div className="flex items-center gap-1 mt-1">
                     <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                    <span className="text-xs font-bold text-gray-600">{place.rating}</span>
+                    <span className="text-xs font-bold text-gray-700">{place.rating}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-1 text-gray-400">
+                <div className="flex items-center gap-1 text-teal font-bold bg-teal/5 px-2 py-1 rounded-lg shrink-0">
                   <MapPin className="w-3 h-3" />
-                  <span className="text-[11px] font-bold">{place.distance}</span>
+                  <span className="text-[11px]">{place.distance}</span>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2 mb-4">
-                <div className="bg-gray-50 p-2 rounded-xl"><p className="text-[9px] text-gray-400 font-bold mb-1">👍 포인트</p><p className="text-[10px] text-gray-700 leading-tight line-clamp-2">{place.summary.pros}</p></div>
-                <div className="bg-gray-50 p-2 rounded-xl"><p className="text-[9px] text-gray-400 font-bold mb-1">⚠️ 참고</p><p className="text-[10px] text-gray-700 leading-tight line-clamp-2">{place.summary.cons}</p></div>
+                <div className="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100"><p className="text-[9px] text-gray-400 font-bold mb-1">RECOMMEND</p><p className="text-[10px] text-gray-700 font-medium leading-relaxed line-clamp-2">{place.summary.pros}</p></div>
+                <div className="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100"><p className="text-[9px] text-gray-400 font-bold mb-1">TIPS</p><p className="text-[10px] text-gray-700 font-medium leading-relaxed line-clamp-2">{place.summary.cons}</p></div>
               </div>
               <div className="flex items-center justify-between pt-3 border-t border-gray-50">
-                <span className="text-xs font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">{place.cost}</span>
-                <a href={place.location ? `https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-blue-500 text-xs font-bold border border-blue-100 px-3 py-1.5 rounded-xl hover:bg-blue-50">지도로 보기</a>
+                <span className="text-[11px] font-bold text-gray-500 bg-gray-100 px-2.5 py-1.5 rounded-lg">{place.cost}</span>
+                <a href={place.location ? `https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 bg-blue-500 text-white text-[11px] font-bold px-4 py-2 rounded-xl shadow-sm hover:bg-blue-600 active:scale-95 transition-all">지도보기</a>
               </div>
             </div>
           ))
