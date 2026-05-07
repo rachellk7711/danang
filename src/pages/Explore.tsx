@@ -61,19 +61,31 @@ export const ExplorePage = () => {
     setLoading(true);
     setLocationError(false);
 
-    // If it's recommendation mode, we just use DB and don't strictly need GPS for listing
+    // 1. Recommendation Mode: Always use DB
     if (exploreMode === 'recommend') {
       useOnlyDB();
       return;
     }
     
+    // 2. Google Mode with Forced Coords (Mock Buttons)
     if (forcedCoords) {
+      console.log("Fetching for mock location:", forcedCoords);
       setCurrentCoords(forcedCoords);
       fetchDataFromAPI(forcedCoords.lat, forcedCoords.lng);
       return;
     }
 
-    // Google Mode needs GPS
+    // 3. Google Mode with existing coords (e.g. category change)
+    if (currentCoords) {
+      fetchDataFromAPI(currentCoords.lat, currentCoords.lng);
+      return;
+    }
+
+    // 4. Initial Google Mode: Get real GPS
+    requestGPSAndFetch();
+  };
+
+  const requestGPSAndFetch = () => {
     if (navigator.geolocation) {
       const safetyTimeout = setTimeout(() => {
         console.warn("GPS request timed out, using fallback.");
@@ -88,9 +100,10 @@ export const ExplorePage = () => {
           const { latitude, longitude } = position.coords;
           
           const dist = Math.sqrt(Math.pow(latitude - 16.0544, 2) + Math.pow(longitude - 108.2022, 2));
-          setShowMockButtons(dist > 1);
+          setShowMockButtons(dist > 0.5); // Show mock if > 50km from Danang center
 
-          setCurrentCoords({ lat: latitude, lng: longitude });
+          const coords = { lat: latitude, lng: longitude };
+          setCurrentCoords(coords);
           fetchDataFromAPI(latitude, longitude);
         },
         (error) => {
@@ -114,7 +127,7 @@ export const ExplorePage = () => {
   };
 
   useEffect(() => {
-    fetchPlaces(currentCoords || undefined);
+    fetchPlaces();
   }, [selectedCategory, exploreMode]);
 
   const fetchDataFromAPI = (lat: number, lng: number) => {
