@@ -17,8 +17,8 @@ const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () =>
   <button
     onClick={onClick}
     className={cn(
-      "px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all",
-      active ? "bg-teal text-white shadow-lg" : "bg-gray-100 text-gray-500 border border-gray-200"
+      "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all",
+      active ? "bg-teal text-white shadow-md" : "bg-gray-100 text-gray-500 border border-gray-200"
     )}
   >
     {label}
@@ -55,8 +55,8 @@ export const ExplorePage = () => {
 
   const activeBaseCoords = useMemo(() => {
     if (!currentCoords) return DANANG_CENTER;
-    const distFromCenter = calculateDistance(currentCoords.lat, currentCoords.lng, DANANG_CENTER.lat, DANANG_CENTER.lng);
-    return distFromCenter > 50 ? DANANG_CENTER : currentCoords;
+    const d = calculateDistance(currentCoords.lat, currentCoords.lng, DANANG_CENTER.lat, DANANG_CENTER.lng);
+    return d > 50 ? DANANG_CENTER : currentCoords;
   }, [currentCoords]);
 
   const loadRecommendPlaces = useCallback(async (coords: {lat: number, lng: number} | null) => {
@@ -205,42 +205,42 @@ export const ExplorePage = () => {
 
   return (
     <div className="pb-24 bg-white min-h-screen">
-      <div className="p-4">
-        <div className="flex bg-gray-100 p-1 rounded-2xl border border-gray-200">
+      <div className="p-3">
+        <div className="flex bg-gray-100 p-1 rounded-xl border border-gray-200 shadow-sm">
           <button
             onClick={() => setExploreMode('recommend')}
             className={cn(
-              "flex-1 py-3 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2",
-              exploreMode === 'recommend' ? "bg-teal text-white shadow-md" : "text-gray-400"
+              "flex-1 py-2 text-[12px] font-bold rounded-lg transition-all flex items-center justify-center gap-2",
+              exploreMode === 'recommend' ? "bg-teal text-white shadow-sm" : "text-gray-400"
             )}
           >
-            <Star className={cn("w-4 h-4", exploreMode === 'recommend' ? "fill-white" : "")} />
+            <Star className={cn("w-3.5 h-3.5", exploreMode === 'recommend' ? "fill-white" : "")} />
             추천 리스트
           </button>
           <button
             onClick={() => setExploreMode('google')}
             className={cn(
-              "flex-1 py-3 text-sm font-bold rounded-xl transition-all flex items-center justify-center gap-2",
-              exploreMode === 'google' ? "bg-coral text-white shadow-md" : "text-gray-400"
+              "flex-1 py-2 text-[12px] font-bold rounded-lg transition-all flex items-center justify-center gap-2",
+              exploreMode === 'google' ? "bg-coral text-white shadow-sm" : "text-gray-400"
             )}
           >
-            <RefreshCw className="w-4 h-4" />
+            <RefreshCw className="w-3.5 h-3.5" />
             구글 실시간
           </button>
         </div>
       </div>
 
-      <div className="px-4 mb-4">
-        <div className="bg-gray-50 border border-gray-100 rounded-3xl p-4 relative overflow-hidden">
-          <p className="text-[11px] text-gray-500 leading-relaxed text-center">
+      <div className="px-3 mb-3">
+        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-3">
+          <p className="text-[10px] text-gray-500 leading-tight text-center">
             {exploreMode === 'recommend' 
-              ? '다낭 전문가의 엄선 맛집과 내 위시리스트를 거리순으로 확인하세요.'
-              : '현재 위치 반경 1.5km 이내, 구글 평점 4.0 이상 장소를 탐색합니다.'}
+              ? '다낭 전문가 엄선 맛집과 내 리스트를 거리순으로 확인하세요.'
+              : '반경 1.5km 이내 구글 평점 4.0 이상 장소를 탐색합니다.'}
           </p>
         </div>
       </div>
 
-      <div className="px-4 mb-4 flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+      <div className="px-3 mb-3 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
         {MOCK_LOCATIONS.map(loc => (
           <button
             key={loc.name}
@@ -251,7 +251,7 @@ export const ExplorePage = () => {
               refreshData(c);
             }}
             className={cn(
-              "px-3 py-2 rounded-xl text-[11px] font-bold shrink-0 border transition-all",
+              "px-2.5 py-1.5 rounded-lg text-[10px] font-bold shrink-0 border transition-all",
               currentCoords?.lat === loc.lat ? "bg-coral text-white border-coral shadow-sm" : "bg-white border-gray-200 text-gray-500"
             )}
           >
@@ -260,8 +260,8 @@ export const ExplorePage = () => {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 px-4 pb-4 overflow-hidden">
-        <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
+      <div className="flex items-center gap-2 px-3 pb-3 overflow-hidden">
+        <div className="flex gap-1.5 overflow-x-auto no-scrollbar flex-1">
           {(['전체', '로컬맛집', '관광맛집', '마사지', '마트·시장', '카페'] as Category[]).map(cat => (
             <CategoryButton
               key={cat}
@@ -271,41 +271,53 @@ export const ExplorePage = () => {
             />
           ))}
         </div>
-        <button onClick={() => setIsAddModalOpen(true)} className="w-10 h-10 bg-teal text-white rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-transform"><Plus className="w-5 h-5" /></button>
+        <button onClick={() => setIsAddModalOpen(true)} className="w-8 h-8 bg-teal text-white rounded-full flex items-center justify-center shadow active:scale-95 transition-transform"><Plus className="w-4 h-4" /></button>
       </div>
 
-      <div className="px-4 space-y-4">
+      <div className="px-3 space-y-3">
         {loading ? (
-          <div className="py-20 text-center"><Loader2 className="w-8 h-8 animate-spin text-teal mx-auto mb-2" /><p className="text-sm text-gray-400">데이터 로드 중...</p></div>
+          <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin text-teal mx-auto mb-2" /><p className="text-[11px] text-gray-400">로드 중...</p></div>
         ) : places.length === 0 ? (
-          <div className="py-20 text-center text-gray-400 text-sm">표시할 장소가 없습니다.</div>
+          <div className="py-20 text-center text-gray-400 text-[11px]">정보가 없습니다.</div>
         ) : (
           places.map((place) => (
-            <div key={place.id} className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm hover:shadow-md transition-shadow">
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[9px] font-bold text-teal bg-teal/5 px-1.5 py-0.5 rounded uppercase">{place.category}</span>
-                    {place.isUserPlace && <span className="text-[9px] font-bold text-coral bg-coral/5 px-1.5 py-0.5 rounded">MY</span>}
-                  </div>
-                  <h4 className="text-base font-black text-gray-900 leading-tight">{place.name}</h4>
-                  <div className="flex items-center gap-1 mt-1">
-                    <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                    <span className="text-xs font-bold text-gray-700">{place.rating}</span>
-                  </div>
+            <div key={place.id} className="bg-white border-b border-gray-100 p-3 relative hover:bg-gray-50/50 transition-colors">
+              <div className="absolute top-3 right-3">
+                <a 
+                  href={place.location ? `https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-8 h-8 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center border border-blue-100 hover:bg-blue-100 transition-colors"
+                >
+                  <MapPin className="w-4 h-4" />
+                </a>
+              </div>
+              
+              <div className="pr-10">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className="text-[9px] font-bold text-teal bg-teal/5 px-1.5 py-0.5 rounded uppercase tracking-tighter">{place.category}</span>
+                  {place.isUserPlace && <span className="text-[9px] font-bold text-coral bg-coral/5 px-1.5 py-0.5 rounded tracking-tighter">MY</span>}
+                  <span className="text-[10px] font-bold text-gray-400 ml-auto">{place.distance}</span>
                 </div>
-                <div className="flex items-center gap-1 text-teal font-bold bg-teal/5 px-2 py-1 rounded-lg shrink-0">
-                  <MapPin className="w-3 h-3" />
-                  <span className="text-[11px]">{place.distance}</span>
+                
+                <h4 className="text-[15px] font-black text-gray-900 leading-tight mb-0.5">{place.name}</h4>
+                
+                <div className="flex items-center gap-1">
+                  <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                  <span className="text-[11px] font-bold text-gray-700">{place.rating}</span>
+                  <span className="text-[10px] text-gray-400 ml-2">{place.cost}</span>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2 mb-4">
-                <div className="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100"><p className="text-[9px] text-gray-400 font-bold mb-1">RECOMMEND</p><p className="text-[10px] text-gray-700 font-medium leading-relaxed line-clamp-2">{place.summary.pros}</p></div>
-                <div className="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100"><p className="text-[9px] text-gray-400 font-bold mb-1">TIPS</p><p className="text-[10px] text-gray-700 font-medium leading-relaxed line-clamp-2">{place.summary.cons}</p></div>
-              </div>
-              <div className="flex items-center justify-between pt-3 border-t border-gray-50">
-                <span className="text-[11px] font-bold text-gray-500 bg-gray-100 px-2.5 py-1.5 rounded-lg">{place.cost}</span>
-                <a href={place.location ? `https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 bg-blue-500 text-white text-[11px] font-bold px-4 py-2 rounded-xl shadow-sm hover:bg-blue-600 active:scale-95 transition-all">지도보기</a>
+
+              <div className="mt-2.5 space-y-1.5">
+                <div className="flex gap-1.5 items-start">
+                  <span className="text-[10px] mt-0.5 shrink-0">👍</span>
+                  <p className="text-[11px] text-gray-600 leading-tight font-medium">{place.summary.pros}</p>
+                </div>
+                <div className="flex gap-1.5 items-start">
+                  <span className="text-[10px] mt-0.5 shrink-0">⚠️</span>
+                  <p className="text-[11px] text-gray-500 leading-tight font-medium">{place.summary.cons}</p>
+                </div>
               </div>
             </div>
           ))
