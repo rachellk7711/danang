@@ -17,7 +17,7 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
   const [searching, setSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([]);
-  const [selectedPlace, setSelectedPlace] = useState<any>(null);
+  const [selectedPlace, setSelectedPlace] = useState<google.maps.places.PlaceResult | null>(null);
   const [showPredictions, setShowPredictions] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   
@@ -33,13 +33,13 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (isOpen && (window as any).google) {
+    if (isOpen && window.google) {
       try {
         if (!autocompleteService.current) {
-          autocompleteService.current = new (window as any).google.maps.places.AutocompleteService();
+          autocompleteService.current = new window.google.maps.places.AutocompleteService();
         }
         if (!placesService.current && mapRef.current) {
-          placesService.current = new (window as any).google.maps.places.PlacesService(mapRef.current);
+          placesService.current = new window.google.maps.places.PlacesService(mapRef.current);
         }
       } catch (err) {
         console.error("Google Maps Service Init Error:", err);
@@ -58,16 +58,16 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
             { 
               input: searchQuery,
               // More compatible biasing method
-              location: new (window as any).google.maps.LatLng(DANANG_CENTER.lat, DANANG_CENTER.lng),
+              location: new google.maps.LatLng(DANANG_CENTER.lat, DANANG_CENTER.lng),
               radius: 15000, // 15km
               componentRestrictions: { country: 'VN' }
             },
             (results, status) => {
               setSearching(false);
-              if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && results) {
+              if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                 setPredictions(results);
                 setShowPredictions(true);
-              } else if (status === (window as any).google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+              } else if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
                 setPredictions([]);
                 setSearchError('결과가 없습니다. 다낭 지역의 정확한 이름을 입력해 보세요.');
               } else {
@@ -147,7 +147,7 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
     }
   };
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setSelectedPlace(null);
     setSearchQuery('');
     setFormData({
@@ -156,7 +156,7 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
       bad_review: '',
       avg_cost: ''
     });
-  };
+  }, []);
 
   if (!isOpen) return null;
 
