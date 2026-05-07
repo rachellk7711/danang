@@ -1,6 +1,6 @@
 /// <reference types="@types/google.maps" />
 import React, { useState, useEffect, useCallback } from 'react';
-import { Star, Navigation, MapPin, Loader2, RefreshCw, Plus } from 'lucide-react';
+import { Star, MapPin, Loader2, RefreshCw, Plus } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import type { Category, PlaceData } from '../types';
