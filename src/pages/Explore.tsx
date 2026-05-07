@@ -128,7 +128,7 @@ export const ExplorePage = () => {
         };
       };
 
-      // 1. Restaurants
+      // 1. Restaurants (Filtered strictly by selectedCategory)
       if (database.restaurants) {
         if (selectedCategory === '전체' || selectedCategory === '로컬맛집') {
           database.restaurants.local?.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
@@ -136,31 +136,39 @@ export const ExplorePage = () => {
         if (selectedCategory === '전체' || selectedCategory === '관광맛집') {
           database.restaurants.tourist?.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '관광맛집')));
         }
+        // Specific Cafe filter for items inside restaurants list
         if (selectedCategory === '전체' || selectedCategory === '카페') {
           [...(database.restaurants.local || []), ...(database.restaurants.tourist || [])].forEach((r: any) => {
-            const cat = String(r.category || '');
-            if (cat.includes('카페') || cat.includes('커피') || cat.includes('디저트') || cat.includes('베이커리')) {
-              dbPlaces.push(mapToPlaceData(r, '카페'));
+            const cat = String(r.category || '').toLowerCase();
+            if (cat.includes('카페') || cat.includes('커피') || cat.includes('디저트') || cat.includes('베이커리') || cat.includes('cafe') || cat.includes('coffee')) {
+              // If specifically searching for Cafe, we add it. 
+              // If 'All', we add it ONLY if it hasn't been added as a restaurant to avoid duplicates.
+              if (selectedCategory === '카페' || !dbPlaces.some(p => p.name === (r.name_kr || r.name))) {
+                dbPlaces.push(mapToPlaceData(r, '카페'));
+              }
             }
           });
         }
       }
 
-      // 2. Attractions
+      // 2. Attractions (Market/Mart/Cafe)
       if (database.attractions) {
         const allAttr = [...(database.attractions.danang || []), ...(database.attractions.hoian || [])];
         allAttr.forEach((a: any) => {
-          const cat = String(a.category || '');
-          if ((selectedCategory === '전체' || selectedCategory === '마트·시장') && (cat.includes('시장') || cat.includes('마트'))) {
+          const cat = String(a.category || '').toLowerCase();
+          const isMarket = cat.includes('시장') || cat.includes('마트') || cat.includes('market') || cat.includes('mart');
+          const isCafe = cat.includes('카페') || cat.includes('커피') || cat.includes('cafe') || cat.includes('coffee');
+
+          if ((selectedCategory === '전체' || selectedCategory === '마트·시장') && isMarket) {
             dbPlaces.push(mapToPlaceData(a, '마트·시장'));
           }
-          if ((selectedCategory === '전체' || selectedCategory === '카페') && (cat.includes('카페') || cat.includes('커피'))) {
+          if ((selectedCategory === '전체' || selectedCategory === '카페') && isCafe) {
             dbPlaces.push(mapToPlaceData(a, '카페'));
           }
         });
       }
 
-      // 3. Shopping
+      // 3. Shopping (Explicit items like Han Market, Lotte Mart)
       if (database.shopping && (selectedCategory === '전체' || selectedCategory === '마트·시장')) {
         Object.entries(database.shopping).forEach(([key, s]: [string, any]) => {
            dbPlaces.push(mapToPlaceData(s, '마트·시장', key));
