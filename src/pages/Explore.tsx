@@ -126,6 +126,21 @@ export const ExplorePage = () => {
     }
   };
 
+  // 1-minute loading safety timeout
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (loading) {
+      timer = setTimeout(() => {
+        if (loading) {
+          console.warn("Global search timeout reached (60s)");
+          setLoading(false);
+          if (places.length === 0) useOnlyDB();
+        }
+      }, 60000);
+    }
+    return () => clearTimeout(timer);
+  }, [loading]);
+
   useEffect(() => {
     fetchPlaces();
   }, [selectedCategory, exploreMode]);
@@ -144,48 +159,51 @@ export const ExplorePage = () => {
       }
 
       const pyrmont = new (window as any).google.maps.LatLng(lat, lng);
+      
+      // Some browsers need the div to be in DOM for PlacesService to work reliably
       const mapDiv = document.createElement('div');
+      mapDiv.style.display = 'none';
+      document.body.appendChild(mapDiv);
+      
       const service = new (window as any).google.maps.places.PlacesService(mapDiv);
 
-      const typeMapping: Record<string, string[]> = {
-        '전체': ['restaurant', 'cafe', 'spa'],
-        '로컬맛집': ['restaurant'],
-        '관광맛집': ['restaurant'],
-        '마사지': ['spa'],
-        '마트·시장': ['store', 'supermarket', 'market'],
-        '카페': ['cafe']
+      const keywordMapping: Record<string, string> = {
+        '전체': 'restaurant cafe massage spa',
+        '로컬맛집': 'local restaurant vietnamese food',
+        '관광맛집': 'famous restaurant tourist food',
+        '마사지': 'massage spa foot massage',
+        '마트·시장': 'market supermarket store',
+        '카페': 'cafe coffee shop'
       };
-
-      const categoryTypes = typeMapping[selectedCategory] || ['restaurant'];
 
       const request: any = {
         location: pyrmont,
-        radius: '2000', // Increased to 2km for better coverage
+        radius: '2000',
+        keyword: keywordMapping[selectedCategory] || 'restaurant'
       };
 
-      // If '전체', use keyword for better multi-type results
-      if (selectedCategory === '전체') {
-        request.keyword = 'restaurant cafe massage spa';
-      } else {
-        request.type = categoryTypes[0];
-      }
-
       service.nearbySearch(request, (results: any[], status: any) => {
+        // Cleanup mapDiv
+        try { document.body.removeChild(mapDiv); } catch (e) {}
+
         try {
           const PlacesStatus = (window as any).google.maps.places.PlacesServiceStatus;
           
           if (status === PlacesStatus.OK && results) {
-            const filteredResults = results.filter(r => (r.rating || 0) >= 4.0);
+            // Filter by rating >= 4.0 and sort by rating/reviews
+            const filteredResults = results
+              .filter(r => (r.rating || 0) >= 4.0)
+              .sort((a, b) => (b.rating || 0) - (a.rating || 0));
             
             const apiPlaces: PlaceData[] = filteredResults.map(result => ({
               id: result.place_id,
               name: result.name,
               category: selectedCategory === '전체' ? (result.types.includes('restaurant') ? '식당' : result.types.includes('cafe') ? '카페' : '장소') : selectedCategory,
               rating: result.rating || 0,
-              distance: '2km 이내',
+              distance: '주변 2km',
               time: '가까움',
               cost: result.price_level ? '₩'.repeat(result.price_level) : '정보없음',
-              isLocal: result.rating > 4.3 && result.user_ratings_total < 200,
+              isLocal: result.rating > 4.3 && result.user_ratings_total < 300,
               isGooglePlace: true,
               summary: {
                 pros: `구글 실시간: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
@@ -201,7 +219,6 @@ export const ExplorePage = () => {
             setLoading(false);
           } else {
             console.error("Google Places API error status:", status);
-            // On other errors (DENIED, etc.), fallback to DB so the screen isn't empty
             useOnlyDB();
           }
         } catch (innerError) {
