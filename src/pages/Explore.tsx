@@ -70,12 +70,10 @@ export const ExplorePage = () => {
     if (navigator.geolocation) {
       // Safety timeout: If GPS takes too long (> 10s), fallback to DB
       const safetyTimeout = setTimeout(() => {
-        if (loading) {
-          console.warn("GPS request timed out, using fallback.");
-          setLocationError(true);
-          setShowMockButtons(true);
-          fetchDataFromAPIAndDB(16.0683, 108.2022); // Han Market
-        }
+        console.warn("GPS request timed out, using fallback.");
+        setLocationError(true);
+        setShowMockButtons(true);
+        useOnlyDB();
       }, 10000);
 
       navigator.geolocation.getCurrentPosition(
@@ -118,61 +116,71 @@ export const ExplorePage = () => {
   }, [selectedCategory]);
 
   const fetchDataFromAPIAndDB = (lat: number, lng: number) => {
-    if (!(window as any).google) {
-      console.warn("Google Maps API not loaded, using DB only");
-      useOnlyDB();
-      return;
-    }
-
-    const pyrmont = new (window as any).google.maps.LatLng(lat, lng);
-    const mapDiv = document.createElement('div');
-    const service = new (window as any).google.maps.places.PlacesService(mapDiv);
-
-    // Map categories to Google Places types
-    const typeMapping: Record<string, string[]> = {
-      '전체': ['restaurant', 'cafe', 'spa', 'store'],
-      '로컬맛집': ['restaurant'],
-      '관광맛집': ['restaurant'],
-      '마사지': ['spa'],
-      '마트·시장': ['store', 'supermarket', 'market'],
-      '카페': ['cafe']
-    };
-
-    const types = typeMapping[selectedCategory] || ['restaurant'];
-
-    const request = {
-      location: pyrmont,
-      radius: '1500',
-      type: types[0]
-    };
-
-    service.nearbySearch(request, (results: any[], status: any) => {
-      if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && results) {
-        const apiPlaces: PlaceData[] = results.map(result => ({
-          id: result.place_id,
-          name: result.name,
-          category: selectedCategory === '전체' ? (result.types.includes('restaurant') ? '식당' : '장소') : selectedCategory,
-          rating: result.rating || 0,
-          distance: '주변',
-          time: '가까움',
-          cost: result.price_level ? '₩'.repeat(result.price_level) : '정보없음',
-          isLocal: result.rating > 4.2 && result.user_ratings_total < 100, // Heuristic for local
-          isGooglePlace: true,
-          summary: {
-            pros: `구글 실시간 데이터: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
-            cons: result.business_status !== 'OPERATIONAL' ? '현재 영업 중이 아닐 수 있음' : '현장 확인 필요'
-          }
-        }));
-
-        // Combine with DB as fallback/supplement
-        const dbPlaces = getDBPlaces();
-        setPlaces([...apiPlaces, ...dbPlaces]);
-        setLoading(false);
-      } else {
-        console.warn("Google Places API failed or no results:", status);
+    try {
+      if (!(window as any).google || !(window as any).google.maps || !(window as any).google.maps.places) {
+        console.warn("Google Maps Places API not fully loaded, using DB only");
         useOnlyDB();
+        return;
       }
-    });
+
+      const pyrmont = new (window as any).google.maps.LatLng(lat, lng);
+      const mapDiv = document.createElement('div');
+      const service = new (window as any).google.maps.places.PlacesService(mapDiv);
+
+      // Map categories to Google Places types
+      const typeMapping: Record<string, string[]> = {
+        '전체': ['restaurant', 'cafe', 'spa', 'store'],
+        '로컬맛집': ['restaurant'],
+        '관광맛집': ['restaurant'],
+        '마사지': ['spa'],
+        '마트·시장': ['store', 'supermarket', 'market'],
+        '카페': ['cafe']
+      };
+
+      const types = typeMapping[selectedCategory] || ['restaurant'];
+
+      const request = {
+        location: pyrmont,
+        radius: '1500',
+        type: types[0]
+      };
+
+      service.nearbySearch(request, (results: any[], status: any) => {
+        try {
+          if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && results) {
+            const apiPlaces: PlaceData[] = results.map(result => ({
+              id: result.place_id,
+              name: result.name,
+              category: selectedCategory === '전체' ? (result.types.includes('restaurant') ? '식당' : '장소') : selectedCategory,
+              rating: result.rating || 0,
+              distance: '주변',
+              time: '가까움',
+              cost: result.price_level ? '₩'.repeat(result.price_level) : '정보없음',
+              isLocal: result.rating > 4.2 && result.user_ratings_total < 100, // Heuristic for local
+              isGooglePlace: true,
+              summary: {
+                pros: `구글 실시간 데이터: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
+                cons: result.business_status !== 'OPERATIONAL' ? '현재 영업 중이 아닐 수 있음' : '현장 확인 필요'
+              }
+            }));
+
+            // Combine with DB as fallback/supplement
+            const dbPlaces = getDBPlaces();
+            setPlaces([...apiPlaces, ...dbPlaces]);
+            setLoading(false);
+          } else {
+            console.warn("Google Places API failed or no results:", status);
+            useOnlyDB();
+          }
+        } catch (innerError) {
+          console.error("Inner API error:", innerError);
+          useOnlyDB();
+        }
+      });
+    } catch (e) {
+      console.error("fetchDataFromAPIAndDB error:", e);
+      useOnlyDB();
+    }
   };
 
   const getDBPlaces = (): PlaceData[] => {
