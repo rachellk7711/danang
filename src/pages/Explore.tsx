@@ -68,11 +68,21 @@ export const ExplorePage = () => {
 
     // 1. Get real GPS location
     if (navigator.geolocation) {
+      // Safety timeout: If GPS takes too long (> 10s), fallback to DB
+      const safetyTimeout = setTimeout(() => {
+        if (loading) {
+          console.warn("GPS request timed out, using fallback.");
+          setLocationError(true);
+          setShowMockButtons(true);
+          fetchDataFromAPIAndDB(16.0683, 108.2022); // Han Market
+        }
+      }, 10000);
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          clearTimeout(safetyTimeout);
           const { latitude, longitude } = position.coords;
           
-          // Check if far from Danang (roughly > 100km)
           const dist = Math.sqrt(Math.pow(latitude - 16.0544, 2) + Math.pow(longitude - 108.2022, 2));
           if (dist > 1) {
             setShowMockButtons(true);
@@ -84,18 +94,22 @@ export const ExplorePage = () => {
           fetchDataFromAPIAndDB(latitude, longitude);
         },
         (error) => {
+          clearTimeout(safetyTimeout);
           console.error("GPS Error:", error);
           setLocationError(true);
-          setShowMockButtons(true); // Show mock if GPS fails (likely in Korea dev env)
-          // Fallback location (Da Nang Han Market)
-          fetchDataFromAPIAndDB(16.0683, 108.2234);
+          setShowMockButtons(true);
+          fetchDataFromAPIAndDB(16.0683, 108.2022);
         },
-        { timeout: 5000 }
+        { 
+          enableHighAccuracy: false,
+          timeout: 8000,
+          maximumAge: 60000 
+        }
       );
     } else {
       setLocationError(true);
       setShowMockButtons(true);
-      fetchDataFromAPIAndDB(16.0683, 108.2234);
+      fetchDataFromAPIAndDB(16.0683, 108.2022);
     }
   };
 
