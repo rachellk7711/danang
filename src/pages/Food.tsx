@@ -25,19 +25,19 @@ const SEASONAL_FRUITS: Record<number, { name: string; icon: string }[]> = {
 };
 
 const VIETNAMESE_FOOD_DATA = [
-  { name: "Bún Bò Huế", nameKr: "분보후에", location: "다낭 / 호이안", ingredients: "소고기, 돼지고기", form: "쌀국수 (우동처럼 굵고 둥근 면)", taste: "매콤하고 진한 고기 육수, 레몬그라스 향", tip: "매콤한 맛을 좋아하신다면 현지 고추기름(사떼)을 살짝 풀어 드시면 국물이 훨씬 깊어집니다." },
-  { name: "Phở Bò / Gà", nameKr: "퍼 보 / 퍼 가", location: "다낭 / 호이안", ingredients: "소고기(보) 또는 닭고기(가)", form: "쌀국수 (납작한 면)", taste: "맑고 담백한 고기 육수", tip: "라임즙을 듬뿍 짜 넣고, 마늘 식초를 한 스푼 넣으면 국물 감칠맛이 확 살아납니다." },
-  { name: "Bánh Xèo", nameKr: "반쎄오", location: "다낭 / 호이안", ingredients: "돼지고기, 새우, 숙주", form: "쌀가루 크레이프 (부침개)", taste: "기름에 튀기듯 구워 고소하고 바삭함", tip: "라이스페이퍼에 허브를 듬뿍 넣고 돌돌 말아 소스에 푹 찍어 드세요." },
-  { name: "Mì Quảng", nameKr: "미꽝", location: "다낭 / 호이안", ingredients: "새우, 돼지고기, 메추리알, 땅콩", form: "쌀국수 (강황을 넣은 넓은 면)", taste: "간장과 피시 소스 베이스의 자작한 짭짤함", tip: "함께 나오는 바삭한 쌀과자를 부수어서 면과 비벼 먹는 것이 정석입니다." },
-  { name: "Bánh Mì", nameKr: "반미", location: "다낭 / 호이안", ingredients: "숯불 돼지고기, 파테(고기 스프레드)", form: "바게트 빵", taste: "짭짤하고 새콤달콤 (숯불향)", tip: "겉바속촉 바게트와 숯불 고기의 조합이 예술입니다." },
-  { name: "Bún Thịt Nướng", nameKr: "분팃느엉", location: "다낭 / 호이안", ingredients: "숯불 돼지고기", form: "쌀국수 (얇고 차가운 면)", taste: "달콤짭짤한 피시 소스 베이스, 진한 숯불향", tip: "고기와 면, 채소를 비빔 소스에 흠뻑 적시듯 섞어 먹는 별미입니다." },
-  { name: "Hải Sản", nameKr: "하이산", location: "다낭 (미케비치 추천)", ingredients: "새우, 게, 오징어, 조개 등", form: "해산물 요리", taste: "선택 가능 (버터 갈릭, 칠리 등)", tip: "버터 갈릭(버 또이) 소스나 타마린드 소스 볶음을 추천합니다." },
-  { name: "Nem Lụi", nameKr: "넴루이", location: "다낭 / 호이안", ingredients: "다진 돼지고기", form: "꼬치 요리", taste: "달짝지근한 숯불 떡갈비 맛", tip: "라이스페이퍼에 야채와 함께 싸서 땅콩 소스에 찍어 드세요." },
-  { name: "Cơm Gà", nameKr: "콤가", location: "호이안 추천", ingredients: "닭고기", form: "쌀밥 (강황과 닭 육수 밥)", taste: "맵지 않고 담백 고소함", tip: "호이안식 콤가에 칠리 소스나 간장을 살짝 비벼 드시면 일품입니다." },
-  { name: "Cao Lầu", nameKr: "카오러우", location: "호이안 전용", ingredients: "차슈 (돼지고기)", form: "쌀국수 (쫄깃한 특산 면)", taste: "간장 및 오향 베이스 짭짤함", tip: "호이안에서만 맛볼 수 있는 독특한 면발의 식감이 아주 좋습니다." },
-  { name: "Bánh Bao Bánh Vạc", nameKr: "반 바오 반 박", location: "호이안 전용", ingredients: "다진 돼지고기, 새우", form: "쌀가루 (반투명 만두피)", taste: "딤섬처럼 담백, 샬롯 고소함", tip: "쫀득한 만두피와 새우즙의 맛을 느낀 후 느억맘 소스를 곁들여 보세요." },
-  { name: "Cháo", nameKr: "짜오", location: "다낭 / 호이안", ingredients: "닭고기, 소고기 등", form: "쌀죽", taste: "삼삼하고 부드러운 맛", tip: "아침 일찍 로컬 식당에서 따뜻하게 속을 풀기 좋은 메뉴입니다." },
-  { name: "Cơm Bình Dân", nameKr: "콤 빈전", location: "다낭 / 호이안", ingredients: "돼지고기, 생선 등 반찬 선택", form: "쌀밥과 반찬", taste: "반찬마다 다름", tip: "원하는 반찬을 가리키며 덮밥처럼 푸짐하게 즐길 수 있습니다." }
+  { name: "Bún Bò Huế", nameKr: "분보후에", ingredients: "소고기, 돼지고기", form: "쌀국수 (우동처럼 굵고 둥근 면)", taste: "매콤하고 진한 고기 육수, 레몬그라스 향", tip: "매콤한 맛을 좋아하신다면 현지 고추기름(사떼)을 살짝 풀어 드시면 국물이 훨씬 깊어집니다." },
+  { name: "Phở Bò / Gà", nameKr: "퍼 보 / 퍼 가", ingredients: "소고기(보) 또는 닭고기(가)", form: "쌀국수 (납작한 면)", taste: "맑고 담백한 고기 육수", tip: "라임즙을 듬뿍 짜 넣고, 마늘 식초를 한 스푼 넣으면 국물 감칠맛이 확 살아납니다." },
+  { name: "Bánh Xèo", nameKr: "반쎄오", ingredients: "돼지고기, 새우, 숙주", form: "쌀가루 크레이프 (부침개)", taste: "기름에 튀기듯 구워 고소하고 바삭함", tip: "라이스페이퍼에 허브를 듬뿍 넣고 돌돌 말아 소스에 푹 찍어 드세요." },
+  { name: "Mì Quảng", nameKr: "미꽝", ingredients: "새우, 돼지고기, 메추리알, 땅콩", form: "쌀국수 (강황을 넣은 넓은 면)", taste: "간장과 피시 소스 베이스의 자작한 짭짤함", tip: "함께 나오는 바삭한 쌀과자를 부수어서 면과 비벼 먹는 것이 정석입니다." },
+  { name: "Bánh Mì", nameKr: "반미", ingredients: "숯불 돼지고기, 파테(고기 스프레드)", form: "바게트 빵", taste: "짭짤하고 새콤달콤 (숯불향)", tip: "겉바속촉 바게트와 숯불 고기의 조합이 예술입니다." },
+  { name: "Bún Thịt Nướng", nameKr: "분팃느엉", ingredients: "숯불 돼지고기", form: "쌀국수 (얇고 차가운 면)", taste: "달콤짭짤한 피시 소스 베이스, 진한 숯불향", tip: "고기와 면, 채소를 비빔 소스에 흠뻑 적시듯 섞어 먹는 별미입니다." },
+  { name: "Hải Sản", nameKr: "하이산", ingredients: "새우, 게, 오징어, 조개 등", form: "해산물 요리", taste: "선택 가능 (버터 갈릭, 칠리 등)", tip: "버터 갈릭(버 또이) 소스나 타마린드 소스 볶음을 추천합니다." },
+  { name: "Nem Lụi / Nem Nướng", nameKr: "넴루이 / 넴느엉", ingredients: "다진 돼지고기", form: "꼬치 요리", taste: "달짝지근한 숯불 떡갈비 맛", tip: "라이스페이퍼에 야채와 함께 싸서 땅콩 소스에 찍어 드세요." },
+  { name: "Cơm Gà", nameKr: "콤가", ingredients: "닭고기", form: "쌀밥 (강황과 닭 육수 밥)", taste: "맵지 않고 담백 고소함", tip: "호이안식 콤가에 칠리 소스나 간장을 살짝 비벼 드시면 일품입니다." },
+  { name: "Cao Lầu", nameKr: "카오러우", ingredients: "차슈 (돼지고기)", form: "쌀국수 (쫄깃한 특산 면)", taste: "간장 및 오향 베이스 짭짤함", tip: "호이안에서만 맛볼 수 있는 독특한 면발의 식감이 아주 좋습니다." },
+  { name: "Bánh Bao Bánh Vạc", nameKr: "반 바오 반 박 (화이트 로즈)", ingredients: "다진 돼지고기, 새우", form: "쌀가루 (반투명 만두피)", taste: "딤섬처럼 담백, 샬롯 고소함", tip: "쫀득한 만두피와 새우즙의 맛을 느낀 후 느억맘 소스를 곁들여 보세요." },
+  { name: "Cháo", nameKr: "짜오 (쌀죽)", ingredients: "닭고기, 소고기 등", form: "쌀죽", taste: "삼삼하고 부드러운 맛", tip: "아침 일찍 로컬 식당에서 따뜻하게 속을 풀기 좋은 메뉴입니다." },
+  { name: "Cơm Bình Dân", nameKr: "콤 빈전 (로컬 백반)", ingredients: "돼지고기, 생선 등", form: "쌀밥과 반찬", taste: "반찬마다 다름", tip: "원하는 반찬을 가리키며 덮밥처럼 푸짐하게 즐길 수 있습니다." }
 ];
 
 const SHOPPING_CATEGORIES = [
@@ -54,6 +54,17 @@ const SHOPPING_CATEGORIES = [
     ]
   },
   {
+    id: 'candy',
+    name: '사탕·젤리',
+    icon: '🍬',
+    items: [
+      { name: '체리쉬 망고 젤리 (Cherish)', desc: '탱글탱글한 망고맛 젤리, 차갑게 먹으면 최고', price: '약 35,000동' },
+      { name: '탑푸르트 망고젤리 (Top Fruit)', desc: '개별 포장된 쫀득한 식감의 인기 망고 젤리', price: '약 40,000동' },
+      { name: '마루 초콜릿 (Marou)', desc: '베트남산 카카오 프리미엄 초콜릿', price: '약 60,000동~' },
+      { name: '코코넛 사탕', desc: '베트남 전통 방식의 쫀득한 사탕', price: '약 30,000동' }
+    ]
+  },
+  {
     id: 'alcohol',
     name: '주류',
     icon: '🍺',
@@ -62,27 +73,17 @@ const SHOPPING_CATEGORIES = [
       { name: '비아 사이공 (Saigon)', desc: '쌉싸름하고 깔끔한 라거, 튀김류와 찰떡궁합입니다.', price: '약 15,000동' },
       { name: '타이거 맥주 (Tiger)', desc: '목넘김이 부드럽고 가벼워 누구나 즐기기 좋습니다.', price: '약 18,000동' },
       { name: '넵머이 (Nep Moi)', desc: '구수한 누룽지 향이 매력적인 전통 소주입니다.', price: '약 80,000동' },
-      { name: '달랏 와인 (Dalat Wine)', desc: '디저트나 가벼운 치즈와 어울리는 가성비 와인.', price: '약 150,000동' }
-    ]
-  },
-  {
-    id: 'coffee',
-    name: '커피·차',
-    icon: '☕',
-    items: [
-      { name: 'G7 커피', desc: '베트남에서 가장 유명한 인스턴트 커피.', price: '약 50,000동' },
-      { name: '아치카페 (Archcafe)', desc: '코코넛 커피 맛이 일품인 인스턴트 커피.', price: '약 60,000동' },
-      { name: '콘삭 커피 (Consoc)', desc: '헤이즐넛 향의 다람쥐 똥 커피(필터형).', price: '약 70,000동' },
-      { name: '미스터 비엣 (Mr. Viet)', desc: '패키지가 예뻐 선물하기 좋은 원두/가루 커피', price: '약 80,000동' }
+      { name: '달랏 와인 (Dalat Wine)', desc: '달콤한 과일향이 강한 가성비 와인.', price: '약 150,000동' }
     ]
   },
   {
     id: 'etc',
-    name: '기타 선물',
+    name: '커피·기타',
     icon: '🎁',
     items: [
-      { name: '센스파 오일', desc: '천연 아로마 오일, 마사지 샵의 향기를 집으로.', price: '약 150,000동' },
-      { name: '라탄 가방/소품', desc: '한시장/호이안 올드타운 필수 구매 아이템.', price: '10만동~' },
+      { name: 'G7 커피', desc: '베트남에서 가장 유명한 인스턴트 커피.', price: '약 50,000동' },
+      { name: '아치카페 (Archcafe)', desc: '코코넛 커피 맛이 일품인 인스턴트 커피.', price: '약 60,000동' },
+      { name: '콘삭 커피 (Consoc)', desc: '헤이즐넛 향의 다람쥐 똥 커피(필터형).', price: '약 70,000동' },
       { name: '느억맘 소스 (Fish Sauce)', desc: '베트남 요리의 핵심 감칠맛 소스.', price: '약 30,000동' },
       { name: '전통 모자 (농)', desc: '강한 햇빛을 막아주는 실용적인 기념품.', price: '약 50,000동' }
     ]
@@ -95,13 +96,16 @@ const DELIVERY_SPOTS_DANANG = [
   { category: '현지식 맛집 🍜', name: '안토이 (An Thoi)', hours: '10:30 - 22:00', contact: '카톡: 다낭안토이', desc: '줄 서서 먹는 다낭 대표 맛집. 매장 맛 그대로 깔끔하게 포장됩니다.', menu: [{ name: '반세오 (최고 인기)', price: '89,000₫' }, { name: '소고기 쌀국수', price: '65,000₫' }] },
   { category: '해산물 배달 🦞', name: '목 해산물 식당 (Moc Quan)', hours: '10:30 - 23:00', contact: '카톡: 다낭 목 해산물 식당', desc: '가성비 최고의 해산물 식당. 크랩, 새우 요리 강력 추천.', menu: [{ name: '블랙타이거 새우 (칠리)', price: '250,000₫~' }, { name: '맛조개 모닝글로리', price: '95,000₫' }] },
   { category: '베트남 3대 쌀국수 🍜', name: '포틴 다낭 (Pho Thin)', hours: '06:00 - 22:00', contact: '배달K / Grab 이용', desc: '하노이에서 온 전설적인 쌀국수. 진한 고기 육수가 특징입니다.', menu: [{ name: '직화 소고기 쌀국수', price: '65,000₫' }, { name: '포틴 콤보', price: '85,000₫' }] },
+  { category: '프리미엄 크랩 🦀', name: '레드크랩 (Red Crab)', hours: '10:00 - 22:00', contact: '카톡: 다낭레드크랩', desc: '특별한 날 리조트에서 파티 분위기 내기에 좋은 크랩 전문점.', menu: [{ name: '갈릭 버터 새우', price: '320,000₫' }, { name: '상하이 볶음밥', price: '120,000₫' }] },
   { category: '야식 치킨 🍗', name: '다낭 치킨톡 (Chicken Talk)', hours: '15:00 - 01:00', contact: '카톡 ID: dnck', desc: '한국식 바삭한 치킨과 떡볶이. 늦은 밤 야식으로 최고입니다.', menu: [{ name: '반반 치킨', price: '320,000₫' }, { name: '국물 떡볶이 세트', price: '250,000₫' }] }
 ];
 
 const DELIVERY_SPOTS_HOIAN = [
   { category: '로컬 맛집 1위 🍜', name: '호로콴 (Horo Quan)', hours: '11:00 - 21:00', contact: '배달K / Grab 이용', desc: '호이안 3대 미식을 즐길 수 있는 가장 평점 좋은 맛집.', menu: [{ name: '타마린드 새우', price: '125,000₫' }, { name: '화이트 로즈', price: '65,000₫' }] },
   { category: '한식 배달 🍚', name: '달빛식당 (Dalbit)', hours: '10:00 - 21:00', contact: '카톡: 달빛식당 호이안', desc: '삼겹살 정식부터 찌개류까지 한국의 맛이 그리울 때 추천.', menu: [{ name: '삼겹살 정식', price: '250,000₫' }, { name: '김치찌개', price: '150,000₫' }] },
+  { category: '치킨 야식 🍗', name: '브로스치킨 (Bros Chicken)', hours: '15:00 - 23:00', contact: '카톡: 호이안 브로스치킨', desc: '호이안 리조트까지 따끈하게 치킨을 배달해 줍니다.', menu: [{ name: '양념 치킨', price: '330,000₫' }] },
   { category: '반미 명가 🥖', name: '반미프엉 (Banh Mi Phuong)', hours: '06:30 - 21:30', contact: 'Grab 푸드 이용', desc: '호이안에서 가장 유명한 반미집. 3번 믹스 메뉴가 인기.', menu: [{ name: '3번 믹스 반미', price: '35,000₫' }, { name: '5번 바베큐 반미', price: '30,000₫' }] },
+  { category: '반미의 여왕 🥖', name: '마담콴 (Madam Khanh)', hours: '07:00 - 19:00', contact: 'Grab 이용', desc: '소스가 진하고 풍부한 맛이 특징인 반미 맛집.', menu: [{ name: 'The Mixed 반미', price: '30,000₫' }] },
   { category: '로컬 가성비 🍜', name: '포슈아 (Pho Xua)', hours: '10:00 - 21:00', contact: '배달K / Grab 이용', desc: '분짜와 프라이드 완탄이 한국인 입맛에 딱 맞습니다.', menu: [{ name: '분짜 (BUN CHA)', price: '55,000₫' }, { name: '프라이드 완탄', price: '60,000₫' }] },
   { category: '퓨전 맛집 🍱', name: '윤식당 호이안 (Yoon)', hours: '11:00 - 21:00', contact: '배달K / 카톡: 윤식당호이안', desc: '정갈한 세트 메뉴 구성으로 가족 식사에 좋습니다.', menu: [{ name: '김치찌개 세트', price: '180,000₫' }, { name: '베트남 플래터', price: '250,000₫' }] },
   { category: '커피 배달 ☕', name: '미노커피 (Mino Coffee)', hours: '08:00 - 21:00', contact: '카톡: minocoffee', desc: '코코넛 스무디 커피가 정말 맛있는 호이안 필수 코스.', menu: [{ name: '코코넛 커피', price: '45,000₫' }, { name: '망고 스무디', price: '50,000₫' }] }
@@ -116,14 +120,11 @@ const FoodAccordionItem: React.FC<{ food: any }> = ({ food }) => {
           <span className={cn("text-[15px] font-black transition-colors", isOpen ? "text-mango" : "text-text-primary")}>{food.nameKr}</span>
           <span className="text-[10px] text-text-hint font-medium uppercase opacity-30">{food.name}</span>
         </div>
-        <div className="flex items-center gap-2">
-          {(food.location !== "다낭 / 호이안") && <span className="text-[9px] font-bold text-coral bg-coral/10 px-2 py-0.5 rounded-full">{food.location}</span>}
-          <ChevronRight className={cn("w-4 h-4 text-text-hint transition-transform duration-300", isOpen && "rotate-90 text-mango")} />
-        </div>
+        <ChevronRight className={cn("w-4 h-4 text-text-hint transition-transform duration-300", isOpen && "rotate-90 text-mango")} />
       </button>
       <AnimatePresence>{isOpen && (
         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-          <div className="pb-5 px-1 space-y-3">
+          <div className="pb-5 px-1 space-y-3 text-left">
             <div className="grid grid-cols-1 gap-2 text-[12px] text-text-secondary">
               <div className="flex gap-2"><span className="text-mango font-bold w-12 shrink-0">주재료</span><span>{food.ingredients}</span></div>
               <div className="flex gap-2"><span className="text-mango font-bold w-12 shrink-0">형태</span><span>{food.form}</span></div>
