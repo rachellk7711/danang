@@ -27,121 +27,163 @@ const VIETNAMESE_FOOD_DATA = [
   {
     name: "Bún Bò Huế",
     nameKr: "분보후에",
-    nameEn: "Hue Beef Noodle Soup",
+    location: "다낭 / 호이안",
     ingredients: "소고기, 돼지고기",
     form: "쌀국수 (우동처럼 굵고 둥근 면)",
     taste: "매콤하고 진한 고기 육수, 레몬그라스 향",
     tip: "매콤한 맛을 좋아하신다면 현지 고추기름(사떼)을 살짝 풀어 드시면 국물이 훨씬 깊어집니다."
   },
   {
-    name: "Phở Bò, Phở Gà",
-    nameKr: "퍼 보, 퍼 가",
-    nameEn: "Beef or Chicken Pho",
+    name: "Phở Bò / Gà",
+    nameKr: "퍼 보 / 퍼 가",
+    location: "다낭 / 호이안",
     ingredients: "소고기(보) 또는 닭고기(가)",
     form: "쌀국수 (납작한 면)",
     taste: "맑고 담백한 고기 육수",
-    tip: "현지인들처럼 라임즙을 듬뿍 짜 넣고, 테이블에 있는 마늘 식초를 한 스푼 넣으면 국물 감칠맛이 확 살아납니다."
+    tip: "라임즙을 듬뿍 짜 넣고, 마늘 식초를 한 스푼 넣으면 국물 감칠맛이 확 살아납니다."
   },
   {
     name: "Bánh Xèo",
     nameKr: "반쎄오",
-    nameEn: "Vietnamese Sizzling Crepe",
+    location: "다낭 / 호이안",
     ingredients: "돼지고기, 새우, 숙주",
     form: "쌀가루 크레이프 (부침개)",
     taste: "기름에 튀기듯 구워 고소하고 바삭함",
-    tip: "라이스페이퍼에 바삭한 반쎄오와 신선한 허브를 듬뿍 넣고 돌돌 말아 소스에 푹 찍어 드세요."
+    tip: "라이스페이퍼에 허브를 듬뿍 넣고 돌돌 말아 소스에 푹 찍어 드세요."
   },
   {
     name: "Mì Quảng",
     nameKr: "미꽝",
-    nameEn: "Quang Seafood Noodle",
+    location: "다낭 / 호이안",
     ingredients: "새우, 돼지고기, 메추리알, 땅콩",
     form: "쌀국수 (강황을 넣은 넓은 면)",
     taste: "간장과 피시 소스 베이스의 자작한 짭짤함",
-    tip: "함께 나오는 커다랗고 바삭한 쌀과자를 부수어서 면과 비벼 먹는 것이 정석입니다."
+    tip: "함께 나오는 바삭한 쌀과자를 부수어서 면과 비벼 먹는 것이 정석입니다."
   },
   {
     name: "Bánh Mì",
     nameKr: "반미",
-    nameEn: "Vietnamese Baguette Sandwich",
+    location: "다낭 / 호이안",
     ingredients: "숯불 돼지고기, 파테(고기 스프레드)",
     form: "바게트 빵",
     taste: "짭짤하고 새콤달콤 (숯불향)",
-    tip: "겉바속촉 바게트와 숯불 고기의 조합이 예술입니다. 고수 향을 즐기신다면 듬뿍 넣어달라고 요청해 보세요."
+    tip: "겉바속촉 바게트와 숯불 고기의 조합이 예술입니다."
   },
   {
     name: "Bún Thịt Nướng",
     nameKr: "분팃느엉",
-    nameEn: "Grilled Pork Noodle",
+    location: "다낭 / 호이안",
     ingredients: "숯불 돼지고기",
     form: "쌀국수 (얇고 차가운 면)",
     taste: "달콤짭짤한 피시 소스 베이스, 진한 숯불향",
-    tip: "고기와 면, 신선한 채소를 새콤달콤한 비빔 소스에 흠뻑 적시듯 섞어 먹는 별미 국수입니다."
+    tip: "고기와 면, 채소를 비빔 소스에 흠뻑 적시듯 섞어 먹는 별미입니다."
   },
   {
     name: "Hải Sản",
     nameKr: "하이산",
-    nameEn: "Seafood",
+    location: "다낭 (미케비치 추천)",
     ingredients: "새우, 게, 오징어, 조개 등",
-    form: "탄수화물 없음",
-    taste: "선택 가능 (소금구이, 찜, 버터 갈릭 등)",
-    tip: "다낭의 미케비치 근처에서는 버터 갈릭(버 또이) 소스나 매콤새콤한 타마린드 소스로 볶은 해산물이 훌륭한 안주가 됩니다."
+    form: "해산물 요리",
+    taste: "선택 가능 (버터 갈릭, 칠리 등)",
+    tip: "버터 갈릭(버 또이) 소스나 타마린드 소스 볶음을 추천합니다."
   },
   {
-    name: "Nem Lụi, Nem Nướng",
-    nameKr: "넴루이, 넴느엉",
-    nameEn: "Grilled Pork Skewers",
+    name: "Nem Lụi",
+    nameKr: "넴루이",
+    location: "다낭 / 호이안",
     ingredients: "다진 돼지고기",
-    form: "꼬치 (라이스페이퍼에 싸서 먹음)",
+    form: "꼬치 요리",
     taste: "달짝지근한 숯불 떡갈비 맛",
-    tip: "꼬치를 라이스페이퍼에 대고 쏙 빼낸 뒤, 야채와 함께 싸서 특제 땅콩 소스에 듬뿍 찍어 드세요."
+    tip: "라이스페이퍼에 야채와 함께 싸서 땅콩 소스에 찍어 드세요."
   },
   {
     name: "Cơm Gà",
     nameKr: "콤가",
-    nameEn: "Chicken Rice",
+    location: "다낭 / 호이안 (호이안 추천)",
     ingredients: "닭고기",
-    form: "쌀밥 (강황과 닭 육수로 지은 밥)",
+    form: "쌀밥 (강황 육수 밥)",
     taste: "맵지 않고 담백, 고소함",
-    tip: "짭짤할 닭고기가 듬뿍 올라간 호이안식 콤가에 테이블에 있는 칠리 소스나 간장을 살짝 비벼 드시면 일품입니다."
+    tip: "호이안식 콤가에 칠리 소스나 간장을 살짝 비벼 드시면 일품입니다."
   },
   {
     name: "Cao Lầu",
     nameKr: "카오러우",
-    nameEn: "Hoi An Pork Noodle",
-    ingredients: "차슈 (간장에 졸인 돼지고기)",
-    form: "쌀국수 (우동처럼 굵고 쫄깃한 호이안 특산 면)",
-    taste: "간장 및 오향(다섯 가지 향신료) 베이스의 짭짤함",
-    tip: "호이안에서만 맛볼 수 있는 쫄깃한 면발의 식감과 달콤짭짤한 고기 고명의 조화가 아주 좋습니다."
+    location: "호이안 전용",
+    ingredients: "차슈 (졸인 돼지고기)",
+    form: "쌀국수 (굵고 쫄깃한 특산 면)",
+    taste: "간장 베이스의 짭짤한 맛",
+    tip: "호이안에서만 맛볼 수 있는 쫄깃한 면발의 식감을 즐겨보세요."
   },
   {
     name: "Bánh Bao Bánh Vạc",
-    nameKr: "반 바오 반 박",
-    nameEn: "White Rose Dumplings",
-    ingredients: "다진 돼지고기, 다진 새우",
-    form: "쌀가루 (반투명한 만두피)",
-    taste: "딤섬처럼 담백함, 튀긴 샬롯의 고소함",
-    tip: "쫀득한 만두피와 새우즙의 맛을 온전히 느낀 후, 함께 나오는 새콤달콤한 느억맘 소스를 곁들여 보세요."
+    nameKr: "화이트 로즈",
+    location: "호이안 전용",
+    ingredients: "돼지고기, 새우",
+    form: "쌀가루 만두",
+    taste: "딤섬처럼 담백하고 쫀득함",
+    tip: "만두피의 쫀득함과 새우즙의 맛을 느낀 후 소스를 곁들여 보세요."
   },
   {
     name: "Cháo",
     nameKr: "짜오",
-    nameEn: "Rice Porridge",
-    ingredients: "닭고기, 소고기, 조개 등",
+    location: "다낭 / 호이안",
+    ingredients: "닭고기, 소고기 등",
     form: "쌀죽",
     taste: "삼삼하고 부드러운 맛",
-    tip: "전날 시원한 맥주를 드셨다면, 아침 일찍 여는 로컬 식당에서 따뜻하게 속을 풀기 좋은 든든한 메뉴입니다."
+    tip: "과음한 다음 날 아침 일찍 속을 풀기 좋은 메뉴입니다."
   },
   {
     name: "Cơm Bình Dân",
     nameKr: "콤 빈전",
-    nameEn: "Local Plate Lunch",
-    ingredients: "돼지고기, 생선 등 원하는 반찬 선택",
-    form: "쌀밥과 반찬",
-    taste: "반찬마다 다름 (간장 조림, 볶음 등)",
-    tip: "점심시간에 갓 만들어낸 현지식 반찬들을 유리 진열장에서 가리키며 덮밥처럼 푸짐하게 즐길 수 있습니다."
+    location: "다낭 / 호이안",
+    ingredients: "돼지고기, 생선 등 선택 반찬",
+    form: "로컬 덮밥",
+    taste: "반찬에 따라 다양함",
+    tip: "점심시간에 갓 만든 반찬을 가리켜서 푸짐하게 즐겨보세요."
   }
 ];
+
+const FoodAccordionItem: React.FC<{ food: any }> = ({ food }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="border-b border-white/5 last:border-0">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full py-2 flex items-center justify-between group"
+      >
+        <div className="flex items-baseline gap-2">
+          <span className="text-[13px] font-black text-text-primary group-hover:text-mango transition-colors">{food.nameKr}</span>
+          <span className="text-[9px] text-text-hint font-medium uppercase">{food.name}</span>
+          <span className="text-[9px] font-bold text-coral/80 ml-1">{food.location}</span>
+        </div>
+        <ChevronRight className={cn("w-3.5 h-3.5 text-text-hint transition-transform duration-200", isOpen && "rotate-90 text-mango")} />
+      </button>
+      
+      {isOpen && (
+        <div className="pb-3 px-1 space-y-2 animate-in fade-in slide-in-from-top-1 duration-200">
+          <div className="space-y-1">
+            <div className="flex gap-2">
+              <span className="text-[10px] font-bold text-mango shrink-0">재료/형태:</span>
+              <span className="text-[10px] text-text-secondary leading-tight">{food.ingredients} / {food.form}</span>
+            </div>
+            <div className="flex gap-2">
+              <span className="text-[10px] font-bold text-mango shrink-0">주요맛:</span>
+              <span className="text-[10px] text-text-secondary leading-tight">{food.taste}</span>
+            </div>
+          </div>
+          <div className="bg-white/5 rounded-lg p-2 border border-white/5">
+            <p className="text-[10px] text-text-primary leading-relaxed">
+              <span className="text-mango font-bold mr-1">💡 Tip</span>
+              {food.tip}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 // Data for Shopping Items
 const SHOPPING_CATEGORIES = [
@@ -435,77 +477,49 @@ export const FoodShoppingPage = () => {
 
   return (
     <div className="pb-10 px-4 space-y-6">
+  return (
+    <div className="pb-10 px-4 space-y-4">
       {/* 0. Vietnamese Food Section */}
-      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+      <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsVnFoodOpen(!isVnFoodOpen)}
-          className="w-full flex items-center justify-between p-4"
+          className="w-full flex items-center justify-between p-3.5"
         >
           <div className="flex items-center gap-2">
-            <Utensils className="w-5 h-5 text-sky-400" />
-            <h2 className="text-xl font-black text-sky-400">베트남 음식 대백과</h2>
+            <Utensils className="w-5 h-5 text-mango" />
+            <h2 className="text-lg font-black text-mango tracking-tight">베트남 음식 대백과</h2>
           </div>
           <div className={cn("transition-transform duration-300", !isVnFoodOpen && "rotate-180")}>
-            <ChevronRight className="w-5 h-5 text-sky-400 rotate-90" />
+            <ChevronRight className="w-5 h-5 text-mango rotate-90" />
           </div>
         </button>
         
         {isVnFoodOpen && (
-          <div className="px-4 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-4 pb-4 animate-in fade-in slide-in-from-top-2 duration-300 divide-y divide-white/5">
             {VIETNAMESE_FOOD_DATA.map((food, idx) => (
-              <div key={idx} className="glass-card overflow-hidden border-l-4 border-l-sky-400 shadow-lg">
-                <div className="bg-sky-400/10 p-3 border-b border-white/5">
-                  <div className="flex justify-between items-baseline mb-1">
-                    <h3 className="text-base font-black text-text-primary">{food.nameKr}</h3>
-                    <span className="text-[10px] font-bold text-sky-400 uppercase tracking-tight">{food.name}</span>
-                  </div>
-                  <p className="text-[10px] text-text-hint font-medium">{food.nameEn}</p>
-                </div>
-                <div className="p-3 space-y-2.5">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <p className="text-[9px] text-sky-400/70 font-bold mb-0.5 uppercase">Main Ingredients</p>
-                      <p className="text-[11px] text-text-primary leading-tight font-medium">{food.ingredients}</p>
-                    </div>
-                    <div>
-                      <p className="text-[9px] text-sky-400/70 font-bold mb-0.5 uppercase">Form</p>
-                      <p className="text-[11px] text-text-primary leading-tight font-medium">{food.form}</p>
-                    </div>
-                  </div>
-                  <div>
-                    <p className="text-[9px] text-sky-400/70 font-bold mb-0.5 uppercase">Taste & Seasoning</p>
-                    <p className="text-[11px] text-text-secondary leading-snug">{food.taste}</p>
-                  </div>
-                  <div className="bg-sky-400/5 rounded-xl p-2.5 border border-sky-400/10 mt-1">
-                    <p className="text-[11px] text-text-primary leading-relaxed">
-                      <span className="text-sky-400 font-bold mr-1.5">💡 Tip</span>
-                      {food.tip}
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <FoodAccordionItem key={idx} food={food} />
             ))}
           </div>
         )}
       </section>
 
       {/* 1. Seasonal Fruits Section */}
-      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+      <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsFruitOpen(!isFruitOpen)}
-          className="w-full flex items-center justify-between p-4"
+          className="w-full flex items-center justify-between p-3.5"
         >
           <div className="flex items-center gap-2">
-            <Utensils className="w-5 h-5 text-mango" />
-            <h2 className="text-xl font-black text-mango">제철 과일 가이드</h2>
+            <Calendar className="w-5 h-5 text-teal" />
+            <h2 className="text-lg font-black text-teal tracking-tight">제철 과일 가이드</h2>
           </div>
           <div className={cn("transition-transform duration-300", !isFruitOpen && "rotate-180")}>
-            <ChevronRight className="w-5 h-5 text-mango rotate-90" />
+            <ChevronRight className="w-5 h-5 text-teal rotate-90" />
           </div>
         </button>
         
         {isFruitOpen && (
-          <div className="px-4 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-4 pb-5 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
             <div className="flex items-center justify-end">
               <div className="flex items-center gap-2 bg-navy-sub/50 p-1 rounded-xl border border-white/5">
                 <Calendar className="w-3.5 h-3.5 text-text-hint ml-2" />
@@ -522,14 +536,14 @@ export const FoodShoppingPage = () => {
             </div>
             
             <div className="bg-mango/10 border border-mango/20 rounded-2xl p-4">
-              <p className="text-[11px] text-mango/80 font-bold mb-3 uppercase tracking-wider">지금 가장 맛있는 {selectedMonth}월 과일</p>
+              <p className="text-[10px] text-mango/80 font-bold mb-3 uppercase tracking-wider">지금 가장 맛있는 {selectedMonth}월 과일</p>
               <div className="grid grid-cols-4 gap-3">
-                {fruits.map((fruit, idx) => (
-                  <div key={idx} className="flex flex-col items-center gap-2">
-                    <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-white/5">
+                {(SEASONAL_FRUITS[selectedMonth] || []).map((fruit, idx) => (
+                  <div key={idx} className="flex flex-col items-center gap-1.5">
+                    <div className="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center text-xl shadow-inner border border-white/5">
                       {fruit.icon}
                     </div>
-                    <span className="text-[11px] font-black text-text-primary text-center">{fruit.name}</span>
+                    <span className="text-[10px] font-black text-text-primary text-center">{fruit.name}</span>
                   </div>
                 ))}
               </div>
@@ -539,31 +553,31 @@ export const FoodShoppingPage = () => {
       </section>
 
       {/* 2. Shopping Items Section */}
-      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+      <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsShoppingOpen(!isShoppingOpen)}
-          className="w-full flex items-center justify-between p-4"
+          className="w-full flex items-center justify-between p-3.5"
         >
           <div className="flex items-center gap-2">
-            <ShoppingBag className="w-5 h-5 text-teal" />
-            <h2 className="text-xl font-black text-teal">쇼핑 추천템</h2>
+            <ShoppingBag className="w-5 h-5 text-coral" />
+            <h2 className="text-lg font-black text-coral tracking-tight">쇼핑 추천템</h2>
           </div>
           <div className={cn("transition-transform duration-300", !isShoppingOpen && "rotate-180")}>
-            <ChevronRight className="w-5 h-5 text-teal rotate-90" />
+            <ChevronRight className="w-5 h-5 text-coral rotate-90" />
           </div>
         </button>
 
         {isShoppingOpen && (
-          <div className="px-4 pb-6 animate-in fade-in slide-in-from-top-2 duration-300">
-            <div className="grid grid-cols-4 gap-1.5 mb-6">
+          <div className="px-4 pb-5 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="grid grid-cols-4 gap-1.5 mb-5">
               {SHOPPING_CATEGORIES.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveTab(cat.id)}
                   className={cn(
-                    "flex flex-col items-center justify-center gap-1 py-2 rounded-xl text-[10px] font-bold transition-all border",
+                    "flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl text-[10px] font-bold transition-all border",
                     activeTab === cat.id 
-                      ? "bg-teal text-white border-teal shadow-lg shadow-teal/20" 
+                      ? "bg-coral text-white border-coral shadow-md" 
                       : "bg-navy-sub/50 text-text-secondary border-white/5"
                   )}
                 >
@@ -573,14 +587,14 @@ export const FoodShoppingPage = () => {
               ))}
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {SHOPPING_CATEGORIES.find(c => c.id === activeTab)?.items.map((item, idx) => (
-                <div key={idx} className="glass-card p-4 flex flex-col gap-1 border-l-4 border-l-teal shadow-md">
+                <div key={idx} className="glass-card p-3 flex flex-col gap-1 border-l-2 border-l-coral shadow-md">
                   <div className="flex justify-between items-start">
-                    <h3 className="text-sm font-black text-text-primary">{item.name}</h3>
-                    <span className="text-[11px] text-mango font-bold bg-mango/10 px-2 py-0.5 rounded-full">{item.price}</span>
+                    <h3 className="text-[13px] font-black text-text-primary">{item.name}</h3>
+                    <span className="text-[9px] text-mango font-bold bg-mango/10 px-1.5 py-0.5 rounded-full">{item.price}</span>
                   </div>
-                  <p className="text-[11px] text-text-secondary leading-tight mt-1">{item.desc}</p>
+                  <p className="text-[10px] text-text-secondary leading-tight mt-0.5">{item.desc}</p>
                 </div>
               ))}
             </div>
