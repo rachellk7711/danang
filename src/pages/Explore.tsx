@@ -56,58 +56,86 @@ export const ExplorePage = () => {
   const [locationError, setLocationError] = useState(false);
   const [currentCoords, setCurrentCoords] = useState<{lat: number, lng: number} | null>(null);
   const [showMockButtons, setShowMockButtons] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (loading) {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = window.setTimeout(() => {
+        console.warn("Global safety timeout (60s) triggered - forcing DB fallback");
+        setLoading(false);
+        if (places.length === 0) {
+          setPlaces(getDBPlaces());
+        }
+      }, 60000);
+    } else {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    }
+    return () => {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    fetchPlaces();
+  }, [selectedCategory, exploreMode]);
 
   const fetchPlaces = (forcedCoords?: {lat: number, lng: number}) => {
-    setLoading(true);
-    setLocationError(false);
+    try {
+      console.log("fetchPlaces triggered. Mode:", exploreMode, "Category:", selectedCategory);
+      setLoading(true);
+      setLocationError(false);
 
-    // 1. Recommendation Mode: Always use DB
-    if (exploreMode === 'recommend') {
+      if (exploreMode === 'recommend') {
+        useOnlyDB();
+        return;
+      }
+      
+      if (forcedCoords) {
+        console.log("Using forced coordinates:", forcedCoords);
+        setCurrentCoords(forcedCoords);
+        fetchDataFromAPI(forcedCoords.lat, forcedCoords.lng);
+        return;
+      }
+
+      if (currentCoords) {
+        console.log("Using existing coordinates:", currentCoords);
+        fetchDataFromAPI(currentCoords.lat, currentCoords.lng);
+        return;
+      }
+
+      console.log("Starting GPS request...");
+      requestGPSAndFetch();
+    } catch (err) {
+      console.error("Critical error in fetchPlaces:", err);
       useOnlyDB();
-      return;
     }
-    
-    // 2. Google Mode with Forced Coords (Mock Buttons)
-    if (forcedCoords) {
-      console.log("Fetching for mock location:", forcedCoords);
-      setCurrentCoords(forcedCoords);
-      fetchDataFromAPI(forcedCoords.lat, forcedCoords.lng);
-      return;
-    }
-
-    // 3. Google Mode with existing coords (e.g. category change)
-    if (currentCoords) {
-      fetchDataFromAPI(currentCoords.lat, currentCoords.lng);
-      return;
-    }
-
-    // 4. Initial Google Mode: Get real GPS
-    requestGPSAndFetch();
   };
 
   const requestGPSAndFetch = () => {
     if (navigator.geolocation) {
-      const safetyTimeout = setTimeout(() => {
-        console.warn("GPS request timed out, using fallback.");
+      const gpsTimeout = window.setTimeout(() => {
+        console.warn("GPS request timed out (15s), using fallback.");
         setLocationError(true);
         setShowMockButtons(true);
-        fetchDataFromAPI(16.0683, 108.2022); // Han Market
-      }, 10000);
+        fetchDataFromAPI(16.0683, 108.2022);
+      }, 15000);
 
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          clearTimeout(safetyTimeout);
+          window.clearTimeout(gpsTimeout);
           const { latitude, longitude } = position.coords;
+          console.log("GPS Success:", latitude, longitude);
           
           const dist = Math.sqrt(Math.pow(latitude - 16.0544, 2) + Math.pow(longitude - 108.2022, 2));
-          setShowMockButtons(dist > 0.5); // Show mock if > 50km from Danang center
+          setShowMockButtons(dist > 0.5);
 
           const coords = { lat: latitude, lng: longitude };
           setCurrentCoords(coords);
           fetchDataFromAPI(latitude, longitude);
         },
         (error) => {
-          clearTimeout(safetyTimeout);
+          window.clearTimeout(gpsTimeout);
           console.error("GPS Error:", error);
           setLocationError(true);
           setShowMockButtons(true);
@@ -115,42 +143,27 @@ export const ExplorePage = () => {
         },
         { 
           enableHighAccuracy: false,
-          timeout: 8000,
+          timeout: 12000,
           maximumAge: 60000 
         }
       );
     } else {
+      console.warn("Geolocation not supported by browser.");
       setLocationError(true);
       setShowMockButtons(true);
       fetchDataFromAPI(16.0683, 108.2022);
     }
   };
 
-  // 1-minute loading safety timeout
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (loading) {
-      timer = setTimeout(() => {
-        if (loading) {
-          console.warn("Global search timeout reached (60s)");
-          setLoading(false);
-          if (places.length === 0) useOnlyDB();
-        }
-      }, 60000);
-    }
-    return () => clearTimeout(timer);
-  }, [loading]);
-
-  useEffect(() => {
-    fetchPlaces();
-  }, [selectedCategory, exploreMode]);
-
   const fetchDataFromAPI = (lat: number, lng: number, retryCount = 0) => {
+    console.log(`fetchDataFromAPI called. Lat: ${lat}, Lng: ${lng}, Retry: ${retryCount}`);
+    
     try {
+      console.log("Checking window.google:", !!(window as any).google);
       if (!(window as any).google || !(window as any).google.maps || !(window as any).google.maps.places) {
         if (retryCount < 3) {
-          console.warn(`Google API not ready, retrying... (${retryCount + 1})`);
-          setTimeout(() => fetchDataFromAPI(lat, lng, retryCount + 1), 1000);
+          console.warn(`Google API not ready, retrying in 1.5s... (${retryCount + 1})`);
+          window.setTimeout(() => fetchDataFromAPI(lat, lng, retryCount + 1), 1500);
           return;
         }
         console.error("Google Maps Places API failed to load after retries.");
@@ -160,8 +173,8 @@ export const ExplorePage = () => {
 
       const pyrmont = new (window as any).google.maps.LatLng(lat, lng);
       
-      // Some browsers need the div to be in DOM for PlacesService to work reliably
       const mapDiv = document.createElement('div');
+      mapDiv.id = 'places-service-container';
       mapDiv.style.display = 'none';
       document.body.appendChild(mapDiv);
       
@@ -178,19 +191,25 @@ export const ExplorePage = () => {
 
       const request: any = {
         location: pyrmont,
-        radius: '2000',
+        radius: 2000,
         keyword: keywordMapping[selectedCategory] || 'restaurant'
       };
 
+      console.log("Sending nearbySearch request:", request);
+
       service.nearbySearch(request, (results: any[], status: any) => {
-        // Cleanup mapDiv
-        try { document.body.removeChild(mapDiv); } catch (e) {}
+        console.log("Google Places API Status:", status);
+        
+        try { 
+          const existing = document.getElementById('places-service-container');
+          if (existing) document.body.removeChild(existing); 
+        } catch (e) {}
 
         try {
           const PlacesStatus = (window as any).google.maps.places.PlacesServiceStatus;
           
           if (status === PlacesStatus.OK && results) {
-            // Filter by rating >= 4.0 and sort by rating/reviews
+            console.log(`Found ${results.length} results.`);
             const filteredResults = results
               .filter(r => (r.rating || 0) >= 4.0)
               .sort((a, b) => (b.rating || 0) - (a.rating || 0));
@@ -218,16 +237,16 @@ export const ExplorePage = () => {
             setPlaces([]);
             setLoading(false);
           } else {
-            console.error("Google Places API error status:", status);
+            console.error("Google Places API returned non-OK status:", status);
             useOnlyDB();
           }
         } catch (innerError) {
-          console.error("Inner API error:", innerError);
+          console.error("Inner API error handling results:", innerError);
           useOnlyDB();
         }
       });
     } catch (e) {
-      console.error("fetchDataFromAPI error:", e);
+      console.error("fetchDataFromAPI critical error:", e);
       useOnlyDB();
     }
   };
