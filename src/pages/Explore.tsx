@@ -130,10 +130,15 @@ export const ExplorePage = () => {
     fetchPlaces();
   }, [selectedCategory, exploreMode]);
 
-  const fetchDataFromAPI = (lat: number, lng: number) => {
+  const fetchDataFromAPI = (lat: number, lng: number, retryCount = 0) => {
     try {
       if (!(window as any).google || !(window as any).google.maps || !(window as any).google.maps.places) {
-        console.warn("Google Maps Places API not fully loaded, showing recommendations instead");
+        if (retryCount < 3) {
+          console.warn(`Google API not ready, retrying... (${retryCount + 1})`);
+          setTimeout(() => fetchDataFromAPI(lat, lng, retryCount + 1), 1000);
+          return;
+        }
+        console.error("Google Maps Places API failed to load after retries.");
         useOnlyDB();
         return;
       }
@@ -151,42 +156,53 @@ export const ExplorePage = () => {
         '카페': ['cafe']
       };
 
-      const types = typeMapping[selectedCategory] || ['restaurant'];
+      const categoryTypes = typeMapping[selectedCategory] || ['restaurant'];
 
-      const request = {
+      const request: any = {
         location: pyrmont,
-        radius: '1000', // 1km radius as requested
-        type: types[0]
+        radius: '2000', // Increased to 2km for better coverage
       };
+
+      // If '전체', use keyword for better multi-type results
+      if (selectedCategory === '전체') {
+        request.keyword = 'restaurant cafe massage spa';
+      } else {
+        request.type = categoryTypes[0];
+      }
 
       service.nearbySearch(request, (results: any[], status: any) => {
         try {
-          if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && results) {
-            // Filter by rating >= 4.0
+          const PlacesStatus = (window as any).google.maps.places.PlacesServiceStatus;
+          
+          if (status === PlacesStatus.OK && results) {
             const filteredResults = results.filter(r => (r.rating || 0) >= 4.0);
             
             const apiPlaces: PlaceData[] = filteredResults.map(result => ({
               id: result.place_id,
               name: result.name,
-              category: selectedCategory === '전체' ? (result.types.includes('restaurant') ? '식당' : '장소') : selectedCategory,
+              category: selectedCategory === '전체' ? (result.types.includes('restaurant') ? '식당' : result.types.includes('cafe') ? '카페' : '장소') : selectedCategory,
               rating: result.rating || 0,
-              distance: '1km 이내',
-              time: '도보 가능',
+              distance: '2km 이내',
+              time: '가까움',
               cost: result.price_level ? '₩'.repeat(result.price_level) : '정보없음',
-              isLocal: result.rating > 4.3 && result.user_ratings_total < 150,
+              isLocal: result.rating > 4.3 && result.user_ratings_total < 200,
               isGooglePlace: true,
               summary: {
-                pros: `구글 4.0+ 추천: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
+                pros: `구글 실시간: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
                 cons: result.business_status !== 'OPERATIONAL' ? '현재 영업 중이 아닐 수 있음' : '현장 확인 필요'
               }
             }));
 
             setPlaces(apiPlaces);
             setLoading(false);
-          } else {
-            console.warn("Google Places API failed or no high-rated results found:", status);
+          } else if (status === PlacesStatus.ZERO_RESULTS) {
+            console.warn("No results found in this area.");
             setPlaces([]);
             setLoading(false);
+          } else {
+            console.error("Google Places API error status:", status);
+            // On other errors (DENIED, etc.), fallback to DB so the screen isn't empty
+            useOnlyDB();
           }
         } catch (innerError) {
           console.error("Inner API error:", innerError);
