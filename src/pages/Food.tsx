@@ -476,8 +476,6 @@ export const FoodShoppingPage = () => {
   const fruits = SEASONAL_FRUITS[selectedMonth] || [];
 
   return (
-    <div className="pb-10 px-4 space-y-6">
-  return (
     <div className="pb-10 px-4 space-y-4">
       {/* 0. Vietnamese Food Section */}
       <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
@@ -603,22 +601,22 @@ export const FoodShoppingPage = () => {
       </section>
 
       {/* 3. Delivery Recommendations (Da Nang) */}
-      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+      <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsDeliveryOpen(!isDeliveryOpen)}
-          className="w-full flex items-center justify-between p-3"
+          className="w-full flex items-center justify-between p-3.5"
         >
           <div className="flex items-center gap-2">
-            <Tag className="w-5 h-5 text-coral" />
-            <h2 className="text-xl font-black text-coral">리조트 배달 맛집 (다낭)</h2>
+            <Tag className="w-5 h-5 text-mango" />
+            <h2 className="text-lg font-black text-mango tracking-tight">리조트 배달 맛집 (다낭)</h2>
           </div>
           <div className={cn("transition-transform duration-300", !isDeliveryOpen && "rotate-180")}>
-            <ChevronRight className="w-5 h-5 text-coral rotate-90" />
+            <ChevronRight className="w-5 h-5 text-mango rotate-90" />
           </div>
         </button>
 
         {isDeliveryOpen && (
-          <div className="px-4 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-4 pb-5 space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-300">
             {DELIVERY_SPOTS_DANANG.map((spot, idx) => (
               <DeliveryCard key={idx} spot={spot} />
             ))}
@@ -627,22 +625,22 @@ export const FoodShoppingPage = () => {
       </section>
 
       {/* 4. Delivery Recommendations (Hoi An) */}
-      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+      <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsHoianDeliveryOpen(!isHoianDeliveryOpen)}
-          className="w-full flex items-center justify-between p-3"
+          className="w-full flex items-center justify-between p-3.5"
         >
           <div className="flex items-center gap-2">
-            <Tag className="w-5 h-5 text-mint" />
-            <h2 className="text-xl font-black text-mint">리조트 배달 맛집 (호이안)</h2>
+            <Tag className="w-5 h-5 text-teal" />
+            <h2 className="text-lg font-black text-teal tracking-tight">리조트 배달 맛집 (호이안)</h2>
           </div>
           <div className={cn("transition-transform duration-300", !isHoianDeliveryOpen && "rotate-180")}>
-            <ChevronRight className="w-5 h-5 text-mint rotate-90" />
+            <ChevronRight className="w-5 h-5 text-teal rotate-90" />
           </div>
         </button>
 
         {isHoianDeliveryOpen && (
-          <div className="px-4 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="px-4 pb-5 space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-300">
             {DELIVERY_SPOTS_HOIAN.map((spot, idx) => (
               <DeliveryCard key={idx} spot={spot} />
             ))}
