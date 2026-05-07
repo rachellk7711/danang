@@ -24,47 +24,110 @@ const SEASONAL_FRUITS: Record<number, { name: string; icon: string }[]> = {
   12: [{ name: '스타애플', icon: '🥛' }, { name: '용과', icon: '🐲' }, { name: '수박', icon: '🍉' }, { name: '오렌지', icon: '🍊' }],
 };
 
-// Filtered Vietnamese Food Data (Hoi An Focused)
 const VIETNAMESE_FOOD_DATA = [
+  {
+    id: "vn_001",
+    name: "Bún Bò Huế",
+    nameKr: "분보후에",
+    location: "다낭 / 호이안",
+    desc: "매콤하고 진한 소고기 육수와 굵은 면의 조화가 일품인 중부 지방 대표 국수",
+    tip: "현지 고추기름(사떼)을 살짝 넣으면 국물 맛이 훨씬 깊어집니다."
+  },
+  {
+    id: "vn_002",
+    name: "Phở Bò / Gà",
+    nameKr: "퍼 보 / 퍼 가",
+    location: "다낭 / 호이안",
+    desc: "맑고 담백한 소고기(보) 또는 닭고기(가) 육수의 베트남 국민 쌀국수",
+    tip: "라임즙과 마늘 식초를 한 스푼 넣으면 국물의 풍미가 폭발합니다."
+  },
+  {
+    id: "vn_003",
+    name: "Bánh Xèo",
+    nameKr: "반쎄오",
+    location: "다낭 / 호이안",
+    desc: "쌀가루 반죽에 돼지고기, 새우를 넣어 구운 바삭한 베트남식 부침개",
+    tip: "라이스페이퍼에 허브를 듬뿍 넣고 돌돌 말아 소스에 찍어 드세요."
+  },
+  {
+    id: "vn_004",
+    name: "Mì Quảng",
+    nameKr: "미꽝",
+    location: "다낭 / 호이안",
+    desc: "자작한 국물과 넓은 면, 땅콩과 쌀과자를 곁들인 다낭의 별미 국수",
+    tip: "함께 나오는 바삭한 쌀과자를 부수어 면과 비벼 먹는 것이 정석입니다."
+  },
+  {
+    id: "vn_005",
+    name: "Bánh Mì",
+    nameKr: "반미",
+    location: "다낭 / 호이안",
+    desc: "숯불 고기와 파테가 들어간 베트남식 바게트 샌드위치",
+    tip: "고수가 싫다면 'Không cho rau thơm'을 말하세요."
+  },
+  {
+    id: "vn_006",
+    name: "Bún Thịt Nướng",
+    nameKr: "분팃느엉",
+    location: "다낭 / 호이안",
+    desc: "숯불 돼지고기와 야채를 소스에 비벼 먹는 차가운 비빔 쌀국수",
+    tip: "달콤짭짤한 피시 소스를 면 전체에 골고루 적셔 비벼 드세요."
+  },
+  {
+    id: "vn_007",
+    name: "Hải Sản",
+    nameKr: "하이산",
+    location: "다낭 미케비치",
+    desc: "신선한 새우, 게, 오징어 등을 다양한 소스로 조리한 해산물 요리",
+    tip: "버터 갈릭 소스나 타마린드 소스 볶음을 추천합니다."
+  },
+  {
+    id: "vn_008",
+    name: "Nem Lụi",
+    nameKr: "넴루이",
+    location: "다낭 / 호이안",
+    desc: "레몬그라스 꼬치에 다진 돼지고기를 뭉쳐 구운 베트남식 떡갈비",
+    tip: "라이스페이퍼에 야채와 싸서 고소한 땅콩 소스에 찍어 먹습니다."
+  },
   {
     id: "vn_009",
     name: "Cơm Gà",
-    nameKr: "콤가 (호이안식 닭밥)",
+    nameKr: "콤가",
     location: "호이안 추천",
-    desc: "강황 육수로 지은 노란 밥 위에 잘게 찢은 닭고기와 허브를 곁들인 호이안 최고의 별미",
-    tip: "호이안식 매운 고추 소스나 간장을 살짝 비벼 드시면 감칠맛이 일품입니다."
+    desc: "강황 육수로 지은 노란 밥 위에 닭고기를 곁들인 호이안식 치킨라이스",
+    tip: "호이안식 매운 고추 소스를 밥에 비벼 먹으면 더 맛있습니다."
   },
   {
     id: "vn_010",
     name: "Cao Lầu",
     nameKr: "카오러우",
     location: "호이안 전용",
-    desc: "오직 호이안의 우물물로만 만든다는 쫄깃한 특제 면과 돼지고기 토핑의 비빔 국수",
-    tip: "함께 들어있는 바삭한 튀김 과자를 면과 함께 씹을 때의 식감을 즐겨보세요."
+    desc: "호이안의 우물물로만 만든다는 쫄깃한 특제 면의 비빔 국수",
+    tip: "함께 들어있는 바삭한 튀김 과자와 면의 식감을 즐겨보세요."
   },
   {
     id: "vn_011",
     name: "Bánh Bao Bánh Vạc",
     nameKr: "화이트 로즈",
     location: "호이안 전용",
-    desc: "하얀 장미 꽃잎을 닮은 얇은 피 안에 새우를 넣어 쪄낸 호이안 전통 만두",
-    tip: "위에 뿌려진 튀긴 마늘(샬롯)과 함께 달콤짭짤한 소스에 찍어 드세요."
+    desc: "하얀 장미 꽃잎을 닮은 호이안 전통 새우 만두",
+    tip: "튀긴 마늘(샬롯)과 함께 달콤짭짤한 소스에 찍어 드세요."
   },
   {
-    id: "vn_014",
-    name: "Bánh Đập",
-    nameKr: "반답 (라이스페이퍼 쌈)",
-    location: "호이안 전용",
-    desc: "바삭한 구운 라이스페이퍼와 부드러운 젖은 라이스페이퍼를 겹쳐 손으로 부수어 먹는 재미있는 음식",
-    tip: "함께 나오는 진한 조개 젓갈 소스나 헨쫀(조개 샐러드)과 환상의 궁합입니다."
+    id: "vn_012",
+    name: "Cháo",
+    nameKr: "짜오",
+    location: "다낭 / 호이안",
+    desc: "소고기나 닭고기를 넣고 부드럽게 끓여낸 베트남식 영양 죽",
+    tip: "아침 식사나 과음한 다음 날 속을 풀기 위한 메뉴로 최고입니다."
   },
   {
-    id: "vn_015",
-    name: "Hến Trộn",
-    nameKr: "헨쫀 (조개 샐러드)",
-    location: "호이안 전용",
-    desc: "투본강에서 잡은 작은 민물 조개를 야채, 견과류와 함께 무쳐낸 새콤달콤한 샐러드",
-    tip: "반답(라이스페이퍼) 위에 조개 무침을 듬뿍 올려서 바삭하게 즐겨보세요."
+    id: "vn_013",
+    name: "Cơm Bình Dân",
+    nameKr: "콤 빈전",
+    location: "다낭 / 호이안",
+    desc: "원하는 반찬을 골라 밥 위에 얹어 먹는 서민 식당 (백반)",
+    tip: "로컬 시장 근처에서 가장 신선하고 저렴하게 즐길 수 있습니다."
   }
 ];
 
@@ -74,8 +137,8 @@ const SHOPPING_CATEGORIES = [
     name: '과자류',
     icon: '🍪',
     items: [
-      { name: '커피조이 (Coffee Joy)', desc: '얇고 바삭한 커피맛 비스킷, 중독성 최고', price: '약 15,000동' },
-      { name: '게리 치즈 크래커 (Gery)', desc: '한면에 두꺼운 치즈가 발린 크래커, 선물용 1위', price: '약 25,000동' },
+      { name: '커피조이 (Coffee Joy)', desc: '얇고 바삭한 커피맛 비스킷', price: '약 15,000동' },
+      { name: '게리 치즈 크래커 (Gery)', desc: '진한 치즈맛 크래커, 선물용 1위', price: '약 25,000동' },
     ]
   },
   {
@@ -83,36 +146,7 @@ const SHOPPING_CATEGORIES = [
     name: '사탕·젤리',
     icon: '🍬',
     items: [
-      { name: '체리쉬 망고 젤리 (Cherish)', desc: '탱글탱글한 망고맛 젤리, 차갑게 먹으면 최고', price: '약 35,000동' },
-      { name: '탑푸르트 망고젤리 (Top Fruit)', desc: '개별 포장된 쫀득한 식감의 인기 망고 젤리', price: '약 40,000동' },
-    ]
-  }
-];
-
-const DELIVERY_SPOTS_DANANG = [
-  {
-    category: '해산물 배달 🦀',
-    name: '다낭 해산물 (Hải Sản)',
-    hours: '10:00 - 22:00',
-    contact: '카카오톡: 다낭해산물배달',
-    desc: '미케비치 근처 신선한 해산물을 조리하여 배달합니다. 버터갈릭 새우와 칠리 크랩이 인기입니다.',
-    menu: [
-      { name: '버터갈릭 새우 (500g)', price: '350,000₫' },
-      { name: '칠리 크랩 한 마리', price: '450,000₫' }
-    ]
-  }
-];
-
-const DELIVERY_SPOTS_HOIAN = [
-  {
-    category: '전설의 반미 🥖',
-    name: '반미프엉 (Banh Mi Phuong)',
-    hours: '06:30 - 21:30',
-    contact: 'Grab 푸드 이용 추천',
-    desc: '호이안에서 가장 유명한 반미집. 3번(믹스) 메뉴가 가장 인기 있습니다.',
-    menu: [
-      { name: '3번 믹스 반미', price: '35,000₫' },
-      { name: '5번 바베큐 반미', price: '30,000₫' }
+      { name: '체리쉬 망고 젤리 (Cherish)', desc: '탱글탱글한 망고맛 젤리', price: '약 35,000동' },
     ]
   }
 ];
@@ -121,27 +155,27 @@ const FoodAccordionItem: React.FC<{ food: any }> = ({ food }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-white/5 last:border-0 overflow-hidden">
-      {/* 1단: 음식 이름 (항상 노출) */}
+    <div className="border-b border-white/5 last:border-0">
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-3.5 flex items-center justify-between group active:bg-white/5 transition-colors"
+        className="w-full py-4 flex items-center justify-between group active:bg-white/5 transition-colors"
       >
-        <div className="flex items-baseline gap-2 overflow-hidden">
-          <span className={cn("text-[14px] font-black transition-colors shrink-0", isOpen ? "text-mango" : "text-text-primary group-hover:text-mango")}>
-            {food.nameKr}
-          </span>
-          <span className="text-[9px] text-text-hint font-medium uppercase truncate opacity-50">
-            {food.name}
+        <div className="flex flex-col items-start text-left">
+          <div className="flex items-center gap-2">
+            <span className={cn("text-[15px] font-black transition-colors", isOpen ? "text-mango" : "text-text-primary group-hover:text-mango")}>
+              {food.nameKr}
+            </span>
+            <span className="text-[10px] text-text-hint font-medium uppercase opacity-40">
+              {food.name}
+            </span>
+          </div>
+          <span className="text-[10px] font-bold text-coral/70 mt-0.5">
+            [{food.location}]
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] font-bold text-coral/80 shrink-0">[{food.location}]</span>
-          <ChevronRight className={cn("w-4 h-4 text-text-hint shrink-0 transition-transform duration-300", isOpen && "rotate-90 text-mango")} />
-        </div>
+        <ChevronRight className={cn("w-5 h-5 text-text-hint shrink-0 transition-transform duration-300", isOpen && "rotate-90 text-mango")} />
       </button>
       
-      {/* 2단: 상세 설명 (클릭 시 노출) */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -151,13 +185,15 @@ const FoodAccordionItem: React.FC<{ food: any }> = ({ food }) => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="pb-4 px-0.5 space-y-2.5">
-              <p className="text-[12px] text-text-secondary leading-relaxed px-1">
+            <div className="pb-5 px-1 space-y-3">
+              <p className="text-[13px] text-text-secondary leading-relaxed">
                 {food.desc}
               </p>
-              <div className="flex gap-2 items-start bg-white/3 rounded-xl p-3 border border-white/5">
-                <div className="bg-mango/20 px-1.5 py-0.5 rounded text-[9px] font-black text-mango mt-0.5">TIP</div>
-                <p className="text-[11px] text-text-primary leading-snug italic">
+              <div className="bg-white/3 rounded-xl p-3 border border-white/5">
+                <div className="flex items-center gap-1.5 mb-1.5">
+                  <span className="bg-mango/20 px-1.5 py-0.5 rounded text-[9px] font-black text-mango">꿀팁</span>
+                </div>
+                <p className="text-[11px] text-text-primary leading-snug italic opacity-90">
                   {food.tip}
                 </p>
               </div>
@@ -179,8 +215,8 @@ const DeliveryCard: React.FC<{ spot: any }> = ({ spot }) => (
       <h3 className="text-sm font-black text-text-primary mb-0.5">{spot.name}</h3>
       <p className="text-[10px] text-coral font-bold">{spot.contact}</p>
     </div>
-    <div className="p-3 bg-white/2">
-      <p className="text-[10px] text-text-secondary mb-3 leading-relaxed italic">"{spot.desc}"</p>
+    <div className="p-3 bg-white/2 text-left">
+      <p className="text-[10px] text-text-secondary mb-3 italic">"{spot.desc}"</p>
       <div className="space-y-1.5">
         {spot.menu.map((m: any, i: number) => (
           <div key={i} className="flex justify-between items-center bg-white/3 border-l-2 border-coral/30 p-2 rounded-r-lg">
@@ -203,15 +239,15 @@ export const FoodShoppingPage = () => {
 
   return (
     <div className="pb-10 px-4 space-y-4">
-      {/* 0. Vietnamese Food Section (2-Tier Accordion) */}
+      {/* 0. Vietnamese Food Section (Accordion) */}
       <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsVnFoodOpen(!isVnFoodOpen)}
-          className="w-full flex items-center justify-between p-3.5"
+          className="w-full flex items-center justify-between p-4"
         >
           <div className="flex items-center gap-2">
             <Utensils className="w-5 h-5 text-mango" />
-            <h2 className="text-lg font-black text-mango tracking-tight">호이안 미식 가이드</h2>
+            <h2 className="text-lg font-black text-mango tracking-tight">베트남 음식 대백과</h2>
           </div>
           <ChevronRight className={cn("w-5 h-5 text-mango transition-transform duration-300", isVnFoodOpen ? "rotate-90" : "rotate-0")} />
         </button>
@@ -229,7 +265,7 @@ export const FoodShoppingPage = () => {
       <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsFruitOpen(!isFruitOpen)}
-          className="w-full flex items-center justify-between p-3.5"
+          className="w-full flex items-center justify-between p-4"
         >
           <div className="flex items-center gap-2">
             <Calendar className="w-5 h-5 text-teal" />
@@ -274,7 +310,7 @@ export const FoodShoppingPage = () => {
       <section className="bg-navy-sub/20 rounded-2xl p-0.5 border border-white/5">
         <button 
           onClick={() => setIsShoppingOpen(!isShoppingOpen)}
-          className="w-full flex items-center justify-between p-3.5"
+          className="w-full flex items-center justify-between p-4"
         >
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-5 h-5 text-coral" />
