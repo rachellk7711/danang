@@ -13,17 +13,28 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () => void }> = ({ label, active, onClick }) => (
-  <button
-    onClick={onClick}
-    className={cn(
-      "px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all",
-      active ? "bg-teal text-white shadow-sm" : "bg-gray-100 text-gray-500 border border-gray-200"
-    )}
-  >
-    {label}
-  </button>
-);
+const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () => void }> = ({ label, active, onClick }) => {
+  const getIcon = (l: string) => {
+    if (l === '로컬맛집') return '🇻🇳 ';
+    if (l === '관광맛집') return '⭐ ';
+    if (l === '마사지') return '💆 ';
+    if (l === '마트·시장') return '🛒 ';
+    if (l === '카페') return '☕ ';
+    return '';
+  };
+
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all",
+        active ? "bg-teal text-white shadow-md" : "bg-gray-100 text-gray-500 border border-gray-200"
+      )}
+    >
+      {getIcon(label)}{label}
+    </button>
+  );
+};
 
 const MOCK_LOCATIONS = [
   { name: '📍 한시장', lat: 16.0683, lng: 108.2234 },
@@ -96,22 +107,52 @@ export const ExplorePage = () => {
         };
       };
 
+      // Restaurants (Local/Tourist/Cafe)
       if (database.restaurants) {
-        if ((selectedCategory === '전체' || selectedCategory === '로컬맛집') && database.restaurants.local) {
-          database.restaurants.local.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
+        if (selectedCategory === '전체' || selectedCategory === '로컬맛집') {
+          database.restaurants.local?.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
         }
-        if ((selectedCategory === '전체' || selectedCategory === '관광맛집') && database.restaurants.tourist) {
-          database.restaurants.tourist.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '관광맛집')));
+        if (selectedCategory === '전체' || selectedCategory === '관광맛집') {
+          database.restaurants.tourist?.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '관광맛집')));
+        }
+        // Cafes inside restaurants
+        if (selectedCategory === '전체' || selectedCategory === '카페') {
+          [...(database.restaurants.local || []), ...(database.restaurants.tourist || [])].forEach((r: any) => {
+            const cat = String(r.category || '');
+            if (cat.includes('카페') || cat.includes('커피') || cat.includes('디저트') || cat.includes('베이커리')) {
+              dbPlaces.push(mapToPlaceData(r, '카페'));
+            }
+          });
         }
       }
+
+      // Attractions (Market/Mart/Cafe)
+      if (database.attractions) {
+        const allAttr = [...(database.attractions.danang || []), ...(database.attractions.hoian || [])];
+        allAttr.forEach((a: any) => {
+          const cat = String(a.category || '');
+          if ((selectedCategory === '전체' || selectedCategory === '마트·시장') && (cat.includes('시장') || cat.includes('마트'))) {
+            dbPlaces.push(mapToPlaceData(a, '마트·시장'));
+          }
+          if ((selectedCategory === '전체' || selectedCategory === '카페') && (cat.includes('카페') || cat.includes('커피'))) {
+            dbPlaces.push(mapToPlaceData(a, '카페'));
+          }
+        });
+      }
+
+      // Shopping (Market/Mart)
+      if (database.shopping && (selectedCategory === '전체' || selectedCategory === '마트·시장')) {
+        Object.values(database.shopping).forEach((s: any) => {
+           dbPlaces.push(mapToPlaceData(s, '마트·시장'));
+        });
+      }
+
+      // Massage
       if (database.massage_shops && (selectedCategory === '전체' || selectedCategory === '마사지')) {
         database.massage_shops.forEach((m: any) => dbPlaces.push(mapToPlaceData(m, '마사지')));
       }
-      if (database.cafes && (selectedCategory === '전체' || selectedCategory === '카페')) {
-        const cafes = database.cafes.danang ? [...database.cafes.danang, ...database.cafes.hoian] : (Array.isArray(database.cafes) ? database.cafes : []);
-        cafes.forEach((c: any) => dbPlaces.push(mapToPlaceData(c, '카페')));
-      }
 
+      // Supabase
       try {
         const { data: userPlaces } = await supabase.from('user_places').select('*');
         if (userPlaces) {
@@ -271,7 +312,7 @@ export const ExplorePage = () => {
           <div className="py-20 text-center text-gray-400 text-[10px]">정보 없음</div>
         ) : (
           places.map((place) => (
-            <div key={place.id} className="bg-white border-b border-gray-100 p-2.5 relative hover:bg-gray-50/50 transition-colors">
+            <div key={place.id} className="bg-white border border-gray-100 rounded-lg p-2.5 relative hover:bg-gray-50/50 transition-colors shadow-sm">
               <div className="absolute top-2.5 right-2">
                 <a 
                   href={place.location ? `https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`} 
