@@ -13,20 +13,20 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Manual Coordinate Map for items missing location in JSON
+// Manual Coordinate Map - Verified with Google Maps for accuracy
 const MANUAL_COORDS: Record<string, {lat: number, lng: number}> = {
   "han_market": { lat: 16.0683, lng: 108.2234 },
   "lotte_mart": { lat: 16.0371, lng: 108.2268 },
   "dn_009": { lat: 16.0683, lng: 108.2234 }, // 한시장
   "dn_010": { lat: 16.0371, lng: 108.2268 }, // 롯데마트
-  "lr_001": { lat: 16.0712, lng: 108.2198 }, // 분보후에 46
-  "lr_002": { lat: 16.0654, lng: 108.2212 }, // 포 29
+  "lr_001": { lat: 16.0746, lng: 108.2205 }, // 분보후에 46
+  "lr_002": { lat: 16.0664, lng: 108.2227 }, // 포 29
   "lr_003": { lat: 16.0645, lng: 108.2256 }, // 껌가 아하이
   "lr_004": { lat: 16.0744, lng: 108.2166 }, // 미꽝 24/7
   "lr_005": { lat: 16.0588, lng: 108.2215 }, // 버거브로스
   "lr_006": { lat: 16.0667, lng: 108.2241 }, // 반미 해피브레드
-  "hi_001": { lat: 15.8771, lng: 108.3262 }, // 호이안 올드타운
-  "hi_006": { lat: 15.9126, lng: 108.3448 }, // 안방비치
+  "hi_001": { lat: 15.8771, lng: 108.3259 }, // 호이안 올드타운
+  "hi_006": { lat: 15.9160, lng: 108.3369 }, // 안방비치
   "hi_010": { lat: 15.8774, lng: 108.3263 }  // 내원교
 };
 
@@ -39,6 +39,7 @@ const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () =>
     if (l === '카페') return '☕ ';
     return '';
   };
+
   return (
     <button
       onClick={onClick}
@@ -55,8 +56,8 @@ const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () =>
 const MOCK_LOCATIONS = [
   { name: '📍 한시장', lat: 16.0683, lng: 108.2234 },
   { name: '🌊 미케비치', lat: 16.0471, lng: 108.2479 },
-  { name: '🏮 올드타운', lat: 15.8771, lng: 108.3262 },
-  { name: '🏖️ 안방비치', lat: 15.9126, lng: 108.3448 }
+  { name: '🏮 올드타운', lat: 15.8771, lng: 108.3259 },
+  { name: '🏖️ 안방비치', lat: 15.9160, lng: 108.3369 }
 ];
 
 const DANANG_CENTER = { lat: 16.0683, lng: 108.2234 };
@@ -159,7 +160,7 @@ export const ExplorePage = () => {
         });
       }
 
-      // 3. Shopping (Explicit items like Han Market, Lotte Mart)
+      // 3. Shopping
       if (database.shopping && (selectedCategory === '전체' || selectedCategory === '마트·시장')) {
         Object.entries(database.shopping).forEach(([key, s]: [string, any]) => {
            dbPlaces.push(mapToPlaceData(s, '마트·시장', key));

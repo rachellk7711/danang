@@ -23,6 +23,126 @@ const SEASONAL_FRUITS: Record<number, { name: string; icon: string }[]> = {
   12: [{ name: '스타애플', icon: '🥛' }, { name: '용과', icon: '🐲' }, { name: '수박', icon: '🍉' }, { name: '오렌지', icon: '🍊' }],
 };
 
+const VIETNAMESE_FOOD_DATA = [
+  {
+    name: "Bún Bò Huế",
+    nameKr: "분보후에",
+    nameEn: "Hue Beef Noodle Soup",
+    ingredients: "소고기, 돼지고기",
+    form: "쌀국수 (우동처럼 굵고 둥근 면)",
+    taste: "매콤하고 진한 고기 육수, 레몬그라스 향",
+    tip: "매콤한 맛을 좋아하신다면 현지 고추기름(사떼)을 살짝 풀어 드시면 국물이 훨씬 깊어집니다."
+  },
+  {
+    name: "Phở Bò, Phở Gà",
+    nameKr: "퍼 보, 퍼 가",
+    nameEn: "Beef or Chicken Pho",
+    ingredients: "소고기(보) 또는 닭고기(가)",
+    form: "쌀국수 (납작한 면)",
+    taste: "맑고 담백한 고기 육수",
+    tip: "현지인들처럼 라임즙을 듬뿍 짜 넣고, 테이블에 있는 마늘 식초를 한 스푼 넣으면 국물 감칠맛이 확 살아납니다."
+  },
+  {
+    name: "Bánh Xèo",
+    nameKr: "반쎄오",
+    nameEn: "Vietnamese Sizzling Crepe",
+    ingredients: "돼지고기, 새우, 숙주",
+    form: "쌀가루 크레이프 (부침개)",
+    taste: "기름에 튀기듯 구워 고소하고 바삭함",
+    tip: "라이스페이퍼에 바삭한 반쎄오와 신선한 허브를 듬뿍 넣고 돌돌 말아 소스에 푹 찍어 드세요."
+  },
+  {
+    name: "Mì Quảng",
+    nameKr: "미꽝",
+    nameEn: "Quang Seafood Noodle",
+    ingredients: "새우, 돼지고기, 메추리알, 땅콩",
+    form: "쌀국수 (강황을 넣은 넓은 면)",
+    taste: "간장과 피시 소스 베이스의 자작한 짭짤함",
+    tip: "함께 나오는 커다랗고 바삭한 쌀과자를 부수어서 면과 비벼 먹는 것이 정석입니다."
+  },
+  {
+    name: "Bánh Mì",
+    nameKr: "반미",
+    nameEn: "Vietnamese Baguette Sandwich",
+    ingredients: "숯불 돼지고기, 파테(고기 스프레드)",
+    form: "바게트 빵",
+    taste: "짭짤하고 새콤달콤 (숯불향)",
+    tip: "겉바속촉 바게트와 숯불 고기의 조합이 예술입니다. 고수 향을 즐기신다면 듬뿍 넣어달라고 요청해 보세요."
+  },
+  {
+    name: "Bún Thịt Nướng",
+    nameKr: "분팃느엉",
+    nameEn: "Grilled Pork Noodle",
+    ingredients: "숯불 돼지고기",
+    form: "쌀국수 (얇고 차가운 면)",
+    taste: "달콤짭짤한 피시 소스 베이스, 진한 숯불향",
+    tip: "고기와 면, 신선한 채소를 새콤달콤한 비빔 소스에 흠뻑 적시듯 섞어 먹는 별미 국수입니다."
+  },
+  {
+    name: "Hải Sản",
+    nameKr: "하이산",
+    nameEn: "Seafood",
+    ingredients: "새우, 게, 오징어, 조개 등",
+    form: "탄수화물 없음",
+    taste: "선택 가능 (소금구이, 찜, 버터 갈릭 등)",
+    tip: "다낭의 미케비치 근처에서는 버터 갈릭(버 또이) 소스나 매콤새콤한 타마린드 소스로 볶은 해산물이 훌륭한 안주가 됩니다."
+  },
+  {
+    name: "Nem Lụi, Nem Nướng",
+    nameKr: "넴루이, 넴느엉",
+    nameEn: "Grilled Pork Skewers",
+    ingredients: "다진 돼지고기",
+    form: "꼬치 (라이스페이퍼에 싸서 먹음)",
+    taste: "달짝지근한 숯불 떡갈비 맛",
+    tip: "꼬치를 라이스페이퍼에 대고 쏙 빼낸 뒤, 야채와 함께 싸서 특제 땅콩 소스에 듬뿍 찍어 드세요."
+  },
+  {
+    name: "Cơm Gà",
+    nameKr: "콤가",
+    nameEn: "Chicken Rice",
+    ingredients: "닭고기",
+    form: "쌀밥 (강황과 닭 육수로 지은 밥)",
+    taste: "맵지 않고 담백, 고소함",
+    tip: "짭짤할 닭고기가 듬뿍 올라간 호이안식 콤가에 테이블에 있는 칠리 소스나 간장을 살짝 비벼 드시면 일품입니다."
+  },
+  {
+    name: "Cao Lầu",
+    nameKr: "카오러우",
+    nameEn: "Hoi An Pork Noodle",
+    ingredients: "차슈 (간장에 졸인 돼지고기)",
+    form: "쌀국수 (우동처럼 굵고 쫄깃한 호이안 특산 면)",
+    taste: "간장 및 오향(다섯 가지 향신료) 베이스의 짭짤함",
+    tip: "호이안에서만 맛볼 수 있는 쫄깃한 면발의 식감과 달콤짭짤한 고기 고명의 조화가 아주 좋습니다."
+  },
+  {
+    name: "Bánh Bao Bánh Vạc",
+    nameKr: "반 바오 반 박",
+    nameEn: "White Rose Dumplings",
+    ingredients: "다진 돼지고기, 다진 새우",
+    form: "쌀가루 (반투명한 만두피)",
+    taste: "딤섬처럼 담백함, 튀긴 샬롯의 고소함",
+    tip: "쫀득한 만두피와 새우즙의 맛을 온전히 느낀 후, 함께 나오는 새콤달콤한 느억맘 소스를 곁들여 보세요."
+  },
+  {
+    name: "Cháo",
+    nameKr: "짜오",
+    nameEn: "Rice Porridge",
+    ingredients: "닭고기, 소고기, 조개 등",
+    form: "쌀죽",
+    taste: "삼삼하고 부드러운 맛",
+    tip: "전날 시원한 맥주를 드셨다면, 아침 일찍 여는 로컬 식당에서 따뜻하게 속을 풀기 좋은 든든한 메뉴입니다."
+  },
+  {
+    name: "Cơm Bình Dân",
+    nameKr: "콤 빈전",
+    nameEn: "Local Plate Lunch",
+    ingredients: "돼지고기, 생선 등 원하는 반찬 선택",
+    form: "쌀밥과 반찬",
+    taste: "반찬마다 다름 (간장 조림, 볶음 등)",
+    tip: "점심시간에 갓 만들어낸 현지식 반찬들을 유리 진열장에서 가리키며 덮밥처럼 푸짐하게 즐길 수 있습니다."
+  }
+];
+
 // Data for Shopping Items
 const SHOPPING_CATEGORIES = [
   {
@@ -305,6 +425,7 @@ const DeliveryCard: React.FC<{ spot: any }> = ({ spot }) => (
 export const FoodShoppingPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [activeTab, setActiveTab] = useState('snack');
+  const [isVnFoodOpen, setIsVnFoodOpen] = useState(true);
   const [isFruitOpen, setIsFruitOpen] = useState(false);
   const [isShoppingOpen, setIsShoppingOpen] = useState(false);
   const [isDeliveryOpen, setIsDeliveryOpen] = useState(false);
@@ -314,6 +435,60 @@ export const FoodShoppingPage = () => {
 
   return (
     <div className="pb-10 px-4 space-y-6">
+      {/* 0. Vietnamese Food Section */}
+      <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
+        <button 
+          onClick={() => setIsVnFoodOpen(!isVnFoodOpen)}
+          className="w-full flex items-center justify-between p-4"
+        >
+          <div className="flex items-center gap-2">
+            <Utensils className="w-5 h-5 text-sky-400" />
+            <h2 className="text-xl font-black text-sky-400">베트남 음식 대백과</h2>
+          </div>
+          <div className={cn("transition-transform duration-300", !isVnFoodOpen && "rotate-180")}>
+            <ChevronRight className="w-5 h-5 text-sky-400 rotate-90" />
+          </div>
+        </button>
+        
+        {isVnFoodOpen && (
+          <div className="px-4 pb-6 space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            {VIETNAMESE_FOOD_DATA.map((food, idx) => (
+              <div key={idx} className="glass-card overflow-hidden border-l-4 border-l-sky-400 shadow-lg">
+                <div className="bg-sky-400/10 p-3 border-b border-white/5">
+                  <div className="flex justify-between items-baseline mb-1">
+                    <h3 className="text-base font-black text-text-primary">{food.nameKr}</h3>
+                    <span className="text-[10px] font-bold text-sky-400 uppercase tracking-tight">{food.name}</span>
+                  </div>
+                  <p className="text-[10px] text-text-hint font-medium">{food.nameEn}</p>
+                </div>
+                <div className="p-3 space-y-2.5">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <p className="text-[9px] text-sky-400/70 font-bold mb-0.5 uppercase">Main Ingredients</p>
+                      <p className="text-[11px] text-text-primary leading-tight font-medium">{food.ingredients}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-sky-400/70 font-bold mb-0.5 uppercase">Form</p>
+                      <p className="text-[11px] text-text-primary leading-tight font-medium">{food.form}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-sky-400/70 font-bold mb-0.5 uppercase">Taste & Seasoning</p>
+                    <p className="text-[11px] text-text-secondary leading-snug">{food.taste}</p>
+                  </div>
+                  <div className="bg-sky-400/5 rounded-xl p-2.5 border border-sky-400/10 mt-1">
+                    <p className="text-[11px] text-text-primary leading-relaxed">
+                      <span className="text-sky-400 font-bold mr-1.5">💡 Tip</span>
+                      {food.tip}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
       {/* 1. Seasonal Fruits Section */}
       <section className="bg-navy-sub/20 rounded-3xl p-1 border border-white/5">
         <button 
