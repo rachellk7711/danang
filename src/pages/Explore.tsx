@@ -49,6 +49,7 @@ const MOCK_LOCATIONS = [
 ];
 
 export const ExplorePage = () => {
+  const [exploreMode, setExploreMode] = useState<'recommend' | 'google'>('recommend');
   const [selectedCategory, setSelectedCategory] = useState<Category>('전체');
   const [places, setPlaces] = useState<PlaceData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,21 +60,26 @@ export const ExplorePage = () => {
   const fetchPlaces = (forcedCoords?: {lat: number, lng: number}) => {
     setLoading(true);
     setLocationError(false);
+
+    // If it's recommendation mode, we just use DB and don't strictly need GPS for listing
+    if (exploreMode === 'recommend') {
+      useOnlyDB();
+      return;
+    }
     
     if (forcedCoords) {
       setCurrentCoords(forcedCoords);
-      fetchDataFromAPIAndDB(forcedCoords.lat, forcedCoords.lng);
+      fetchDataFromAPI(forcedCoords.lat, forcedCoords.lng);
       return;
     }
 
-    // 1. Get real GPS location
+    // Google Mode needs GPS
     if (navigator.geolocation) {
-      // Safety timeout: If GPS takes too long (> 10s), fallback to DB
       const safetyTimeout = setTimeout(() => {
         console.warn("GPS request timed out, using fallback.");
         setLocationError(true);
         setShowMockButtons(true);
-        useOnlyDB();
+        fetchDataFromAPI(16.0683, 108.2022); // Han Market
       }, 10000);
 
       navigator.geolocation.getCurrentPosition(
@@ -82,21 +88,17 @@ export const ExplorePage = () => {
           const { latitude, longitude } = position.coords;
           
           const dist = Math.sqrt(Math.pow(latitude - 16.0544, 2) + Math.pow(longitude - 108.2022, 2));
-          if (dist > 1) {
-            setShowMockButtons(true);
-          } else {
-            setShowMockButtons(false);
-          }
+          setShowMockButtons(dist > 1);
 
           setCurrentCoords({ lat: latitude, lng: longitude });
-          fetchDataFromAPIAndDB(latitude, longitude);
+          fetchDataFromAPI(latitude, longitude);
         },
         (error) => {
           clearTimeout(safetyTimeout);
           console.error("GPS Error:", error);
           setLocationError(true);
           setShowMockButtons(true);
-          fetchDataFromAPIAndDB(16.0683, 108.2022);
+          fetchDataFromAPI(16.0683, 108.2022);
         },
         { 
           enableHighAccuracy: false,
@@ -107,18 +109,18 @@ export const ExplorePage = () => {
     } else {
       setLocationError(true);
       setShowMockButtons(true);
-      fetchDataFromAPIAndDB(16.0683, 108.2022);
+      fetchDataFromAPI(16.0683, 108.2022);
     }
   };
 
   useEffect(() => {
     fetchPlaces(currentCoords || undefined);
-  }, [selectedCategory]);
+  }, [selectedCategory, exploreMode]);
 
-  const fetchDataFromAPIAndDB = (lat: number, lng: number) => {
+  const fetchDataFromAPI = (lat: number, lng: number) => {
     try {
       if (!(window as any).google || !(window as any).google.maps || !(window as any).google.maps.places) {
-        console.warn("Google Maps Places API not fully loaded, using DB only");
+        console.warn("Google Maps Places API not fully loaded, showing recommendations instead");
         useOnlyDB();
         return;
       }
@@ -127,9 +129,8 @@ export const ExplorePage = () => {
       const mapDiv = document.createElement('div');
       const service = new (window as any).google.maps.places.PlacesService(mapDiv);
 
-      // Map categories to Google Places types
       const typeMapping: Record<string, string[]> = {
-        '전체': ['restaurant', 'cafe', 'spa', 'store'],
+        '전체': ['restaurant', 'cafe', 'spa'],
         '로컬맛집': ['restaurant'],
         '관광맛집': ['restaurant'],
         '마사지': ['spa'],
@@ -141,36 +142,38 @@ export const ExplorePage = () => {
 
       const request = {
         location: pyrmont,
-        radius: '1500',
+        radius: '1000', // 1km radius as requested
         type: types[0]
       };
 
       service.nearbySearch(request, (results: any[], status: any) => {
         try {
           if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && results) {
-            const apiPlaces: PlaceData[] = results.map(result => ({
+            // Filter by rating >= 4.0
+            const filteredResults = results.filter(r => (r.rating || 0) >= 4.0);
+            
+            const apiPlaces: PlaceData[] = filteredResults.map(result => ({
               id: result.place_id,
               name: result.name,
               category: selectedCategory === '전체' ? (result.types.includes('restaurant') ? '식당' : '장소') : selectedCategory,
               rating: result.rating || 0,
-              distance: '주변',
-              time: '가까움',
+              distance: '1km 이내',
+              time: '도보 가능',
               cost: result.price_level ? '₩'.repeat(result.price_level) : '정보없음',
-              isLocal: result.rating > 4.2 && result.user_ratings_total < 100, // Heuristic for local
+              isLocal: result.rating > 4.3 && result.user_ratings_total < 150,
               isGooglePlace: true,
               summary: {
-                pros: `구글 실시간 데이터: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
+                pros: `구글 4.0+ 추천: 리뷰 ${result.user_ratings_total?.toLocaleString() || 0}개. ${result.vicinity}`,
                 cons: result.business_status !== 'OPERATIONAL' ? '현재 영업 중이 아닐 수 있음' : '현장 확인 필요'
               }
             }));
 
-            // Combine with DB as fallback/supplement
-            const dbPlaces = getDBPlaces();
-            setPlaces([...apiPlaces, ...dbPlaces]);
+            setPlaces(apiPlaces);
             setLoading(false);
           } else {
-            console.warn("Google Places API failed or no results:", status);
-            useOnlyDB();
+            console.warn("Google Places API failed or no high-rated results found:", status);
+            setPlaces([]);
+            setLoading(false);
           }
         } catch (innerError) {
           console.error("Inner API error:", innerError);
@@ -178,7 +181,7 @@ export const ExplorePage = () => {
         }
       });
     } catch (e) {
-      console.error("fetchDataFromAPIAndDB error:", e);
+      console.error("fetchDataFromAPI error:", e);
       useOnlyDB();
     }
   };
@@ -186,12 +189,12 @@ export const ExplorePage = () => {
   const getDBPlaces = (): PlaceData[] => {
     const dbPlaces: PlaceData[] = [];
     const mapRestaurantToPlaceData = (r: any, isLocal: boolean): PlaceData => ({
-      id: r.id, name: r.name_kr || r.name, category: isLocal ? '로컬맛집' : '관광맛집', rating: r.rating, distance: 'DB 추천', time: '-', cost: `${r.avg_cost_per_person?.toLocaleString() || 0}동~`, isLocal,
+      id: r.id, name: r.name_kr || r.name, category: isLocal ? '로컬맛집' : '관광맛집', rating: r.rating, distance: '검증됨', time: '-', cost: `${r.avg_cost_per_person?.toLocaleString() || 0}동~`, isLocal,
       summary: { pros: r.good_review, cons: r.bad_review }
     });
     
     const mapMassageToPlaceData = (m: any): PlaceData => ({
-      id: m.id, name: m.name_kr || m.name, category: '마사지', rating: m.rating, distance: 'DB 추천', time: '-', cost: `${m.services?.[0]?.price?.toLocaleString() || 0}동~`, isLocal: m.type === 'local',
+      id: m.id, name: m.name_kr || m.name, category: '마사지', rating: m.rating, distance: '검증됨', time: '-', cost: `${m.services?.[0]?.price?.toLocaleString() || 0}동~`, isLocal: m.type === 'local',
       summary: { pros: m.good_review, cons: m.bad_review }
     });
 
@@ -207,14 +210,14 @@ export const ExplorePage = () => {
     if (selectedCategory === '전체' || selectedCategory === '카페') {
       const allCafes = [...db.cafes.danang, ...db.cafes.hoian];
       allCafes.forEach(c => dbPlaces.push({
-        id: c.id, name: c.name_kr || c.name, category: '카페', rating: c.rating, distance: 'DB 추천', time: '-', cost: `${c.avg_cost?.toLocaleString() || 0}동~`, isLocal: c.type === 'local',
+        id: c.id, name: c.name_kr || c.name, category: '카페', rating: c.rating, distance: '검증됨', time: '-', cost: `${c.avg_cost?.toLocaleString() || 0}동~`, isLocal: c.type === 'local',
         summary: { pros: c.good_review, cons: c.bad_review }
       }));
     }
     if (selectedCategory === '전체' || selectedCategory === '마트·시장') {
       const allMarkets = [...db.markets_marts.danang, ...db.markets_marts.hoian];
       allMarkets.forEach(m => dbPlaces.push({
-        id: m.id, name: m.name_local || m.name, category: '마트·시장', rating: m.rating, distance: 'DB 추천', time: '-', cost: m.price_level, isLocal: m.type.includes('local'),
+        id: m.id, name: m.name_local || m.name, category: '마트·시장', rating: m.rating, distance: '검증됨', time: '-', cost: m.price_level, isLocal: m.type.includes('local'),
         summary: { pros: m.good_review, cons: m.bad_review }
       }));
     }
@@ -228,8 +231,39 @@ export const ExplorePage = () => {
 
   return (
     <div className="pb-10">
-      {/* Test Mock Locations */}
-      {showMockButtons && (
+      {/* Explore Mode Selector */}
+      <div className="px-4 mb-6">
+        <div className="bg-navy-sub/50 p-1 rounded-2xl border border-white/5 flex gap-1">
+          <button
+            onClick={() => setExploreMode('recommend')}
+            className={cn(
+              "flex-1 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2",
+              exploreMode === 'recommend' ? "bg-teal text-white shadow-lg" : "text-text-secondary hover:text-text-primary"
+            )}
+          >
+            <Star className={cn("w-3.5 h-3.5", exploreMode === 'recommend' ? "fill-white" : "")} />
+            앱 추천 리스트
+          </button>
+          <button
+            onClick={() => setExploreMode('google')}
+            className={cn(
+              "flex-1 py-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2",
+              exploreMode === 'google' ? "bg-blue-500 text-white shadow-lg" : "text-text-secondary hover:text-text-primary"
+            )}
+          >
+            <MapPin className="w-3.5 h-3.5" />
+            구글 실시간 (1km)
+          </button>
+        </div>
+        <p className="text-[10px] text-text-hint mt-2 px-1">
+          {exploreMode === 'recommend' 
+            ? "💡 다낭/호이안 전문가가 직접 엄선한 검증된 맛집 목록입니다." 
+            : "📍 현재 내 위치 반경 1km 이내, 구글 평점 4.0 이상 장소를 검색합니다."}
+        </p>
+      </div>
+
+      {/* Test Mock Locations (Only for Google Mode) */}
+      {exploreMode === 'google' && showMockButtons && (
         <div className="px-4 mb-4">
           <p className="text-[10px] text-text-hint mb-2 flex items-center gap-1">
             <Navigation className="w-2.5 h-2.5" /> 테스트용 가상 위치 (베트남 외 지역 접속 시 활성)
@@ -260,7 +294,7 @@ export const ExplorePage = () => {
         </div>
       )}
 
-      {locationError && (
+      {exploreMode === 'google' && locationError && (
         <div className="px-4 mb-4">
           <div className="bg-coral/10 border border-coral/20 rounded-xl p-3 flex items-start gap-2">
             <MapPin className="w-4 h-4 text-coral mt-0.5 shrink-0" />
@@ -291,8 +325,15 @@ export const ExplorePage = () => {
             <p className="text-xs">주변 장소를 실시간으로 탐색 중입니다...</p>
           </div>
         ) : places.length === 0 ? (
-          <div className="text-center py-10 text-text-hint text-sm">
-            해당 카테고리의 장소가 없습니다.
+          <div className="text-center py-20 flex flex-col items-center gap-4">
+            <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center">
+              <MapPin className="w-8 h-8 text-text-hint/30" />
+            </div>
+            <p className="text-sm text-text-hint">
+              {exploreMode === 'google' 
+                ? "반경 1km 내에 평점 4.0 이상의 장소가 없습니다." 
+                : "해당 카테고리의 장소가 없습니다."}
+            </p>
           </div>
         ) : (
           places.map((place) => (
@@ -354,7 +395,7 @@ export const ExplorePage = () => {
                 </a>
               </div>
 
-              {/* Gemini Summary */}
+              {/* Summary */}
               <div className="bg-navy-sub/50 rounded-xl p-3 text-[12px] leading-relaxed border border-white/5">
                 <div className="flex items-start gap-2 mb-2">
                   <MessageCircle className="w-3.5 h-3.5 text-mint mt-0.5 shrink-0" />
