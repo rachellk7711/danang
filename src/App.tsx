@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ThemeProvider } from './contexts/ThemeContext'
+import { LocationProvider } from './contexts/LocationContext'
 import { FixedHeader } from './components/FixedHeader'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ExplorePage } from './pages/Explore'
@@ -24,25 +25,27 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen flex justify-center bg-navy transition-colors">
-        <div className="w-full max-w-[375px] bg-navy relative shadow-2xl min-h-screen">
-          <FixedHeader activeTab={activeTab} onTabChange={setActiveTab} />
-          
-          <main className="pt-[140px] pb-10">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.2 }}
-              >
-                {renderContent()}
-              </motion.div>
-            </AnimatePresence>
-          </main>
+      <LocationProvider>
+        <div className="min-h-screen flex justify-center bg-navy transition-colors">
+          <div className="w-full max-w-[375px] bg-navy relative shadow-2xl min-h-screen">
+            <FixedHeader activeTab={activeTab} onTabChange={setActiveTab} />
+            
+            <main className="pt-[140px] pb-10">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {renderContent()}
+                </motion.div>
+              </AnimatePresence>
+            </main>
+          </div>
         </div>
-      </div>
+      </LocationProvider>
     </ThemeProvider>
   )
 }

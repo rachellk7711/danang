@@ -145,3 +145,20 @@ export interface DBContent {
     hoian: Market[];
   };
 }
+
+export interface UserPlace {
+  id?: string;
+  created_at?: string;
+  name: string;
+  name_kr?: string;
+  category: Category;
+  rating: number;
+  location: Location;
+  address: string;
+  good_review: string;
+  bad_review: string;
+  tips?: string;
+  avg_cost?: string;
+  google_place_id?: string;
+  user_id?: string;
+}

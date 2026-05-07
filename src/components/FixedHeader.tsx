@@ -5,6 +5,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { fetchWeather } from '../services/weatherService';
 import type { WeatherData } from '../services/weatherService';
+import { useLocation } from '../contexts/LocationContext';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,13 +39,17 @@ const Tab: React.FC<TabProps> = ({ label, icon, active, onClick }) => (
 
 export const FixedHeader: React.FC<{ activeTab: string, onTabChange: (id: string) => void }> = ({ activeTab, onTabChange }) => {
   const { theme, toggleTheme } = useTheme();
+  const { coords, setLocationName } = useLocation();
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
   useEffect(() => {
     const getWeatherData = async () => {
       try {
-        const data = await fetchWeather();
+        const data = await fetchWeather(coords?.lat, coords?.lng);
         setWeather(data);
+        if (data.locationName) {
+          setLocationName(data.locationName);
+        }
       } catch (err) {
         console.error('Failed to fetch weather:', err);
       }
@@ -53,7 +58,7 @@ export const FixedHeader: React.FC<{ activeTab: string, onTabChange: (id: string
     getWeatherData();
     const interval = setInterval(getWeatherData, 600000); // 10 minutes
     return () => clearInterval(interval);
-  }, []);
+  }, [coords]);
 
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
@@ -74,6 +79,11 @@ export const FixedHeader: React.FC<{ activeTab: string, onTabChange: (id: string
               <span className="text-text-primary">{formattedDate}</span>
               <div className="w-[1px] h-2.5 bg-white/10" />
               <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
+                  <MapPin className="w-3 h-3 text-mango" />
+                  <span className="text-text-primary font-bold">{weather ? weather.locationName : '위치 파악 중...'}</span>
+                </div>
+                <div className="w-[1px] h-2 bg-white/10 mx-1" />
                 <div className="flex items-center gap-1">
                   <Thermometer className="w-3 h-3 text-mango" />
                   <span>{weather ? `${weather.temp}° / ${weather.tempMax}°` : '--° / --°'}</span>
