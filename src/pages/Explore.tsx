@@ -17,8 +17,8 @@ const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () =>
   <button
     onClick={onClick}
     className={cn(
-      "px-3 py-1.5 rounded-full text-[11px] font-bold whitespace-nowrap transition-all",
-      active ? "bg-teal text-white shadow-md" : "bg-gray-100 text-gray-500 border border-gray-200"
+      "px-3 py-1 rounded-full text-[11px] font-bold whitespace-nowrap transition-all",
+      active ? "bg-teal text-white shadow-sm" : "bg-gray-100 text-gray-500 border border-gray-200"
     )}
   >
     {label}
@@ -205,42 +205,32 @@ export const ExplorePage = () => {
 
   return (
     <div className="pb-24 bg-white min-h-screen">
-      <div className="p-3">
-        <div className="flex bg-gray-100 p-1 rounded-xl border border-gray-200 shadow-sm">
+      <div className="p-2">
+        <div className="flex bg-gray-100 p-0.5 rounded-lg border border-gray-200">
           <button
             onClick={() => setExploreMode('recommend')}
             className={cn(
-              "flex-1 py-2 text-[12px] font-bold rounded-lg transition-all flex items-center justify-center gap-2",
+              "flex-1 py-1.5 text-[11px] font-bold rounded-md transition-all flex items-center justify-center gap-1.5",
               exploreMode === 'recommend' ? "bg-teal text-white shadow-sm" : "text-gray-400"
             )}
           >
-            <Star className={cn("w-3.5 h-3.5", exploreMode === 'recommend' ? "fill-white" : "")} />
+            <Star className={cn("w-3 h-3", exploreMode === 'recommend' ? "fill-white" : "")} />
             추천 리스트
           </button>
           <button
             onClick={() => setExploreMode('google')}
             className={cn(
-              "flex-1 py-2 text-[12px] font-bold rounded-lg transition-all flex items-center justify-center gap-2",
+              "flex-1 py-1.5 text-[11px] font-bold rounded-md transition-all flex items-center justify-center gap-1.5",
               exploreMode === 'google' ? "bg-coral text-white shadow-sm" : "text-gray-400"
             )}
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            <RefreshCw className="w-3 h-3" />
             구글 실시간
           </button>
         </div>
       </div>
 
-      <div className="px-3 mb-3">
-        <div className="bg-gray-50 border border-gray-100 rounded-2xl p-3">
-          <p className="text-[10px] text-gray-500 leading-tight text-center">
-            {exploreMode === 'recommend' 
-              ? '다낭 전문가 엄선 맛집과 내 리스트를 거리순으로 확인하세요.'
-              : '반경 1.5km 이내 구글 평점 4.0 이상 장소를 탐색합니다.'}
-          </p>
-        </div>
-      </div>
-
-      <div className="px-3 mb-3 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+      <div className="px-2 mb-2 flex gap-1 overflow-x-auto pb-0.5 no-scrollbar">
         {MOCK_LOCATIONS.map(loc => (
           <button
             key={loc.name}
@@ -251,7 +241,7 @@ export const ExplorePage = () => {
               refreshData(c);
             }}
             className={cn(
-              "px-2.5 py-1.5 rounded-lg text-[10px] font-bold shrink-0 border transition-all",
+              "px-2 py-1 rounded-md text-[10px] font-bold shrink-0 border transition-all",
               currentCoords?.lat === loc.lat ? "bg-coral text-white border-coral shadow-sm" : "bg-white border-gray-200 text-gray-500"
             )}
           >
@@ -260,8 +250,8 @@ export const ExplorePage = () => {
         ))}
       </div>
 
-      <div className="flex items-center gap-2 px-3 pb-3 overflow-hidden">
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar flex-1">
+      <div className="flex items-center gap-1 px-2 pb-2 overflow-hidden">
+        <div className="flex gap-1 overflow-x-auto no-scrollbar flex-1">
           {(['전체', '로컬맛집', '관광맛집', '마사지', '마트·시장', '카페'] as Category[]).map(cat => (
             <CategoryButton
               key={cat}
@@ -271,52 +261,52 @@ export const ExplorePage = () => {
             />
           ))}
         </div>
-        <button onClick={() => setIsAddModalOpen(true)} className="w-8 h-8 bg-teal text-white rounded-full flex items-center justify-center shadow active:scale-95 transition-transform"><Plus className="w-4 h-4" /></button>
+        <button onClick={() => setIsAddModalOpen(true)} className="w-7 h-7 bg-teal text-white rounded-full flex items-center justify-center shadow active:scale-95 transition-transform"><Plus className="w-3.5 h-3.5" /></button>
       </div>
 
-      <div className="px-3 space-y-3">
+      <div className="px-2 space-y-2">
         {loading ? (
-          <div className="py-20 text-center"><Loader2 className="w-6 h-6 animate-spin text-teal mx-auto mb-2" /><p className="text-[11px] text-gray-400">로드 중...</p></div>
+          <div className="py-20 text-center"><Loader2 className="w-5 h-5 animate-spin text-teal mx-auto mb-1" /><p className="text-[10px] text-gray-400">로드 중...</p></div>
         ) : places.length === 0 ? (
-          <div className="py-20 text-center text-gray-400 text-[11px]">정보가 없습니다.</div>
+          <div className="py-20 text-center text-gray-400 text-[10px]">정보 없음</div>
         ) : (
           places.map((place) => (
-            <div key={place.id} className="bg-white border-b border-gray-100 p-3 relative hover:bg-gray-50/50 transition-colors">
-              <div className="absolute top-3 right-3">
+            <div key={place.id} className="bg-white border-b border-gray-100 p-2.5 relative hover:bg-gray-50/50 transition-colors">
+              <div className="absolute top-2.5 right-2">
                 <a 
                   href={place.location ? `https://www.google.com/maps/search/?api=1&query=${place.location.lat},${place.location.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-8 h-8 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center border border-blue-100 hover:bg-blue-100 transition-colors"
+                  className="w-7 h-7 bg-blue-50 text-blue-500 rounded-md flex items-center justify-center border border-blue-100"
                 >
-                  <MapPin className="w-4 h-4" />
+                  <MapPin className="w-3.5 h-3.5" />
                 </a>
               </div>
               
-              <div className="pr-10">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className="text-[9px] font-bold text-teal bg-teal/5 px-1.5 py-0.5 rounded uppercase tracking-tighter">{place.category}</span>
-                  {place.isUserPlace && <span className="text-[9px] font-bold text-coral bg-coral/5 px-1.5 py-0.5 rounded tracking-tighter">MY</span>}
-                  <span className="text-[10px] font-bold text-gray-400 ml-auto">{place.distance}</span>
+              <div className="pr-8">
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="text-[8px] font-black text-teal bg-teal/5 px-1 py-0.5 rounded tracking-tighter">{place.category}</span>
+                  {place.isUserPlace && <span className="text-[8px] font-black text-coral bg-coral/5 px-1 py-0.5 rounded tracking-tighter">MY</span>}
+                  <span className="text-[9px] font-bold text-teal ml-auto">{place.distance}</span>
                 </div>
                 
-                <h4 className="text-[15px] font-black text-gray-900 leading-tight mb-0.5">{place.name}</h4>
+                <h4 className="text-[14px] font-black text-gray-900 leading-tight mb-0.5">{place.name}</h4>
                 
                 <div className="flex items-center gap-1">
-                  <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                  <span className="text-[11px] font-bold text-gray-700">{place.rating}</span>
-                  <span className="text-[10px] text-gray-400 ml-2">{place.cost}</span>
+                  <Star className="w-2.5 h-2.5 text-yellow-400 fill-yellow-400" />
+                  <span className="text-[10px] font-bold text-gray-700">{place.rating}</span>
+                  <span className="text-[9px] text-gray-400 ml-1.5">{place.cost}</span>
                 </div>
               </div>
 
-              <div className="mt-2.5 space-y-1.5">
-                <div className="flex gap-1.5 items-start">
-                  <span className="text-[10px] mt-0.5 shrink-0">👍</span>
-                  <p className="text-[11px] text-gray-600 leading-tight font-medium">{place.summary.pros}</p>
+              <div className="mt-2 space-y-1">
+                <div className="flex gap-1 items-start">
+                  <span className="text-[10px] shrink-0">👍</span>
+                  <p className="text-[11px] text-gray-700 leading-snug font-medium">{place.summary.pros}</p>
                 </div>
-                <div className="flex gap-1.5 items-start">
-                  <span className="text-[10px] mt-0.5 shrink-0">⚠️</span>
-                  <p className="text-[11px] text-gray-500 leading-tight font-medium">{place.summary.cons}</p>
+                <div className="flex gap-1 items-start">
+                  <span className="text-[10px] shrink-0">⚠️</span>
+                  <p className="text-[11px] text-gray-500 leading-snug font-medium">{place.summary.cons}</p>
                 </div>
               </div>
             </div>
