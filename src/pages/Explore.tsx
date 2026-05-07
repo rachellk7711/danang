@@ -13,6 +13,23 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Manual Coordinate Map for items missing location in JSON
+const MANUAL_COORDS: Record<string, {lat: number, lng: number}> = {
+  "han_market": { lat: 16.0683, lng: 108.2234 },
+  "lotte_mart": { lat: 16.0371, lng: 108.2268 },
+  "dn_009": { lat: 16.0683, lng: 108.2234 }, // 한시장
+  "dn_010": { lat: 16.0371, lng: 108.2268 }, // 롯데마트
+  "lr_001": { lat: 16.0712, lng: 108.2198 }, // 분보후에 46
+  "lr_002": { lat: 16.0654, lng: 108.2212 }, // 포 29
+  "lr_003": { lat: 16.0645, lng: 108.2256 }, // 껌가 아하이
+  "lr_004": { lat: 16.0744, lng: 108.2166 }, // 미꽝 24/7
+  "lr_005": { lat: 16.0588, lng: 108.2215 }, // 버거브로스
+  "lr_006": { lat: 16.0667, lng: 108.2241 }, // 반미 해피브레드
+  "hi_001": { lat: 15.8771, lng: 108.3262 }, // 호이안 올드타운
+  "hi_006": { lat: 15.9126, lng: 108.3448 }, // 안방비치
+  "hi_010": { lat: 15.8774, lng: 108.3263 }  // 내원교
+};
+
 const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () => void }> = ({ label, active, onClick }) => {
   const getIcon = (l: string) => {
     if (l === '로컬맛집') return '🇻🇳 ';
@@ -22,7 +39,6 @@ const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () =>
     if (l === '카페') return '☕ ';
     return '';
   };
-
   return (
     <button
       onClick={onClick}
@@ -77,9 +93,13 @@ export const ExplorePage = () => {
       const database = db as any;
       const base = coords || activeBaseCoords;
 
-      const mapToPlaceData = (item: any, catName: string): PlaceData => {
-        const itemLat = item.location?.lat || (item.city === 'hoian' ? 15.8801 : 16.0544);
-        const itemLng = item.location?.lng || (item.city === 'hoian' ? 108.3380 : 108.2022);
+      const mapToPlaceData = (item: any, catName: string, idPrefix: string = ''): PlaceData => {
+        const itemId = item.id || idPrefix;
+        const manual = MANUAL_COORDS[itemId];
+        
+        const itemLat = item.location?.lat || manual?.lat || (item.city === 'hoian' ? 15.8801 : 16.0544);
+        const itemLng = item.location?.lng || manual?.lng || (item.city === 'hoian' ? 108.3380 : 108.2022);
+        
         const d = calculateDistance(base.lat, base.lng, itemLat, itemLng);
         const distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
 
@@ -90,7 +110,7 @@ export const ExplorePage = () => {
         else if (item.price_level) costStr = String(item.price_level);
 
         return {
-          id: String(item.id || Math.random()),
+          id: String(itemId || Math.random()),
           name: String(item.name_kr || item.name || '이름 없음'),
           category: catName,
           rating: Number(item.rating || item.local_rating || 0),
@@ -107,7 +127,7 @@ export const ExplorePage = () => {
         };
       };
 
-      // Restaurants (Local/Tourist/Cafe)
+      // 1. Restaurants
       if (database.restaurants) {
         if (selectedCategory === '전체' || selectedCategory === '로컬맛집') {
           database.restaurants.local?.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
@@ -115,7 +135,6 @@ export const ExplorePage = () => {
         if (selectedCategory === '전체' || selectedCategory === '관광맛집') {
           database.restaurants.tourist?.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '관광맛집')));
         }
-        // Cafes inside restaurants
         if (selectedCategory === '전체' || selectedCategory === '카페') {
           [...(database.restaurants.local || []), ...(database.restaurants.tourist || [])].forEach((r: any) => {
             const cat = String(r.category || '');
@@ -126,7 +145,7 @@ export const ExplorePage = () => {
         }
       }
 
-      // Attractions (Market/Mart/Cafe)
+      // 2. Attractions
       if (database.attractions) {
         const allAttr = [...(database.attractions.danang || []), ...(database.attractions.hoian || [])];
         allAttr.forEach((a: any) => {
@@ -140,19 +159,19 @@ export const ExplorePage = () => {
         });
       }
 
-      // Shopping (Market/Mart)
+      // 3. Shopping (Explicit items like Han Market, Lotte Mart)
       if (database.shopping && (selectedCategory === '전체' || selectedCategory === '마트·시장')) {
-        Object.values(database.shopping).forEach((s: any) => {
-           dbPlaces.push(mapToPlaceData(s, '마트·시장'));
+        Object.entries(database.shopping).forEach(([key, s]: [string, any]) => {
+           dbPlaces.push(mapToPlaceData(s, '마트·시장', key));
         });
       }
 
-      // Massage
+      // 4. Massage
       if (database.massage_shops && (selectedCategory === '전체' || selectedCategory === '마사지')) {
         database.massage_shops.forEach((m: any) => dbPlaces.push(mapToPlaceData(m, '마사지')));
       }
 
-      // Supabase
+      // 5. Supabase
       try {
         const { data: userPlaces } = await supabase.from('user_places').select('*');
         if (userPlaces) {
@@ -307,7 +326,7 @@ export const ExplorePage = () => {
 
       <div className="px-2 space-y-2">
         {loading ? (
-          <div className="py-20 text-center"><Loader2 className="w-5 h-5 animate-spin text-teal mx-auto mb-1" /><p className="text-[10px] text-gray-400">로드 중...</p></div>
+          <div className="py-20 text-center"><Loader2 className="w-5 h-5 animate-spin text-teal mx-auto mb-1" /><p className="text-[10px] text-gray-400">거리 계산 중...</p></div>
         ) : places.length === 0 ? (
           <div className="py-20 text-center text-gray-400 text-[10px]">정보 없음</div>
         ) : (
@@ -328,7 +347,7 @@ export const ExplorePage = () => {
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <span className="text-[8px] font-black text-teal bg-teal/5 px-1 py-0.5 rounded tracking-tighter">{place.category}</span>
                   {place.isUserPlace && <span className="text-[8px] font-black text-coral bg-coral/5 px-1 py-0.5 rounded tracking-tighter">MY</span>}
-                  <span className="text-[9px] font-bold text-teal ml-auto">{place.distance}</span>
+                  <span className="text-[9px] font-black text-teal ml-auto">{place.distance}</span>
                 </div>
                 
                 <h4 className="text-[14px] font-black text-gray-900 leading-tight mb-0.5">{place.name}</h4>
