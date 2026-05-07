@@ -28,8 +28,8 @@ const CategoryButton: React.FC<{ label: string, active?: boolean, onClick: () =>
 const MOCK_LOCATIONS = [
   { name: '📍 한시장', lat: 16.0683, lng: 108.2234 },
   { name: '🌊 미케비치', lat: 16.0471, lng: 108.2479 },
-  { name: '⛩️ 호이안', lat: 15.8801, lng: 108.3380 },
-  { name: '⛰️ 선짜', lat: 16.1215, lng: 108.2778 }
+  { name: '🏮 올드타운', lat: 15.8771, lng: 108.3262 },
+  { name: '🏖️ 안방비치', lat: 15.9126, lng: 108.3448 }
 ];
 
 const DANANG_CENTER = { lat: 16.0683, lng: 108.2234 };
@@ -42,15 +42,7 @@ export const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Use a stable reference point for distance sorting if current location is too far from Da Nang
-  const activeBaseCoords = useMemo(() => {
-    if (!currentCoords) return DANANG_CENTER;
-    const distFromCenter = calculateDistance(currentCoords.lat, currentCoords.lng, DANANG_CENTER.lat, DANANG_CENTER.lng);
-    // If more than 50km away, assume user is not in Da Nang and use center for sorting
-    return distFromCenter > 50 ? DANANG_CENTER : currentCoords;
-  }, [currentCoords]);
-
-  function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -59,7 +51,13 @@ export const ExplorePage = () => {
       Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
-  }
+  };
+
+  const activeBaseCoords = useMemo(() => {
+    if (!currentCoords) return DANANG_CENTER;
+    const distFromCenter = calculateDistance(currentCoords.lat, currentCoords.lng, DANANG_CENTER.lat, DANANG_CENTER.lng);
+    return distFromCenter > 50 ? DANANG_CENTER : currentCoords;
+  }, [currentCoords]);
 
   const loadRecommendPlaces = useCallback(async (coords: {lat: number, lng: number} | null) => {
     setLoading(true);
@@ -69,16 +67,10 @@ export const ExplorePage = () => {
       const base = coords || activeBaseCoords;
 
       const mapToPlaceData = (item: any, catName: string): PlaceData => {
-        let distance = '정보없음';
-        let distanceVal = 999;
-        
-        // Use specific item location or city default
         const itemLat = item.location?.lat || (item.city === 'hoian' ? 15.8801 : 16.0544);
         const itemLng = item.location?.lng || (item.city === 'hoian' ? 108.3380 : 108.2022);
-
         const d = calculateDistance(base.lat, base.lng, itemLat, itemLng);
-        distanceVal = d;
-        distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
+        const distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
 
         let costStr = '정보없음';
         if (item.avg_cost_per_person) costStr = `${Number(item.avg_cost_per_person).toLocaleString()}동~`;
@@ -92,7 +84,7 @@ export const ExplorePage = () => {
           category: catName,
           rating: Number(item.rating || item.local_rating || 0),
           distance,
-          distanceVal,
+          distanceVal: d,
           time: '-',
           cost: costStr,
           isLocal: !!(String(item.type || '').includes('local')),
@@ -104,7 +96,6 @@ export const ExplorePage = () => {
         };
       };
 
-      // Safe JSON Mapping
       if (database.restaurants) {
         if ((selectedCategory === '전체' || selectedCategory === '로컬맛집') && database.restaurants.local) {
           database.restaurants.local.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
@@ -215,7 +206,7 @@ export const ExplorePage = () => {
   return (
     <div className="pb-24 bg-white min-h-screen">
       <div className="p-4">
-        <div className="flex bg-gray-100 p-1 rounded-2xl border border-gray-200 shadow-sm">
+        <div className="flex bg-gray-100 p-1 rounded-2xl border border-gray-200">
           <button
             onClick={() => setExploreMode('recommend')}
             className={cn(
@@ -240,8 +231,8 @@ export const ExplorePage = () => {
       </div>
 
       <div className="px-4 mb-4">
-        <div className="bg-teal/5 border border-teal/10 rounded-3xl p-4 relative overflow-hidden">
-          <p className="text-[11px] text-teal/70 leading-relaxed text-center font-medium">
+        <div className="bg-gray-50 border border-gray-100 rounded-3xl p-4 relative overflow-hidden">
+          <p className="text-[11px] text-gray-500 leading-relaxed text-center">
             {exploreMode === 'recommend' 
               ? '다낭 전문가의 엄선 맛집과 내 위시리스트를 거리순으로 확인하세요.'
               : '현재 위치 반경 1.5km 이내, 구글 평점 4.0 이상 장소를 탐색합니다.'}
@@ -285,7 +276,7 @@ export const ExplorePage = () => {
 
       <div className="px-4 space-y-4">
         {loading ? (
-          <div className="py-20 text-center"><Loader2 className="w-8 h-8 animate-spin text-teal mx-auto mb-2" /><p className="text-sm text-gray-400">최적의 장소를 찾는 중...</p></div>
+          <div className="py-20 text-center"><Loader2 className="w-8 h-8 animate-spin text-teal mx-auto mb-2" /><p className="text-sm text-gray-400">데이터 로드 중...</p></div>
         ) : places.length === 0 ? (
           <div className="py-20 text-center text-gray-400 text-sm">표시할 장소가 없습니다.</div>
         ) : (
