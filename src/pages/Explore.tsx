@@ -40,7 +40,6 @@ export const ExplorePage = () => {
   const [loading, setLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Distance helper
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
     const R = 6371;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -52,105 +51,102 @@ export const ExplorePage = () => {
     return R * c;
   };
 
-  // 1. RECOMMEND MODE: Fetch from Local JSON + Supabase
   const loadRecommendPlaces = useCallback(async (coords: {lat: number, lng: number} | null) => {
     setLoading(true);
-    const dbPlaces: PlaceData[] = [];
-    const database = db as any;
+    try {
+      const dbPlaces: PlaceData[] = [];
+      const database = db as any;
 
-    const mapToPlaceData = (item: any, catName: string): PlaceData => {
-      let distance = '정보없음';
-      let distanceVal = 999;
+      const mapToPlaceData = (item: any, catName: string): PlaceData => {
+        let distance = '정보없음';
+        let distanceVal = 999;
+        
+        const itemLat = item.location?.lat || (item.city === 'danang' ? 16.0544 : item.city === 'hoian' ? 15.8801 : null);
+        const itemLng = item.location?.lng || (item.city === 'danang' ? 108.2022 : item.city === 'hoian' ? 108.3380 : null);
+
+        if (coords?.lat && coords?.lng && itemLat && itemLng) {
+          const d = calculateDistance(coords.lat, coords.lng, itemLat, itemLng);
+          distanceVal = d;
+          distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
+        }
+
+        let costStr = '정보없음';
+        if (item.avg_cost_per_person) costStr = `${Number(item.avg_cost_per_person).toLocaleString()}동~`;
+        else if (item.avg_cost) costStr = `${Number(item.avg_cost).toLocaleString()}동~`;
+        else if (item.services?.[0]?.price) costStr = `${Number(item.services[0].price).toLocaleString()}동~`;
+        else if (item.price_level) costStr = String(item.price_level);
+
+        return {
+          id: String(item.id || Math.random()),
+          name: String(item.name_kr || item.name || '이름 없음'),
+          category: catName,
+          rating: Number(item.rating || item.local_rating || 0),
+          distance,
+          distanceVal,
+          time: '-',
+          cost: costStr,
+          isLocal: !!(String(item.type || '').includes('local')),
+          location: { lat: itemLat, lng: itemLng },
+          summary: {
+            pros: String(item.good_review || item.description || ''),
+            cons: String(item.bad_review || '추천 장소')
+          }
+        };
+      };
+
+      // Safe JSON Mapping
+      if (database.restaurants) {
+        if ((selectedCategory === '전체' || selectedCategory === '로컬맛집') && database.restaurants.local) {
+          database.restaurants.local.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
+        }
+        if ((selectedCategory === '전체' || selectedCategory === '관광맛집') && database.restaurants.tourist) {
+          database.restaurants.tourist.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '관광맛집')));
+        }
+      }
       
-      const itemLat = item.location?.lat || (item.city === 'danang' ? 16.0544 : item.city === 'hoian' ? 15.8801 : null);
-      const itemLng = item.location?.lng || (item.city === 'danang' ? 108.2022 : item.city === 'hoian' ? 108.3380 : null);
-
-      if (coords?.lat && coords?.lng && itemLat && itemLng) {
-        const d = calculateDistance(coords.lat, coords.lng, itemLat, itemLng);
-        distanceVal = d;
-        distance = d < 1 ? `${Math.round(d * 1000)}m` : `${d.toFixed(1)}km`;
+      if (database.massage_shops && (selectedCategory === '전체' || selectedCategory === '마사지')) {
+        database.massage_shops.forEach((m: any) => dbPlaces.push(mapToPlaceData(m, '마사지')));
       }
 
-      let costStr = '정보없음';
-      if (item.avg_cost_per_person) costStr = `${Number(item.avg_cost_per_person).toLocaleString()}동~`;
-      else if (item.avg_cost) costStr = `${Number(item.avg_cost).toLocaleString()}동~`;
-      else if (item.services?.[0]?.price) costStr = `${Number(item.services[0].price).toLocaleString()}동~`;
-      else if (item.price_level) costStr = String(item.price_level);
+      // Supabase Load
+      try {
+        const { data: userPlaces } = await supabase.from('user_places').select('*');
+        if (userPlaces) {
+          const mappedUserPlaces = userPlaces.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+            rating: p.rating,
+            distance: coords ? `${calculateDistance(coords.lat, coords.lng, p.location.lat, p.location.lng).toFixed(1)}km` : '-',
+            distanceVal: coords ? calculateDistance(coords.lat, coords.lng, p.location.lat, p.location.lng) : 999,
+            time: '내 장소',
+            cost: p.avg_cost || '-',
+            isLocal: true,
+            isUserPlace: true,
+            location: p.location,
+            summary: { pros: p.good_review, cons: p.bad_review }
+          }));
 
-      return {
-        id: String(item.id || Math.random()),
-        name: String(item.name_kr || item.name || '이름 없음'),
-        category: catName,
-        rating: Number(item.rating || item.local_rating || 0),
-        distance,
-        distanceVal,
-        time: '-',
-        cost: costStr,
-        isLocal: !!(String(item.type || '').includes('local')),
-        location: { lat: itemLat, lng: itemLng },
-        summary: {
-          pros: String(item.good_review || item.description || ''),
-          cons: String(item.bad_review || '추천 장소')
+          const filteredUserPlaces = selectedCategory === '전체' 
+            ? mappedUserPlaces 
+            : mappedUserPlaces.filter((p: any) => p.category === selectedCategory);
+          
+          const merged = [...dbPlaces, ...filteredUserPlaces].sort((a, b) => (a.distanceVal || 999) - (b.distanceVal || 999));
+          setPlaces(merged);
+        } else {
+          setPlaces(dbPlaces.sort((a, b) => (a.distanceVal || 999) - (b.distanceVal || 999)));
         }
-      };
-    };
-
-    // Load from JSON
-    if (selectedCategory === '전체' || selectedCategory === '로컬맛집') {
-      database.restaurants.local.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '로컬맛집')));
-    }
-    if (selectedCategory === '전체' || selectedCategory === '관광맛집') {
-      database.restaurants.tourist.forEach((r: any) => dbPlaces.push(mapToPlaceData(r, '관광맛집')));
-    }
-    if (selectedCategory === '전체' || selectedCategory === '마사지') {
-      database.massage_shops.forEach((m: any) => dbPlaces.push(mapToPlaceData(m, '마사지')));
-    }
-    if (selectedCategory === '전체' || selectedCategory === '카페') {
-      const allCafes = [...database.cafes.danang, ...database.cafes.hoian];
-      allCafes.forEach((c: any) => dbPlaces.push(mapToPlaceData(c, '카페')));
-    }
-    if (selectedCategory === '전체' || selectedCategory === '마트·시장') {
-      const allMarkets = [...database.markets_marts.danang, ...database.markets_marts.hoian];
-      allMarkets.forEach((m: any) => dbPlaces.push(mapToPlaceData(m, '마트·시장')));
-    }
-
-    try {
-      // Load from Supabase (User Saved Places)
-      const { data: userPlaces } = await supabase.from('user_places').select('*');
-      if (userPlaces) {
-        const mappedUserPlaces = userPlaces.map((p: any) => ({
-          id: p.id,
-          name: p.name,
-          category: p.category,
-          rating: p.rating,
-          distance: coords ? `${calculateDistance(coords.lat, coords.lng, p.location.lat, p.location.lng).toFixed(1)}km` : '-',
-          distanceVal: coords ? calculateDistance(coords.lat, coords.lng, p.location.lat, p.location.lng) : 999,
-          time: '내 장소',
-          cost: p.avg_cost || '-',
-          isLocal: true,
-          isUserPlace: true,
-          location: p.location,
-          summary: { pros: p.good_review, cons: p.bad_review }
-        }));
-
-        const filteredUserPlaces = selectedCategory === '전체' 
-          ? mappedUserPlaces 
-          : mappedUserPlaces.filter((p: any) => p.category === selectedCategory);
-        
-        const merged = [...dbPlaces, ...filteredUserPlaces].sort((a, b) => (a.distanceVal || 999) - (b.distanceVal || 999));
-        setPlaces(merged);
-      } else {
+      } catch (supabaseErr) {
+        console.error("Supabase error, using only DB:", supabaseErr);
         setPlaces(dbPlaces.sort((a, b) => (a.distanceVal || 999) - (b.distanceVal || 999)));
       }
     } catch (err) {
-      console.error("Data Load Error:", err);
-      setPlaces(dbPlaces.sort((a, b) => (a.distanceVal || 999) - (b.distanceVal || 999)));
+      console.error("Critical Load Error:", err);
     } finally {
       setLoading(false);
     }
   }, [selectedCategory]);
 
-  // 2. GOOGLE MODE: Real-time Search
   const searchGooglePlaces = useCallback((lat: number, lng: number) => {
     setLoading(true);
     try {
@@ -182,7 +178,6 @@ export const ExplorePage = () => {
         language: 'ko'
       }, (results: google.maps.places.PlaceResult[] | null, status: any) => {
         try { mapDiv.remove(); } catch (e) {}
-
         if (status === google.maps.places.PlacesServiceStatus.OK && results) {
           const apiPlaces: PlaceData[] = results
             .filter(r => (r.rating || 0) >= 4.0)
@@ -213,18 +208,15 @@ export const ExplorePage = () => {
     }
   }, [selectedCategory, loadRecommendPlaces]);
 
-  // Main entry point for fetching data
   const refreshData = useCallback((forcedCoords?: {lat: number, lng: number}) => {
     const activeCoords = forcedCoords || currentCoords;
-    
     if (exploreMode === 'recommend') {
       loadRecommendPlaces(activeCoords);
     } else {
       if (activeCoords) {
         searchGooglePlaces(activeCoords.lat, activeCoords.lng);
       } else {
-        // Handle no location for Google mode
-        searchGooglePlaces(16.0683, 108.2234); // Han Market default
+        searchGooglePlaces(16.0683, 108.2234);
       }
     }
   }, [exploreMode, currentCoords, loadRecommendPlaces, searchGooglePlaces]);
@@ -276,7 +268,6 @@ export const ExplorePage = () => {
         </div>
       </div>
 
-      {/* Region Selector (Mock Locations) */}
       <div className="px-4 mb-4">
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
           {MOCK_LOCATIONS.map(loc => (
@@ -309,7 +300,6 @@ export const ExplorePage = () => {
         </div>
       </div>
 
-      {/* Categories */}
       <div className="flex items-center gap-2 px-4 pb-4 overflow-hidden relative z-20">
         <div className="flex gap-2 overflow-x-auto no-scrollbar flex-1">
           {(['전체', '로컬맛집', '관광맛집', '마사지', '마트·시장', '카페'] as Category[]).map(cat => (
@@ -331,19 +321,16 @@ export const ExplorePage = () => {
         )}
       </div>
 
-      {/* List Area */}
       <div className="px-4 space-y-4">
         {loading ? (
           <div className="py-20 flex flex-col items-center justify-center gap-3 text-text-hint">
             <Loader2 className="w-8 h-8 animate-spin text-teal" />
-            <p className="text-xs">
-              {exploreMode === 'google' ? '구글 실시간 정보를 가져오는 중...' : '추천 리스트를 불러오는 중...'}
-            </p>
+            <p className="text-xs">데이터를 불러오는 중입니다...</p>
           </div>
         ) : places.length === 0 ? (
           <div className="text-center py-20 flex flex-col items-center gap-4">
              <MapPin className="w-12 h-12 text-text-hint/20" />
-             <p className="text-sm text-text-hint">검색된 장소가 없습니다.</p>
+             <p className="text-sm text-text-hint">장소가 없습니다. 다른 카테고리를 선택해 보세요.</p>
           </div>
         ) : (
           places.map((place) => (
@@ -366,7 +353,6 @@ export const ExplorePage = () => {
                     </div>
                   </div>
                 </div>
-
                 <div className="flex flex-col items-end shrink-0">
                    <div className="flex items-center gap-1 text-teal mb-1">
                      <MapPin className="w-3 h-3" />
@@ -374,7 +360,6 @@ export const ExplorePage = () => {
                    </div>
                 </div>
               </div>
-
               <div className="grid grid-cols-2 gap-2 mb-4">
                 <div className="bg-navy p-2.5 rounded-2xl border border-white/5">
                    <p className="text-[9px] text-text-hint font-bold uppercase mb-1">👍 포인트</p>
@@ -385,7 +370,6 @@ export const ExplorePage = () => {
                    <p className="text-[10px] text-text-secondary leading-tight line-clamp-2">{place.summary.cons}</p>
                 </div>
               </div>
-
               <div className="flex items-center justify-between pt-4 border-t border-white/5">
                 <div className="bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
                   <span className="text-[10px] font-black text-white">{place.cost}</span>
@@ -407,7 +391,6 @@ export const ExplorePage = () => {
           ))
         )}
       </div>
-
       <AddPlaceModal 
         isOpen={isAddModalOpen} 
         onClose={() => setIsAddModalOpen(false)} 
