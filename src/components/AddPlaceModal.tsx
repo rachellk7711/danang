@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+/// <reference types="@types/google.maps" />
+import React, { useState, useEffect, useRef, memo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { X, Search, Star, MapPin, Loader2, Save, Plus, AlertCircle, Map as MapIcon, Info } from 'lucide-react';
+import { X, Search, Star, MapPin, Loader2, Save, AlertCircle, Map as MapIcon, Info } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '../services/supabaseClient';
-import type { UserPlace, Category } from '../types';
+import type { Category } from '../types';
 
 interface AddPlaceModalProps {
   isOpen: boolean;
@@ -33,13 +34,14 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
   const mapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (isOpen && window.google) {
+    const google = (window as any).google;
+    if (isOpen && google) {
       try {
         if (!autocompleteService.current) {
-          autocompleteService.current = new window.google.maps.places.AutocompleteService();
+          autocompleteService.current = new google.maps.places.AutocompleteService();
         }
         if (!placesService.current && mapRef.current) {
-          placesService.current = new window.google.maps.places.PlacesService(mapRef.current);
+          placesService.current = new google.maps.places.PlacesService(mapRef.current);
         }
       } catch (err) {
         console.error("Google Maps Service Init Error:", err);
@@ -57,13 +59,12 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
           autocompleteService.current.getPlacePredictions(
             { 
               input: searchQuery,
-              // More compatible biasing method
-              location: new google.maps.LatLng(DANANG_CENTER.lat, DANANG_CENTER.lng),
-              radius: 15000, // 15km
+              locationBias: { radius: 15000, center: DANANG_CENTER },
               componentRestrictions: { country: 'VN' }
             },
-            (results, status) => {
+            (results: google.maps.places.AutocompletePrediction[] | null, status: any) => {
               setSearching(false);
+              const google = (window as any).google;
               if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                 setPredictions(results);
                 setShowPredictions(true);
@@ -98,9 +99,10 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
     setLoading(true);
     placesService.current.getDetails(
       { placeId: prediction.place_id, fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'] },
-      (place, status) => {
+      (place: google.maps.places.PlaceResult | null, status: any) => {
         setLoading(false);
-        if (status === (window as any).google.maps.places.PlacesServiceStatus.OK && place) {
+        const google = (window as any).google;
+        if (status === google.maps.places.PlacesServiceStatus.OK && place) {
           setSelectedPlace(place);
           setSearchQuery(place.name || '');
           setShowPredictions(false);
@@ -124,8 +126,8 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
             category: formData.category,
             rating: selectedPlace.rating || 0,
             location: {
-              lat: selectedPlace.geometry.location.lat(),
-              lng: selectedPlace.geometry.location.lng()
+              lat: selectedPlace.geometry?.location?.lat(),
+              lng: selectedPlace.geometry?.location?.lng()
             },
             address: selectedPlace.formatted_address,
             good_review: formData.good_review,
@@ -195,7 +197,6 @@ export const AddPlaceModal = memo(({ isOpen, onClose, onSuccess }: AddPlaceModal
               )}
             </div>
 
-            {/* Predictions List - Force to top of everything */}
             {showPredictions && predictions.length > 0 && (
               <div className="absolute top-full left-0 right-0 z-[100000] mt-1 bg-navy-card border border-teal/30 rounded-xl shadow-[0_10px_50px_rgba(0,0,0,0.8)] overflow-hidden max-h-[250px] overflow-y-auto">
                 {predictions.map((p) => (

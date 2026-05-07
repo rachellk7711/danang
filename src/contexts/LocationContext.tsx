@@ -7,7 +7,7 @@ interface Coords {
 
 interface LocationContextType {
   coords: Coords | null;
-  setCoords: (coords: Coords) => void;
+  setCoords: (coords: Coords | null) => void;
   locationName: string;
   setLocationName: (name: string) => void;
   isMock: boolean;

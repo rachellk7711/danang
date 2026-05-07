@@ -162,3 +162,22 @@ export interface UserPlace {
   google_place_id?: string;
   user_id?: string;
 }
+
+export interface PlaceData {
+  id: string;
+  name: string;
+  category: string;
+  rating: number;
+  distance: string;
+  distanceVal?: number;
+  time: string;
+  cost: string;
+  isLocal: boolean;
+  isUserPlace?: boolean;
+  isGooglePlace?: boolean;
+  location?: Location;
+  summary: {
+    pros: string;
+    cons: string;
+  };
+}
