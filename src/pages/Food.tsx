@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ShoppingBag, Utensils, Calendar, ChevronRight, Tag } from 'lucide-react';
+import { ShoppingBag, Utensils, Calendar, ChevronRight } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -205,37 +205,12 @@ const FoodAccordionItem: React.FC<{ food: any }> = ({ food }) => {
   );
 };
 
-const DeliveryCard: React.FC<{ spot: any }> = ({ spot }) => (
-  <div className="glass-card overflow-hidden">
-    <div className="bg-navy-sub/50 p-3 border-b border-white/5">
-      <div className="flex justify-between items-start mb-1">
-        <span className="text-[10px] font-bold text-coral uppercase tracking-widest">{spot.category}</span>
-        <span className="text-[10px] text-text-hint">{spot.hours}</span>
-      </div>
-      <h3 className="text-sm font-black text-text-primary mb-0.5">{spot.name}</h3>
-      <p className="text-[10px] text-coral font-bold">{spot.contact}</p>
-    </div>
-    <div className="p-3 bg-white/2 text-left">
-      <p className="text-[10px] text-text-secondary mb-3 italic">"{spot.desc}"</p>
-      <div className="space-y-1.5">
-        {spot.menu.map((m: any, i: number) => (
-          <div key={i} className="flex justify-between items-center bg-white/3 border-l-2 border-coral/30 p-2 rounded-r-lg">
-            <span className="text-[11px] text-text-primary font-medium">{m.name}</span>
-            <span className="text-[11px] font-bold text-mango bg-mango/10 px-1.5 py-0.5 rounded-md">{m.price}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </div>
-);
-
 export const FoodShoppingPage = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [activeTab, setActiveTab] = useState('snack');
   const [isVnFoodOpen, setIsVnFoodOpen] = useState(true);
   const [isFruitOpen, setIsFruitOpen] = useState(false);
   const [isShoppingOpen, setIsShoppingOpen] = useState(false);
-  const [isDeliveryOpen, setIsDeliveryOpen] = useState(false);
 
   return (
     <div className="pb-10 px-4 space-y-4">
