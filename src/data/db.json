@@ -16,8 +16,8 @@
         "hours": "07:00 ~ 21:00",
         "duration_hours": 6,
         "location": {
-          "lat": 15.9973,
-          "lng": 107.9881
+          "lat": 15.9989,
+          "lng": 107.9953
         },
         "distance_from_center_km": 40,
         "transport": "그랩 또는 투어버스 (왕복 약 1시간)",
@@ -164,8 +164,8 @@
         "hours": "07:00 ~ 21:00",
         "duration_hours": 1.5,
         "location": {
-          "lat": 16.1031,
-          "lng": 108.2781
+          "lat": 16.1048,
+          "lng": 108.2940
         },
         "distance_from_center_km": 10,
         "transport": "그랩 20분",
@@ -200,8 +200,8 @@
         "hours": "15:30 ~ 22:30",
         "duration_hours": 3,
         "location": {
-          "lat": 16.0244,
-          "lng": 108.2367
+          "lat": 16.0401,
+          "lng": 108.2265
         },
         "distance_from_center_km": 3,
         "transport": "그랩 10분",
@@ -236,8 +236,8 @@
         "hours": "09:00 ~ 17:00",
         "duration_hours": 5,
         "location": {
-          "lat": 15.9897,
-          "lng": 108.2556
+          "lat": 15.9925,
+          "lng": 108.2435
         },
         "distance_from_center_km": 8,
         "transport": "그랩 20분",
@@ -272,8 +272,8 @@
         "hours": "07:00 ~ 17:30",
         "duration_hours": 2,
         "location": {
-          "lat": 15.9728,
-          "lng": 108.2639
+          "lat": 15.9755,
+          "lng": 108.2609
         },
         "distance_from_center_km": 9,
         "transport": "그랩 20분",
@@ -933,8 +933,8 @@
         "hours": "출발 07:30, 귀환 16:00",
         "duration_hours": 8,
         "location": {
-          "lat": 15.9733,
-          "lng": 108.505
+          "lat": 15.954,
+          "lng": 108.522
         },
         "distance_from_center_km": 18,
         "transport": "호이안 항구에서 스피드보트",
@@ -1038,8 +1038,8 @@
         "hours": "08:00 ~ 21:00",
         "duration_hours": 0.5,
         "location": {
-          "lat": 15.8774,
-          "lng": 108.3263
+          "lat": 15.8771,
+          "lng": 108.3260
         },
         "distance_from_center_km": 0.5,
         "transport": "올드타운 도보",
@@ -1175,8 +1175,8 @@
         "hours": "06:00 ~ 17:00",
         "duration_hours": 3,
         "location": {
-          "lat": 15.765,
-          "lng": 108.119
+          "lat": 15.767,
+          "lng": 108.117
         },
         "distance_from_center_km": 40,
         "transport": "투어버스 (호이안 출발 반나절 투어)",
