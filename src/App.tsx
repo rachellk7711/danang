@@ -9,7 +9,7 @@ import { FoodShoppingPage } from './pages/Food'
 import { EmergencyPage } from './pages/Emergency'
 
 function App() {
-  const [activeTab, setActiveTab] = useState('explore')
+  const [activeTab, setActiveTab] = useState('spots')
 
   const renderContent = () => {
     switch (activeTab) {
