@@ -165,7 +165,7 @@
         "duration_hours": 1.5,
         "location": {
           "lat": 16.1048,
-          "lng": 108.2940
+          "lng": 108.294
         },
         "distance_from_center_km": 10,
         "transport": "그랩 20분",
@@ -1039,7 +1039,7 @@
         "duration_hours": 0.5,
         "location": {
           "lat": 15.8771,
-          "lng": 108.3260
+          "lng": 108.326
         },
         "distance_from_center_km": 0.5,
         "transport": "올드타운 도보",
@@ -1255,7 +1255,11 @@
         "good_review": "국물이 진하고 깊음. 다낭 최고 분보후에. 현지인들만 아는 찐 맛집",
         "bad_review": "영어 메뉴 없음. 오전 일찍 가야 재료 소진 전 먹을 수 있음",
         "tips": "손으로 메뉴 가리키면 됨. 오전 7~9시 방문 추천",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.0722,
+          "lng": 108.2198
+        }
       },
       {
         "id": "lr_002",
@@ -1279,7 +1283,11 @@
         "good_review": "저렴하고 맛있는 점심. 현지 직장인들이 줄 서는 집",
         "bad_review": "점심 피크타임에 자리 없음. 에어컨 없음",
         "tips": "11시 전 방문 추천. 1인 50,000동이면 배부름",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.069,
+          "lng": 108.222
+        }
       },
       {
         "id": "lr_003",
@@ -1303,7 +1311,11 @@
         "good_review": "육수 맑고 깔끔. 고기 양 많음. 에어컨 있음",
         "bad_review": "위치 찾기 조금 어려움",
         "tips": "구글맵 필수. 아침 식사 추천",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.0695,
+          "lng": 108.2235
+        }
       },
       {
         "id": "lr_004",
@@ -1327,7 +1339,11 @@
         "good_review": "바삭한 반쎄오. 라이스페이퍼에 싸먹는 방식. 현지인 최애",
         "bad_review": "위치 골목 안쪽. 찾기 어려움. 현금만 가능",
         "tips": "쌈 싸먹는 방법 모르면 옆 사람 따라하면 됨",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.0558,
+          "lng": 108.2238
+        }
       },
       {
         "id": "lr_005",
@@ -1351,7 +1367,11 @@
         "good_review": "호이안 콤가 원조. 강황 밥 위에 부드러운 닭. 가성비 최고",
         "bad_review": "항상 만석. 대기 필요",
         "tips": "호이안 방문 시 무조건 들러야 할 곳. 점심 피크 전 방문",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 15.8775,
+          "lng": 108.3305
+        }
       },
       {
         "id": "lr_006",
@@ -1375,7 +1395,11 @@
         "good_review": "호이안 전통 카오러우 맛집. 면이 쫄깃함",
         "bad_review": "양이 적다는 후기 있음",
         "tips": "호이안 올드타운 내 위치. 화이트로즈와 함께 주문",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 15.878,
+          "lng": 108.331
+        }
       },
       {
         "id": "lr_007",
@@ -1399,7 +1423,11 @@
         "good_review": "다낭 미꽝 원조격. 저렴하고 맛있음",
         "bad_review": "에어컨 없어 더울 수 있음",
         "tips": "다낭에서 꼭 먹어야 할 음식 중 하나",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.0683,
+          "lng": 108.22
+        }
       },
       {
         "id": "lr_008",
@@ -1423,7 +1451,11 @@
         "good_review": "25,000동 가성비 최고. 아침 식사 딱",
         "bad_review": "포장만 가능",
         "tips": "아침 산책 중 들르기 딱. 1개씩 들고 걸어먹기",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.068,
+          "lng": 108.2225
+        }
       },
       {
         "id": "lr_009",
@@ -1447,7 +1479,11 @@
         "good_review": "숯불향 진함. 현지인들이 즐겨 찾는 집",
         "bad_review": "오후엔 재료 소진",
         "tips": "오전 방문 필수",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.067,
+          "lng": 108.223
+        }
       },
       {
         "id": "lr_010",
@@ -1476,7 +1512,11 @@
         "good_review": "신선한 해산물. 관광지보다 훨씬 저렴",
         "bad_review": "에어컨 없음. 영어 안 됨",
         "tips": "손가락으로 재료 가리키면 OK",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.061,
+          "lng": 108.243
+        }
       },
       {
         "id": "lr_011",
@@ -1500,7 +1540,11 @@
         "good_review": "화이트로즈 원조집. 반투명 만두피가 예쁨",
         "bad_review": "관광객도 많이 와서 완전 로컬은 아님",
         "tips": "카오러우+화이트로즈 세트 추천",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 15.8793,
+          "lng": 108.3325
+        }
       },
       {
         "id": "lr_012",
@@ -1524,7 +1568,11 @@
         "good_review": "저렴하고 맛있음. 현지인 맛집",
         "bad_review": "위치 찾기 어려움",
         "tips": "구글맵 검색 추천",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 15.878,
+          "lng": 108.332
+        }
       },
       {
         "id": "lr_013",
@@ -1548,7 +1596,11 @@
         "good_review": "세계적으로 유명한 반미. 바삭한 바게트",
         "bad_review": "관광객 많아 줄 김. 로컬보다 비쌈",
         "tips": "호이안 방문 시 꼭 한 번은 먹어볼 것",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.8795,
+          "lng": 108.3315
+        }
       },
       {
         "id": "lr_014",
@@ -1572,7 +1624,11 @@
         "good_review": "넴루이 최고. 직접 싸먹는 재미",
         "bad_review": "재료 쌈 싸는 방법 처음엔 어색",
         "tips": "옆 테이블 보며 따라 싸먹기",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.064,
+          "lng": 108.2215
+        }
       },
       {
         "id": "lr_015",
@@ -1601,7 +1657,11 @@
         "good_review": "진짜 로컬 조개 요리. 35,000동 초가성비",
         "bad_review": "오후엔 재료 소진. 에어컨 없음",
         "tips": "아침 일찍 방문 필수",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.066,
+          "lng": 108.221
+        }
       },
       {
         "id": "lr_016",
@@ -1625,7 +1685,11 @@
         "good_review": "숯불향 짱. 쌈채소 신선",
         "bad_review": "가격 조금 있음",
         "tips": "모둠 주문 추천",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.063,
+          "lng": 108.219
+        }
       },
       {
         "id": "lr_017",
@@ -1654,7 +1718,11 @@
         "good_review": "신선하고 저렴함. 한강 뷰",
         "bad_review": "영어 소통 어려움",
         "tips": "가격 흥정 가능. 저녁 식사 추천",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.052,
+          "lng": 108.248
+        }
       },
       {
         "id": "lr_018",
@@ -1683,7 +1751,11 @@
         "good_review": "현지인 베이커리. 저렴하고 맛있음",
         "bad_review": "관광 정보 거의 없음. 직접 찾아가야 함",
         "tips": "아침 간식으로 딱",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.0685,
+          "lng": 108.224
+        }
       },
       {
         "id": "lr_019",
@@ -1707,7 +1779,11 @@
         "good_review": "아침 해장 최고. 현지인 단골",
         "bad_review": "오전만 운영",
         "tips": "숙취 해소 또는 아침 속 편하게",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.07,
+          "lng": 108.22
+        }
       },
       {
         "id": "lr_020",
@@ -1736,7 +1812,11 @@
         "good_review": "숯불향 최고. 현지인 저녁 맛집",
         "bad_review": "연기 많음. 실외 좌석",
         "tips": "저녁 일찍 자리 잡기",
-        "type": "local"
+        "type": "local",
+        "location": {
+          "lat": 16.058,
+          "lng": 108.22
+        }
       }
     ],
     "tourist": [
@@ -1762,7 +1842,11 @@
         "good_review": "전 세계 여행자 필수 코스. 바삭한 바게트와 풍성한 속재료",
         "bad_review": "관광객 너무 많아 30분 대기 기본. 가격 계속 오름",
         "tips": "오전 일찍 또는 저녁 방문 추천. 사진 찍을 자리 확보 필요",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.8795,
+          "lng": 108.3315
+        }
       },
       {
         "id": "tr_002",
@@ -1791,7 +1875,11 @@
         "good_review": "올드타운 최고 레스토랑. 에어컨. 메뉴 다양. 쿠킹클래스 운영",
         "bad_review": "관광지 가격. 현지 식당 대비 3배 비쌈",
         "tips": "여유 있는 식사 원할 때 추천. 쿠킹클래스 동시 운영",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.878,
+          "lng": 108.3318
+        }
       },
       {
         "id": "tr_003",
@@ -1820,7 +1908,11 @@
         "good_review": "올드타운 강변 뷰. 브런치·디저트 맛있음",
         "bad_review": "가격 비쌈. 식사보다 뷰 값이 더 큼",
         "tips": "낮 브런치 또는 저녁 야경과 함께 추천",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.8778,
+          "lng": 108.3315
+        }
       },
       {
         "id": "tr_004",
@@ -1849,7 +1941,11 @@
         "good_review": "한국어 메뉴 있음. 직원 친절. 깔끔한 인테리어",
         "bad_review": "관광객 가격. 시장 대비 2~3배 비쌈",
         "tips": "특별한 저녁 식사 원할 때 추천",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.0612,
+          "lng": 108.2275
+        }
       },
       {
         "id": "tr_005",
@@ -1873,7 +1969,11 @@
         "good_review": "여행자들 사이 유명. 무제한 넴루이 가성비",
         "bad_review": "관광객 위주. 로컬 느낌 없음",
         "tips": "배고플 때 방문. 음료 추가 주문 추천",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.876,
+          "lng": 108.3295
+        }
       },
       {
         "id": "tr_006",
@@ -1897,7 +1997,11 @@
         "good_review": "한강 뷰. 영어 메뉴. 직원 친절",
         "bad_review": "음식 퀄리티 대비 가격 높음",
         "tips": "한강 뷰 즐기며 식사하고 싶을 때",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.044,
+          "lng": 108.246
+        }
       },
       {
         "id": "tr_007",
@@ -1926,7 +2030,11 @@
         "good_review": "한국어 직원 있음. 영어 메뉴. 맛 안정적",
         "bad_review": "가격 비쌈",
         "tips": "해산물 안전하게 먹고 싶을 때",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.05,
+          "lng": 108.247
+        }
       },
       {
         "id": "tr_008",
@@ -1950,7 +2058,11 @@
         "good_review": "베트남 음식 질렸을 때 한식 생각나면 딱",
         "bad_review": "한국 본토 맛과 다름. 가격 비쌈",
         "tips": "아이들 베트남 음식 거부 시 대안",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.048,
+          "lng": 108.246
+        }
       },
       {
         "id": "tr_009",
@@ -1974,7 +2086,11 @@
         "good_review": "한강 뷰 최고. 드래곤브릿지 보이는 자리",
         "bad_review": "뷰 값 포함 가격. 음식 평범",
         "tips": "드래곤브릿지 야경 보며 저녁 식사",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.0625,
+          "lng": 108.2346
+        }
       },
       {
         "id": "tr_010",
@@ -1998,7 +2114,11 @@
         "good_review": "전통 복장 직원. 베트남 분위기 물씬",
         "bad_review": "관광지 가격. 음식 퀄리티 보통",
         "tips": "베트남 전통 분위기 체험 원할 때",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.059,
+          "lng": 108.227
+        }
       },
       {
         "id": "tr_011",
@@ -2022,7 +2142,11 @@
         "good_review": "호이안 힙한 카페 겸 식당. SNS 감성",
         "bad_review": "양 적음. 가격 있음",
         "tips": "인스타 감성 원할 때",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.8792,
+          "lng": 108.3308
+        }
       },
       {
         "id": "tr_012",
@@ -2046,7 +2170,11 @@
         "good_review": "에어컨. 영어 메뉴. 깔끔한 분위기",
         "bad_review": "평범한 맛. 가격 있음",
         "tips": "더울 때 에어컨 식당으로",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.8785,
+          "lng": 108.331
+        }
       },
       {
         "id": "tr_013",
@@ -2075,7 +2203,11 @@
         "good_review": "저렴한 생맥주. 시원함",
         "bad_review": "시끄러움. 흡연자 많음",
         "tips": "저녁 맥주 한잔 하고 싶을 때",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.051,
+          "lng": 108.242
+        }
       },
       {
         "id": "tr_014",
@@ -2104,7 +2236,11 @@
         "good_review": "안방비치 선베드+식사. 분위기 최고",
         "bad_review": "선베드 이용 시 최소 소비 금액 있음",
         "tips": "안방비치 방문 시 선베드 예약 겸 식사",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.906,
+          "lng": 108.371
+        }
       },
       {
         "id": "tr_015",
@@ -2133,7 +2269,11 @@
         "good_review": "미케비치 옆 야외 테이블. 분위기 낭만적",
         "bad_review": "바다 바람 강할 때 불편. 모기 있음",
         "tips": "저녁 노을 시간 방문 추천. 모기 기피제 챙기기",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.052,
+          "lng": 108.249
+        }
       },
       {
         "id": "tr_016",
@@ -2157,7 +2297,11 @@
         "good_review": "영어 소통 완벽. 에어컨. 한국 입맛 맞음",
         "bad_review": "관광지 가격",
         "tips": "아이들 베트남 음식 거부 시 아침 식사",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.044,
+          "lng": 108.244
+        }
       },
       {
         "id": "tr_017",
@@ -2186,7 +2330,11 @@
         "good_review": "미케비치 바로 앞. 분위기 최고",
         "bad_review": "메뉴 가격 표시 불명확. 계산 시 확인 필수",
         "tips": "주문 전 가격 반드시 확인",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.064,
+          "lng": 108.225
+        }
       },
       {
         "id": "tr_018",
@@ -2210,7 +2358,11 @@
         "good_review": "영어 메뉴. 여러 음식 한 번에 맛보기 좋음",
         "bad_review": "음식 평범. 관광지 가격",
         "tips": "호이안 전통 음식 여러 가지 맛보고 싶을 때",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.879,
+          "lng": 108.33
+        }
       },
       {
         "id": "tr_019",
@@ -2234,7 +2386,11 @@
         "good_review": "올드타운 강변 뷰. 분위기 로맨틱",
         "bad_review": "가격 비쌈",
         "tips": "저녁 야경과 함께",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 15.8783,
+          "lng": 108.332
+        }
       },
       {
         "id": "tr_020",
@@ -2258,7 +2414,11 @@
         "good_review": "반미 프엉보다 줄 짧음. 맛 비슷",
         "bad_review": "프엉만큼 유명하진 않음",
         "tips": "반미 프엉 줄 너무 길 때 대안",
-        "type": "tourist"
+        "type": "tourist",
+        "location": {
+          "lat": 16.06,
+          "lng": 108.22
+        }
       }
     ]
   },
@@ -2290,7 +2450,11 @@
       "good_review": "미케비치 인근 최고급 스파. 시설 최상. 친절함",
       "bad_review": "가격 비쌈. 예약 필수",
       "tips": "Klook 사전 예약 시 10~15% 할인. 커플 패키지 추천",
-      "reservation": "카카오톡 없음. 전화 또는 Klook 예약"
+      "reservation": "카카오톡 없음. 전화 또는 Klook 예약",
+      "location": {
+        "lat": 16.049,
+        "lng": 108.2455
+      }
     },
     {
       "id": "ms_002",
@@ -2319,7 +2483,11 @@
       "good_review": "현지인 단골. 실력 최고. 가성비 압도적",
       "bad_review": "예약 필수. 시설 단순. 영어 소통 어려움",
       "tips": "예약 없이 가면 대기 필수. 현금만 가능",
-      "reservation": "전화 예약 (베트남어 필요) 또는 직접 방문"
+      "reservation": "전화 예약 (베트남어 필요) 또는 직접 방문",
+      "location": {
+        "lat": 16.0504,
+        "lng": 108.2435
+      }
     },
     {
       "id": "ms_003",
@@ -2348,7 +2516,11 @@
       "good_review": "깔끔한 시설. 한국어 직원 있음. 영어 소통 가능",
       "bad_review": "성수기 예약 어려움",
       "tips": "한국인 많이 찾는 곳. 미리 예약 추천",
-      "reservation": "카카오톡: CozySpaDaNang"
+      "reservation": "카카오톡: CozySpaDaNang",
+      "location": {
+        "lat": 16.047,
+        "lng": 108.2465
+      }
     },
     {
       "id": "ms_004",
@@ -2377,7 +2549,11 @@
       "good_review": "올드타운 인근. 깔끔함. 영어 소통 가능",
       "bad_review": "관광지 가격",
       "tips": "올드타운 관람 후 피로 풀기",
-      "reservation": "Klook 또는 직접 방문"
+      "reservation": "Klook 또는 직접 방문",
+      "location": {
+        "lat": 15.882,
+        "lng": 108.335
+      }
     },
     {
       "id": "ms_005",
@@ -2402,7 +2578,11 @@
       "good_review": "호이안 최고급 스파. 시설·서비스 모두 훌륭",
       "bad_review": "가격 높음. 사전 예약 필수",
       "tips": "미리 예약 안 하면 자리 없음",
-      "reservation": "palmarosaspa.com 온라인 예약"
+      "reservation": "palmarosaspa.com 온라인 예약",
+      "location": {
+        "lat": 15.8828,
+        "lng": 108.3303
+      }
     },
     {
       "id": "ms_006",
@@ -2427,7 +2607,11 @@
       "good_review": "현지인 추천. 가성비 최고. 실력 좋음",
       "bad_review": "시설 평범. 영어 거의 안 됨",
       "tips": "구글맵 보여주면 됨. 현금만",
-      "reservation": "직접 방문"
+      "reservation": "직접 방문",
+      "location": {
+        "lat": 16.051,
+        "lng": 108.245
+      }
     },
     {
       "id": "ms_007",
@@ -2452,7 +2636,11 @@
       "good_review": "호이안 로컬 마사지 중 최고. 실력자 마사지사",
       "bad_review": "예약 없으면 대기. 시설 단순",
       "tips": "저녁 올드타운 후 방문",
-      "reservation": "직접 방문 추천"
+      "reservation": "직접 방문 추천",
+      "location": {
+        "lat": 15.88,
+        "lng": 108.334
+      }
     },
     {
       "id": "ms_008",
@@ -2477,7 +2665,11 @@
       "good_review": "호이안 감성 인테리어. 커플에게 추천",
       "bad_review": "관광지 가격",
       "tips": "커플 여행객 추천",
-      "reservation": "직접 방문 또는 전화"
+      "reservation": "직접 방문 또는 전화",
+      "location": {
+        "lat": 15.8795,
+        "lng": 108.3335
+      }
     },
     {
       "id": "ms_009",
@@ -2502,7 +2694,11 @@
       "good_review": "저렴하고 실력 좋음. 현지인 단골",
       "bad_review": "영어 안 됨. 시설 단순",
       "tips": "가격 최저가. 현금 필수",
-      "reservation": "직접 방문"
+      "reservation": "직접 방문",
+      "location": {
+        "lat": 16.068,
+        "lng": 108.224
+      }
     },
     {
       "id": "ms_010",
@@ -2531,7 +2727,11 @@
       "good_review": "미케비치 인근. 시설 럭셔리. 직원 친절. 한국어 카탈로그",
       "bad_review": "가격 높음",
       "tips": "미케비치 일몰 후 방문 추천. Klook 예약 할인",
-      "reservation": "Klook 또는 카카오톡: PranaSpaDN"
+      "reservation": "Klook 또는 카카오톡: PranaSpaDN",
+      "location": {
+        "lat": 16.046,
+        "lng": 108.246
+      }
     }
   ],
   "seasonal_fruits": {
@@ -3139,7 +3339,11 @@
         "photo_spots": [
           "로스팅 머신 배경",
           "통창 빛 들어오는 바 자리"
-        ]
+        ],
+        "location": {
+          "lat": 16.0504,
+          "lng": 108.2464
+        }
       },
       {
         "id": "cafe_dn_002",
@@ -3180,7 +3384,11 @@
           "한강 배경 루프탑",
           "군인 소품 인테리어",
           "코코넛 커피 클로즈업"
-        ]
+        ],
+        "location": {
+          "lat": 16.0687,
+          "lng": 108.2235
+        }
       },
       {
         "id": "cafe_dn_003",
@@ -3220,7 +3428,11 @@
         "photo_spots": [
           "골목 플라스틱 의자 감성",
           "현지인과 함께하는 장면"
-        ]
+        ],
+        "location": {
+          "lat": 16.068,
+          "lng": 108.224
+        }
       },
       {
         "id": "cafe_dn_004",
@@ -3260,7 +3472,11 @@
         "photo_spots": [
           "미니멀 화이트 인테리어",
           "에스프레소 토닉 클로즈업"
-        ]
+        ],
+        "location": {
+          "lat": 16.046,
+          "lng": 108.245
+        }
       },
       {
         "id": "cafe_dn_005",
@@ -3300,7 +3516,11 @@
         "photo_spots": [
           "드래곤브릿지 야경",
           "한강 리플렉션"
-        ]
+        ],
+        "location": {
+          "lat": 16.0625,
+          "lng": 108.2346
+        }
       },
       {
         "id": "cafe_dn_006",
@@ -3340,7 +3560,11 @@
         "photo_spots": [
           "해먹 배경",
           "정원 나무 그늘"
-        ]
+        ],
+        "location": {
+          "lat": 16.054,
+          "lng": 108.241
+        }
       },
       {
         "id": "cafe_dn_007",
@@ -3380,7 +3604,11 @@
         "photo_spots": [
           "2층 통창 뷰",
           "소금커피 크림 클로즈업"
-        ]
+        ],
+        "location": {
+          "lat": 16.058,
+          "lng": 108.239
+        }
       },
       {
         "id": "cafe_dn_008",
@@ -3420,7 +3648,11 @@
         "photo_spots": [
           "360도 파노라마 야경",
           "다낭 시내 전경"
-        ]
+        ],
+        "location": {
+          "lat": 16.0735,
+          "lng": 108.2238
+        }
       },
       {
         "id": "cafe_dn_009",
@@ -3457,7 +3689,11 @@
         "good_review": "저렴하고 맛있음. 에어컨. 와이파이. 현지인 일상 카페",
         "bad_review": "체인점이라 특색 없음",
         "tips": "여행 중 간단히 쉬어가기 좋음. 현지 체인이라 어디서나 찾기 쉬움",
-        "photo_spots": []
+        "photo_spots": [],
+        "location": {
+          "lat": 16.066,
+          "lng": 108.222
+        }
       },
       {
         "id": "cafe_dn_010",
@@ -3494,7 +3730,11 @@
         "good_review": "어디서나 찾기 쉬움. 에어컨. 와이파이. 안정적 품질",
         "bad_review": "로컬 느낌 없음. 관광지 가격",
         "tips": "급하게 에어컨 카페 필요할 때. 전국 어디서나 있음",
-        "photo_spots": []
+        "photo_spots": [],
+        "location": {
+          "lat": 16.067,
+          "lng": 108.223
+        }
       },
       {
         "id": "cafe_dn_011",
@@ -3533,7 +3773,11 @@
         "tips": "원두 선물 구매하기 좋음. G7보다 고급 원두 라인업",
         "photo_spots": [
           "원두 패키지 진열대"
-        ]
+        ],
+        "location": {
+          "lat": 16.065,
+          "lng": 108.2215
+        }
       },
       {
         "id": "cafe_dn_012",
@@ -3572,7 +3816,11 @@
         "tips": "외국인 여행자 많아 편안한 분위기",
         "photo_spots": [
           "심플한 카운터 바 자리"
-        ]
+        ],
+        "location": {
+          "lat": 16.048,
+          "lng": 108.246
+        }
       },
       {
         "id": "cafe_dn_013",
@@ -3612,7 +3860,11 @@
         "photo_spots": [
           "절벽 위 바다 파노라마",
           "오픈 테라스 뷰"
-        ]
+        ],
+        "location": {
+          "lat": 16.1048,
+          "lng": 108.294
+        }
       },
       {
         "id": "cafe_dn_014",
@@ -3649,7 +3901,11 @@
         "good_review": "저렴하고 맛있음. 현지 젊은이들 분위기",
         "bad_review": "시끄러울 수 있음",
         "tips": "저녁 현지 분위기 체험하기 좋음",
-        "photo_spots": []
+        "photo_spots": [],
+        "location": {
+          "lat": 16.052,
+          "lng": 108.243
+        }
       },
       {
         "id": "cafe_dn_015",
@@ -3689,7 +3945,11 @@
         "photo_spots": [
           "아트 감성 인테리어",
           "기념품 진열"
-        ]
+        ],
+        "location": {
+          "lat": 16.055,
+          "lng": 108.242
+        }
       }
     ],
     "hoian": [
@@ -3731,7 +3991,11 @@
         "photo_spots": [
           "고요한 정원 티 테이블",
           "나무 소품 인테리어"
-        ]
+        ],
+        "location": {
+          "lat": 15.8792,
+          "lng": 108.3318
+        }
       },
       {
         "id": "cafe_hi_002",
@@ -3766,7 +4030,11 @@
         "photo_spots": [
           "투본강 배경",
           "코코넛 커피"
-        ]
+        ],
+        "location": {
+          "lat": 15.88,
+          "lng": 108.333
+        }
       },
       {
         "id": "cafe_hi_003",
@@ -3806,7 +4074,11 @@
         "photo_spots": [
           "2층 테라스 투본강 야경",
           "케이크 플레이팅"
-        ]
+        ],
+        "location": {
+          "lat": 15.8778,
+          "lng": 108.3315
+        }
       },
       {
         "id": "cafe_hi_004",
@@ -3846,7 +4118,11 @@
         "photo_spots": [
           "정원 좌석",
           "호이안 등불 배경"
-        ]
+        ],
+        "location": {
+          "lat": 15.8785,
+          "lng": 108.332
+        }
       },
       {
         "id": "cafe_hi_005",
@@ -3886,7 +4162,11 @@
         "photo_spots": [
           "등불 골목 배경 음료 사진",
           "버터플라이피 에이드 색 변화"
-        ]
+        ],
+        "location": {
+          "lat": 15.8801,
+          "lng": 108.334
+        }
       },
       {
         "id": "cafe_hi_006",
@@ -3926,7 +4206,11 @@
         "photo_spots": [
           "빈티지 건물 외관",
           "앤틱 인테리어"
-        ]
+        ],
+        "location": {
+          "lat": 15.879,
+          "lng": 108.3325
+        }
       },
       {
         "id": "cafe_hi_007",
@@ -3965,7 +4249,11 @@
         "tips": "아이들 재울 수 있는 저녁에 성인 둘이 방문",
         "photo_spots": [
           "화이트 모던 인테리어"
-        ]
+        ],
+        "location": {
+          "lat": 15.8795,
+          "lng": 108.333
+        }
       },
       {
         "id": "cafe_hi_008",
@@ -4004,7 +4292,11 @@
         "tips": "올드타운 관람 후 더위 식히기",
         "photo_spots": [
           "SNS 감성 음료 사진"
-        ]
+        ],
+        "location": {
+          "lat": 15.8792,
+          "lng": 108.331
+        }
       },
       {
         "id": "cafe_hi_009",
@@ -4044,7 +4336,11 @@
         "photo_spots": [
           "해변 배경 스무디",
           "스무디 볼 클로즈업"
-        ]
+        ],
+        "location": {
+          "lat": 15.906,
+          "lng": 108.371
+        }
       },
       {
         "id": "cafe_hi_010",
@@ -4084,7 +4380,11 @@
         "photo_spots": [
           "로스팅 공간",
           "드립 커피 클로즈업"
-        ]
+        ],
+        "location": {
+          "lat": 15.8786,
+          "lng": 108.3316
+        }
       }
     ]
   },
